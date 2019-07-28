@@ -1,0 +1,14 @@
+<html>
+<body>
+	<h2>Test JWT<hr></h2>	
+	
+	<form action="{{ Route( 'jwt.valid' ) }}" method="POST">
+
+		<textarea name="token" rows="4" cols="80" readonly>{{ PARAM 1 }}</textarea>
+
+		<br><br><button type="submit">Validate Token</button>
+		
+	</form>						
+
+</body>
+</html>

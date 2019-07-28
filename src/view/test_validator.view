@@ -1,0 +1,16 @@
+<html>
+<body>
+	<h2>Test Validator<hr></h2>
+	
+	<form action="{{ Route( 'validator.run' ) }}" method="POST">
+
+		<br><input type="text" name="name"   placeholder="Valid: required|string|len:5"   value="">
+		<br><input type="text" name="age"    placeholder="Valid: required|numeric" value="">
+		<br><input type="text" name="dummy"  placeholder="No valid..." value="">
+
+		<br><br><button type="submit">Validate</button>
+		
+	</form>						
+
+</body>
+</html>

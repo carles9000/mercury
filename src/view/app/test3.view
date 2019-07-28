@@ -1,0 +1,41 @@
+<html>
+<body>
+	<h2>Test3<hr></h2>
+	
+	<?prg
+		LOCAL hResponse := PValue(1)
+		LOCAL nI, h
+		LOCAL cHtml 	:= ''
+
+		IF ValType( hResponse ) == 'H'		
+		
+			cHtml += '<h3>Token Data</h3>'
+			cHtml += '<table border="1">'
+			
+			FOR nI := 1 TO len( hResponse )
+			
+				h := HB_HPairAt( hResponse, nI )
+				
+				cHtml += '<tr><td>' + h[1] + '</td><td>' + valtochar(h[2]) + '</td></tr>'
+	
+			NEXT
+			
+			cHtml += '</table>'							
+			
+		ENDIF
+	
+		
+		RETU cHtml
+	?>	
+	
+	
+	
+	
+	<form action="{{ Route( 'app.principal' ) }}" method="GET">
+
+		<br><br><button type="submit">Pantalla Principal</button>
+		
+	</form>		
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+{{ View( 'boot/header.view' ) }}
+
+<body>
+
+	{{ View( 'boot/nav_default.view' ) }}	
+	
+	<?prg
+		LOCAL hMsg := PValue(1)
+		LOCAL cHtml := ''
+		LOCAL aError
+		LOCAL h, nI
+		
+		DO CASE 
+			CASE Valtype( hMsg ) == 'A'
+			
+				cHtml += '<div class="alert alert-danger"><strong><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;&nbsp;Error de Validación</strong>'
+				
+				nError := len( hMsg )
+				
+				FOR nI := 1 TO nError
+				
+					h := hMsg[nI]
+				
+					cHtml += '<br>Campo: ' + h[ 'field' ] + ', ' + h[ 'msg' ]										
+				NEXT					
+				
+				cHtml += '</div>'
+
+		
+			CASE Valtype( hMsg ) == 'C'
+			
+				cHtml += '<div class="alert alert-danger"><strong><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;&nbsp;Error de Validación</strong>'	
+
+				cHtml += '<br>' + hMsg					
+			
+		ENDCASE
+		
+		RETU cHtml		
+	?>		
+	
+	
+	<!--<div  align="center"><img id='logo_default' src="{{ App_Url() + '/images/1.jpg' }}"></div>   -->	
+
+    
+</body>
+</html>

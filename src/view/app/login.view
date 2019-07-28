@@ -1,0 +1,60 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+	<h2>Login<hr></h2>
+
+	<?prg
+		LOCAL hResponse := PValue(1)
+		LOCAL nI
+		LOCAL cHtml 	:= ''
+		
+		IF ValType( hResponse ) == 'H'
+		
+			IF ! hResponse[ 'success' ]
+			
+				DO CASE 
+				
+					CASE hResponse[ 'type' ] == 'validator'
+					
+						aMsgError := hResponse[ 'error' ]
+			
+						FOR nI := 1 TO len( aMsgError )
+						
+							h := aMsgError[nI] 
+								
+							cHtml += '<br>Field: ' + h[ 'field' ] + ', ' + h[ 'msg' ] + ', value ==> ' + h[ 'value' ]					
+				
+						NEXT	
+
+					CASE hResponse[ 'type' ] == 'user'	
+
+						cHtml +=  hResponse[ 'error' ]
+						
+				ENDCASE
+
+				RETU cHtml
+				
+			ENDIF						
+			
+		ENDIF
+		
+		RETU ''	
+	?>			
+	
+	
+	<form action="{{ Route( 'app.autentica' ) }}" method="POST">
+
+		<br><input type="text"     name="user"   placeholder="User  (dummy)"   value="dummy">
+		<br><input type="password" name="psw"    placeholder="Password  (1234)" value="">		
+
+		<br><br><button type="submit">Login</button>
+		
+	</form>						
+	
+	<br><br>
+	<a href="{{ Route( 'app' ) }}">Pantalla default...</a>
+	
+</body>
+</html>

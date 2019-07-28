@@ -1,0 +1,36 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+	<h2>Test Validator - Validacion de datos<hr></h2>
+					
+		<?prg 
+			LOCAL aMsgError  := pvalue(1)	
+			LOCAL cHtml 	 := ''
+			LOCAL nI, h
+
+			//	Si llega un mensaje en la pantalla de edicion es uqe hay un error...
+
+			IF Valtype( aMsgError ) == 'A'
+
+				FOR nI := 1 TO len( aMsgError )
+				
+					h := aMsgError[nI] 
+						
+					cHtml += '<br>Field: ' + h[ 'field' ] + ', ' + h[ 'msg' ] + ', value ==> ' + h[ 'value' ]					
+		
+				NEXT							
+				
+				RETU cHtml
+			
+			ENDIF						
+			
+			RETU '<h3>Validator Ok !!!</h3>'
+		?>
+		
+		<br><br>
+		<button onclick="window.location.href='{{ Route( "validator" ) }}'">Go to Test...</button>
+		
+</body>
+</html>

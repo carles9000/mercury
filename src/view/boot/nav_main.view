@@ -1,0 +1,22 @@
+<nav class="navbar navbar-dark bg-dark navbar-mercury">
+	<a href="https://harbourproject.slack.com/messages/CJUHF8SBX/"><img class="logo" src="{{ App_Url() + '/images/hfw_box.png'}}"></a>	
+	<a class="navbar-brand" href="{{ Route( 'boot' )  }}">Harbour Web</a>	
+
+	<ul class="navbar-nav ml-auto">
+		<li class="nav-item active">
+			<a class="nav-link" href="{{ Route( 'boot.logout' )}}" onclick="return confirm('Are you sure?')" ><i class="fas fa-sign-out-alt"></i>&nbsp;Logout</a>		
+		</li>
+    </ul>
+</nav>
+
+
+
+<nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark navbar-mercury">	
+
+	<ul class="navbar-nav ml-auto">
+		<li class="nav-item active">
+			<a class="nav-link forweb" href="https://github.com/carles9000/mvc_mercury"><i class="fa fa-info-circle"></i>&nbsp;MVC Mercury Library</a>
+		</li>			
+	</ul>
+
+</nav>

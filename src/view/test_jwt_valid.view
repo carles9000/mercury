@@ -1,0 +1,49 @@
+<html>
+	<meta charset="utf-8">
+	
+<body style="background-color: #ececec;">
+
+	<h2>Test JWT - Validator<hr></h2>	
+	
+		<?prg 
+			LOCAL lValid 	:= PValue(1)
+			LOCAL hData 	:= PValue(2)
+			LOCAL cError 	:= PValue(3)
+			LOCAL cHtml 	:= ''
+			LOCAL nI
+			LOCAL aReg 
+		
+			IF lValid 
+			
+				cHtml += '<h3>Token Validado</h3>'
+				
+				cHtml += '<table border="1" style="background-color: white;">'	
+				
+				FOR nI := 1 TO len( hData )
+				
+					aReg := HB_HPairAt( hData, nI )
+					
+					cHtml += '<tr>'
+					cHtml += '<td><b>' + aReg[1] + '</b></td><td>' + valtochar(aReg[2]) + '</td>'
+					cHtml += '</tr>'
+					
+				NEXT	
+
+				cHtml += '</table>' 				
+			
+			ELSE
+			
+				cHtml += '<h3>Error Token !</h3>'
+				cHtml += cError		
+			
+			ENDIF	
+
+			RETU cHtml
+		
+		?>
+	
+		<br><br>
+		<button onclick="window.location.href='{{ Route( "jwt" ) }}'">Go to Test...</button>	
+
+</body>
+</html>

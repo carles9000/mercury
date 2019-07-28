@@ -1,0 +1,14 @@
+<html>
+<body>
+	<h2>Pantalla Principal<hr></h2>
+	
+	<a href="{{ Route( 'app.test1' ) }}">Test 1</a>
+	<br>
+	<a href="{{ Route( 'app.test2' ) }}">Test 2</a>
+	<br>
+	<a href="{{ Route( 'app.test3' ) }}">Test 3</a>
+	<br><br><br>
+	<a href="{{ Route( 'app.logout' ) }}">Salir del Sistema - Logout</a>	
+	
+</body>
+</html>

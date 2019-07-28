@@ -1,0 +1,10 @@
+<!-- Page Content  -->
+<div id="content">
+
+	{{ View( 'boot/content_btn.view' ) }}
+
+	<h2>Test 2</h2>
+
+	<div class="line"></div>
+
+</div>

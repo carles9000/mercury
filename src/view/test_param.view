@@ -1,0 +1,36 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+	<h2>Test Parameters: _Get()<hr></h2>
+	
+	<h3>Método parametros</h3>
+	
+	{{ PARAM 1 }} => {{ PARAM 2 }}
+	
+	<br><br>
+	
+	<h3>Método Setter/Getter</h3>	
+	
+	{{ _Get( 'name' ) }} => {{ _Get( 'age' ) }} 
+
+
+		<?prg 
+		
+			LOCAL aData 	 := _Get( 'fruit' )
+			LOCAL cHtml 	 := '<hr><h3>Fruits..</h3>'
+			LOCAL nI
+			
+			FOR nI := 1 TO len( aData )
+					
+				cHtml += '<li>' + aData[ nI ]
+	
+			NEXT						
+			
+			RETU cHtml
+		?>	
+	
+	
+</body>
+</html>

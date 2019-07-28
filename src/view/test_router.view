@@ -1,0 +1,12 @@
+<h2>Test Router</h2>
+
+Time: {{ time() }}
+
+<br>
+
+Router( 'my_new' ) ==> {{ Route( 'my_new') }}
+
+<br>
+
+Router( 'dummy' )) ==> {{ Route( 'dummy') }} 
+

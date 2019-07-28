@@ -1,0 +1,12 @@
+<html>
+<body>
+	<h2>Test1<hr></h2>
+	
+	<form action="{{ Route( 'app.principal' ) }}" method="GET">
+
+		<br><br><button type="submit">Pantalla Principal</button>
+		
+	</form>		
+
+</body>
+</html>

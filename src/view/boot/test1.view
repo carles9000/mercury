@@ -1,0 +1,24 @@
+{{ View( 'boot/header_main.view' ) }}
+
+<body>
+
+	{{ View( 'boot/nav_main.view' ) }}
+	
+    <div class="wrapper">
+		
+		{{ View( 'boot/menu.view' ) }}
+		
+		{{ View( 'boot/content_test1.view' ) }}				
+
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+        });
+    </script>
+
+</body>
+</html>
