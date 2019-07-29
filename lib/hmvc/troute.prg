@@ -391,7 +391,7 @@ METHOD Execute( cController, hParam, aRouteSelect ) CLASS TRoute
 	//	Por defecto la carpeta de los controladores estara en srv/controller
 	
 	LOCAL cPath := App():cPath + App():cPathController
-	LOCAL oTController
+	LOCAL oTController, oView
 	LOCAL cProg, cCode, cFile, cNameClass
 	LOCAL cAction := ''
 	LOCAL nPos
@@ -423,9 +423,13 @@ METHOD Execute( cController, hParam, aRouteSelect ) CLASS TRoute
 		
 		ELSEIF ( nPos := At( '()', cController ) ) > 0 
 
-			cAction := alltrim( Substr( cController, 1, nPos-1) )
-			cFile 	:= alltrim( Substr( cController, nPos+2 ) )
-			cType	:= 'func'		
+			cAction 	:= alltrim( Substr( cController, 1, nPos-1) )
+			cFile 		:= alltrim( Substr( cController, nPos+2 ) )
+			cType		:= 'func'		
+			
+		ELSEIF ( right( lower( cController ), 5 ) == '.view' ) 
+
+			cType	 	:= 'view'				
 		
 		ELSE 
 		
@@ -435,6 +439,17 @@ METHOD Execute( cController, hParam, aRouteSelect ) CLASS TRoute
 		ENDIF
 
 	//	------------------------------------------------------------
+	
+	//	Si es una View la ejecutamos y salimos...
+	
+		IF cType == 'view' 
+			LOG 'EJECUTO VIEW -> ' + cController
+			oView := TView():New()
+			oView:Exec( cController )
+			RETU nil
+		ENDIF
+		
+	//	Si es una clase o function....
 
 	cProg := cPath + cFile
 	

@@ -21,6 +21,8 @@ CLASS TView
 ENDCLASS 
 
 METHOD New() CLASS TView
+
+	::oResponse := TResponse():New()
 		
 RETU Self
 
