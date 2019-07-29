@@ -405,6 +405,7 @@ METHOD Execute( cController, hParam, aRouteSelect ) CLASS TRoute
 	LOG ' '
 	LOG 'TRoute():Execute()'
 	LOG '=================='
+	LOG 'Headers: ' + cHBheaders2
 	
 	LOG 'Exec: ' + cController
 	

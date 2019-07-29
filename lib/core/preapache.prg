@@ -223,13 +223,13 @@ FUNCTION zExecute( cCode, oInfo, ... )
 	LOCAL bLastHandler 	:= ErrorBlock(bErrorHandler)   
     LOCAL oHrb, uRet
     local cHBheaders1 := "~/harbour/include"
-    local cHBheaders2 := "c:/harbour/include"
+    LOCAL cHBheaders2 := AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_APP' ) + "/include"	//	"c:\harbour\include"
 
 	IF hPP == NIL
 
 		hPP := __pp_init()
 		__pp_path( hPP, "~/harbour/include" )
-		__pp_path( hPP, "c:\harbour\include" )
+		__pp_path( hPP, cHBheaders2 )
 		IF ! Empty( hb_GetEnv( "HB_INCLUDE" ) )
 		 __pp_path( hPP, hb_GetEnv( "HB_INCLUDE" ) )
 		ENDIF 	 
