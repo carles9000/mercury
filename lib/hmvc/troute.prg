@@ -400,7 +400,7 @@ METHOD Execute( cController, hParam, aRouteSelect ) CLASS TRoute
 	LOCAL oInfo := {=>}
 	LOCAL oExecute
     LOCAL cHBheaders1 := "~/harbour/include"
-    LOCAL cHBheaders2 := "c:\harbour\include"
+    LOCAL cHBheaders2 := App():Path() + "/include"
 	
 	LOG ' '
 	LOG 'TRoute():Execute()'
