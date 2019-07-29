@@ -63,11 +63,13 @@ RETU Self
 
 METHOD Init() CLASS TApp
 
+
 	::Config()	
 	
-	::aSys[ 'time_init' ]	:= hb_milliseconds()
-	
+	::aSys[ 'time_init' ]	:= hb_milliseconds()	
+
 	::oRoute:Listen()
+
 
 RETU NIL
 

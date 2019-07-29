@@ -33,7 +33,7 @@ METHOD New( oApp ) CLASS TRoute
 
 	::oApp 			:= oApp
 	::oRequest 	:= oApp:oRequest
-	::oResponse 	:= oApp:oResponse			
+	::oResponse 	:= oApp:oResponse
 	
 RETU Self
 
@@ -129,7 +129,8 @@ METHOD Listen() CLASS TRoute
 	
 	//	Analizamos todas las rutas. Inicialmente solo se analizaban las del mismo método
 	//	pero se ha detectado que en una vista se puede pedir Route() de otros metodo.
-		
+
+
 	FOR n := 1 TO nLen 
 	
 		aRoute 		:= ::aMap[n]			
@@ -180,9 +181,7 @@ METHOD Listen() CLASS TRoute
 		//	------------------------------------------------------------
 		
 		::aMap[n][ MAP_QUERY ] := alltrim(cMap)
-		::aMap[n][ MAP_PARAMS] := aParamsMap
-		
-
+		::aMap[n][ MAP_PARAMS] := aParamsMap		
 		
 	NEXT
 	
@@ -346,6 +345,7 @@ METHOD Listen() CLASS TRoute
 	NEXT
 	
 	//	Si existe un controlador lo ejecutaremos
+	
 
 	IF lFound 
 	
@@ -369,14 +369,15 @@ METHOD Listen() CLASS TRoute
 		ENDIF
 		
 	ELSE	
-	
+
 		LOG 'No existe ruta => ' + cUrlFriendly + ', method: ' + cMethod
 	
 		IF App():lLog == .F.
-			::oResponse:Send( 404 )
+			::oResponse:SendCode( 404 )
 		ENDIF
 		
 		QUIT
+	
 	
 	ENDIF		
 

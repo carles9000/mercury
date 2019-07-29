@@ -22,7 +22,7 @@ CLASS TResponse
    
    METHOD SetHeader( cHeader, uValue )
    
-   METHOD Send    ( nCode )
+   METHOD SendCode( nCode )
    METHOD SendJson( uResult, nCode )
    METHOD SendXml ( uResult, nCode )
    METHOD SendHtml( uResult, nCode )
@@ -102,9 +102,9 @@ METHOD Redirect( cUrl ) CLASS TResponse
 	
 RETU NIL
 
-METHOD Send( nCode ) CLASS TResponse
+METHOD SendCode( nCode ) CLASS TResponse
 
-	ErrorLevel( nCode )
+	//ErrorLevel( nCode )
 
 RETU NIL 
 
