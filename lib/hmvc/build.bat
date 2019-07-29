@@ -12,6 +12,18 @@ del tmvc_lib.hrb
 
 harbour tmvc_lib.prg /n /w /gh
 
+if errorlevel 1 goto compileerror
+goto exit
+
+:compileerror
+
+@echo Error Compile
+@echo =============
+
 pause
+
+:exit
+
+
 
 
