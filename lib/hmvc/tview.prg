@@ -44,7 +44,13 @@ METHOD Load( cFile ) CLASS TView
 	
 	IF File ( cProg )
 	
-		cCode := MemoRead( cProg )	
+		cCode := MemoRead( cProg )
+		
+	ELSE
+	
+		LOG 'Error: No existe Vista: ' + cFile 		
+			
+		App():ShowError( 'No existe Vista: ' +  cFile,  'TView Error!' )						
 	
 	ENDIF				
 
@@ -59,7 +65,6 @@ METHOD Exec( cFile, ... ) CLASS TView
 	LOCAL oExecute 
 
 	IF !empty( cCode )
-
 	
 		oInfo := {=>}
 		oInfo[ 'file' ] := cFile 
@@ -81,10 +86,6 @@ METHOD Exec( cFile, ... ) CLASS TView
 	
 	ELSE
 	
-		LOG 'Error: No existe Vista: ' + cFile 
-		
-		::oRoute:oApp:ShowError( 'No existe Vista: ' +  cFile,  'TView Error!' )
-		
 	
 	ENDIF				
 
