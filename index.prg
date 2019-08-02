@@ -79,6 +79,9 @@ FUNCTION Main()
 
 		//	Test Paramaters	
 			oApp:oRoute:Map( 'GET'  , 'param'					, 'param'				, 'test@param.prg' )
+
+		//	View Direct
+			oApp:oRoute:Map( 'GET'  , 'view'					, 'view'				, 'vista_default.view' )
 			
 			
 	//	Iniciamos el sistema
