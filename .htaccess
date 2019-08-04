@@ -2,9 +2,9 @@
 # CONFIGURACION RUTAS PROGRAMA  (Relative to DOCUMENT_ROOT)
 # --------------------------------------------------------------------------
 SetEnv APP_TITLE           "Mercury v1.0"
-SetEnv PATH_URL            "/mercury"
-SetEnv PATH_APP            "/mercury"
-SetEnv PATH_DATA           "/mercury/data/"
+SetEnv PATH_URL            "/hfw/mercury"
+SetEnv PATH_APP            "/hfw/mercury"
+SetEnv PATH_DATA           "/hfw/mercury/data/"
 
 
 # --------------------------------------------------------------------------
