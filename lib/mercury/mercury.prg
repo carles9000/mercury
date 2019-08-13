@@ -1,5 +1,5 @@
 /*	----------------------------------------------------------------------------
-	Name:			LIB HMVC - Libreria Harbour MVC (Model/View/Controller 
+	Name:			LIB Mercury - Libreria Harbour MVC (Model/View/Controller 
 	Description: 	Primera libreria para poder emular sistema MVC
 	Autor:			Carles Aubia
 	Date: 			19/06/19	

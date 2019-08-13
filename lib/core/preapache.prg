@@ -107,27 +107,45 @@ FUNCTION AP_CompileErrorHandler( oError, oInfo, cTitle )
 	LOCAL cCallStack  := ''
 	LOCAL cCode 		:= ''
 
-	Aadd( aError, { 'File', oInfo[ 'file' ] } )
-	Aadd( aError, { 'Error', oError:description } )
+	//LOCAL a 			:= __objGetMsgList( oError, .T. )
 	
-	if hb_hhaskey( oInfo, 'block' )	
-		Aadd( aError, { 'Num. Code Block', ltrim(str(oInfo[ 'block' ])) } )
-	endif	
 
-	cCode := StrTran( oInfo[ 'code'], CRLF, '<br>' )	
-	Aadd( aError, { 'Code', cCode } )	
-   
+	Aadd( aError, { 'File...', oInfo[ 'file' ] } )
+	//Aadd( aError, { 'File...', oError:filename } )
+	Aadd( aError, { 'Error', oError:description } )
+	Aadd( aError, { 'Operation', valtochar( oError:operation)  } )
+	
     IF ValType( oError:Args ) == "A"
       cArgs += "   Args:" + CRLF
       for n = 1 to Len( oError:Args )
-         cArgs += "[" + Str( n, 4 ) + "] = " + ValType( oError:Args[ n ] ) + ;
-                   "   " + ValToChar( oError:Args[ n ] ) + hb_OsNewLine()
+	  
+		IF ValType( oError:Args[ n ] ) $ 'CNDMAH'
+			cArgs += "[" + Str( n, 4 ) + "] = " + ValType( oError:Args[ n ] ) + ;
+					"   " + hb_ValToExp( oError:Args[ n ] ) + hb_OsNewLine()
+					//"   " + ValToChar( oError:Args[ n ] ) + hb_OsNewLine()
+		ELSE
+			cArgs += "[" + Str( n, 4 ) + "] = " + ValType( oError:Args[ n ] ) + hb_OsNewLine()
+		ENDIF
       next
-    ENDIF
+    ENDIF			
 	
     IF !empty( cArgs )
 		Aadd( aError, { 'Args', cArgs } )
 	ENDIF
+	
+	Aadd( aError, { 'Error Code', valtochar( oError:subsystem ) + ' ' + valtochar( oError:subcode ) } )
+
+	
+	//Aadd( aError, { 'Error(1)', valtochar(oError:gencode) } )
+	
+	if hb_hhaskey( oInfo, 'block' ) .AND. oInfo[ 'block' ] > 0
+		Aadd( aError, { 'Num. Code Block', ltrim(str(oInfo[ 'block' ])) } )
+	endif	
+
+	cCode := StrTran( oInfo[ 'code'], CRLF, '<br>' )	
+	Aadd( aError, { 'Source', cCode } )	
+   
+	
 
 	/*
     n = 0
@@ -149,29 +167,32 @@ FUNCTION AP_ShowCompileError( aError, cTitle )
 	LOCAL nI
 	LOCAL nLen := len( aError )
 	LOCAL cText
+	LOCAL cHtml := ''
 
-	?? '<meta charset="utf-8">'
-	?? '<body style="background-color: #ececec;">'
-	?? '<h2>' + cTitle + '<hr></h2>'	
+	cHtml += '<meta charset="utf-8">'
+	cHtml +=  '<body style="background-color: #ececec;">'
+	cHtml +=  '<h2>' + cTitle + '<hr></h2>'	
 
-	?? '<table border="1" style="background-color: white;">'
+	cHtml +=  '<table border="1" style="background-color: white;">'
 	
 	FOR nI := 1 TO nLen	
 
-		?? '<tr>'
-		?? '<td><b>' + aError[nI][1] + '</b></td>' 
+		cHtml +=  '<tr>'
+		cHtml +=  '<td><b>' + aError[nI][1] + '</b></td>' 
 		
 		//	Sustituyo <br> imprimible por real...
 		cText :=  UHtmlEncode((aError[nI][2])) 		
 		cText := Alltrim(StrTran( cText, '&lt;br&gt;', '<br>' ))
 		
-		?? '<td><pre>' + cText + '</pre></td>' 
-		?? '</tr>'
+		cHtml +=  '<td><pre>' + cText + '</pre></td>' 
+		cHtml +=  '</tr>'
 		
 	NEXT	
 	
-	?? '</table>' 
-	?? '</body>' 
+	cHtml +=  '</table>' 
+	cHtml +=  '</body>' 
+	
+	? cHtml
 
 RETU ''
 

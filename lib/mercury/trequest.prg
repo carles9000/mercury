@@ -136,9 +136,11 @@ METHOD LoadGet() CLASS TRequest
 	FOR EACH cPart IN hb_ATokens( cArgs, "&" )
 	
 		IF ( nI := At( "=", cPart ) ) > 0
-			::hGet[ lower(Left( cPart, nI - 1 )) ] := Alltrim(SubStr( cPart, nI + 1 ))
+			//::hGet[ lower(Left( cPart, nI - 1 )) ] := Alltrim(SubStr( cPart, nI + 1 ))
+			HB_HSet( ::hGet, lower( hb_UrlDecode( Left( cPart, nI - 1 ) ) ), Alltrim(SubStr( cPart, nI + 1 )) )
 		ELSE
-			::hGet[ lower(cPart) ] :=  ''
+			//::hGet[ lower(hb_UrlDecode(cPart)) ] :=  ''
+			HB_HSet( ::hGet, lower(hb_UrlDecode(cPart)), '' )
 		ENDIF
 	   
 	NEXT	
@@ -151,12 +153,31 @@ RETU NIL
 
 METHOD LoadPost() CLASS TRequest
 
-	::hPost := AP_PostPairs()
-	
+	LOCAL hPost := AP_PostPairs()
+	LOCAL aPair
+	LOCAL nI	
+		
 	//	Bug AP_PostPairs, si esta vacio devuelve un hash de 1 posicion sin key ni value
 	
-	IF Len( ::hPost ) == 1 .AND. empty( HB_HKeyAt( ::hPost, 1 ) )
+	IF Len( hPost ) == 1 .AND. empty( HB_HKeyAt( hPost, 1 ) )
+	
 		::hPost := {=>}
+		
+	ELSE
+	
+		//	Es posible que la key se haya de descodificar como por ejemplo cuando Datatables
+		//	envia un post con muchos campos de este tipo: "columns%5B0%5D%5Bdata%5D". 
+		//	Es por esto que se decodifica				
+	
+		FOR nI := 1 TO len( hPost )
+		
+			aPair := HB_HPairAt( hPost, nI )
+			
+			HB_HSet( ::hPost, hb_UrlDecode(aPair[1]), aPair[2] )
+		
+		NEXT				
+	
+	
 	ENDIF 
 
 RETU NIL

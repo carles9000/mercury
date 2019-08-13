@@ -1,12 +1,4 @@
 //	-----------------------------------------------------------	//
-#define MAP_METHOD 		1
-#define MAP_ID 			2
-#define MAP_ROUTE			3
-#define MAP_CONTROLLER	4
-#define MAP_QUERY			5
-#define MAP_PARAMS			6
-#define MAP_ORDER			7
-
 
 CLASS TRoute
 
@@ -401,6 +393,7 @@ METHOD Execute( cController, hParam, aRouteSelect ) CLASS TRoute
 	LOCAL oExecute
     LOCAL cHBheaders1 := "~/harbour/include"
     LOCAL cHBheaders2 := App():Path() + "/include"
+	LOCAL z
 	
 	LOG ' '
 	LOG 'TRoute():Execute()'
@@ -461,8 +454,8 @@ METHOD Execute( cController, hParam, aRouteSelect ) CLASS TRoute
 	
 	IF File ( cProg )	
 		
-		IF cType == 'class'
-		
+		IF cType == 'class'		
+	
 				cNameClass := cFileNoExt( cFileNoPath( cFile ) )
 	
 			//	Opcion acceso Controller via Clases
@@ -480,7 +473,7 @@ METHOD Execute( cController, hParam, aRouteSelect ) CLASS TRoute
 				cCode += "	ENDIF "  + HB_OsNewLine() 
 				
 				cCode += "RETU NIL" + HB_OsNewLine() + memoread( cProg )
-			
+
 		ELSE
 
 				cCode := memoread( cProg )

@@ -105,7 +105,10 @@ FUNCTION View( cFile, ... )
 	
 	oInfo[ 'file' ] := cFile
 	
+	App():cLastView := cFile 
+	
 	cCode := oView:Load( cFile )
+	
 	
 	zReplaceBlocks( @cCode, '{{', '}}', oInfo, ... )					
 

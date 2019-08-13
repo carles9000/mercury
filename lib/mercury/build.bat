@@ -3,14 +3,14 @@
 @set    path=c:\harbour\bin
 @set include=c:\harbour\include
 
-del tmvc_lib.hrb
+del mercury.hrb
 
 
 @echo ========================
 @echo Building Lib MVC Mercury
 @echo ========================
 
-harbour tmvc_lib.prg /n /w /gh
+harbour mercury.prg /n /w /gh
 
 pause
 

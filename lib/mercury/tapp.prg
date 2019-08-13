@@ -1,5 +1,5 @@
-#define MVC_VERSION 	'MVC v0.45'
-#xcommand log <cText> => Aadd( TApp():aLog, <cText> )  //	Tracear el sistema
+#include 'mercury.ch'
+
 
 FUNCTION App()
 	
@@ -19,6 +19,7 @@ CLASS TApp
    DATA oMiddleware
    DATA oData
    DATA lShowError							INIT .T.
+   DATA cLastView							INIT ''
    
    //DATA bError							INIT {|cError, cTitle| ::ShowError( cError, cTitle ) }							
    
@@ -41,6 +42,7 @@ CLASS TApp
    METHOD Version() 							INLINE MVC_VERSION
    METHOD Path() 								INLINE ::cPath
    METHOD Url() 								INLINE ::cUrl
+   METHOD Route() 								
    METHOD Init() 
    METHOD Config() 
    METHOD ListApp() 
@@ -90,12 +92,101 @@ METHOD ShowError( cError, cTitle ) CLASS TApp
 	
 	?? '<meta charset="utf-8" />' 
 	
-	?? '<h2>' + cTitle + '<hr></h2>'
+	?? '<h3>' + cTitle + '<hr></h3>'
 	
-	?? '<h3>' + cError + '</h3>'
+	?? '<h4>' + cError + '</h3><hr>'
 
 
 RETU NIL
+
+METHOD Route( cRoute, aParams ) CLASS TApp
+
+	LOCAL aRoute
+	LOCAL aDefParams, nDefParams, cDefParam
+	LOCAL cUrl 	:= ''
+	LOCAL aMap 	:= ::oRoute:aMap
+	LOCAL lError 	:= .F.
+	LOCAL lFound	:= .F.
+	LOCAL hError 	:= {=>}
+	LOCAL cError 	:= ''
+	LOCAL nI
+	
+	__defaultNIL( @cRoute, '' )
+	__defaultNIL( @aParams, {=>} )
+	
+	FOR EACH aRoute IN aMap
+	
+		IF aRoute[ MAP_ID ] == cRoute
+		
+			lFound := .T.
+		
+			//	URL Base
+			
+				IF aRoute[ MAP_QUERY ] <> '/' 	//	Default page		
+					cUrl := ::cUrl + '/' + aRoute[ MAP_QUERY ]
+				ELSE
+					cUrl := ::cUrl + '/' 
+				ENDIF
+	
+			// 	Cuantos parámetros tiene la Ruta
+			
+				aDefParams := aRoute[ MAP_PARAMS ]
+				nDefParams := len( aParams )									
+				
+			// 	Si los parámetros definidos == parametros recibidos -> OK
+			
+				IF nDefParams == len( aParams )
+				
+						FOR nI := 1 TO nDefParams
+
+							cDefParam := aDefParams[nI]
+							
+							IF HB_HHasKey( aParams, cDefParam )
+
+								cUrl += '/'
+								cUrl += ValToChar( aParams[ cDefParam ] ) 								
+								
+							ELSE	
+							
+								//	Generamos ERROR ?	=> Yo diria que si
+								
+								lError 				:= .T.
+								/*
+								hError[ 'id' ]		    := cRoute
+								hError[ 'define' ]		:= aRoute[ MAP_ROUTE ]
+								hError[ 'descripcion' ]:= 'Parámetro definido<strong> ' + cDefParam + ' </strong>no existe'
+								*/
+								
+								cError := aRoute[ MAP_ROUTE ] + ' => ' +  'Parámetro definido<strong> ' + cDefParam + ' </strong>no existe'
+							
+							ENDIF						
+						
+						NEXT				
+				
+				ENDIF
+				
+			//	Salir...
+				exit
+			
+	
+		ENDIF
+		
+	NEXT	
+	
+	//	Si NO tenemos ningun error devolvemos la URL
+	
+		IF lFound .AND. !lError			
+			RETU cUrl
+		ELSEIF !lFound .AND. lError
+
+			::ShowError( cError, 'Error TRoute => ' + App():cLastView )
+		ELSE 
+		
+			cError := 'Route ' + cRoute + " doesn't exist !"
+			::ShowError( cError, 'Error TRoute => ' + App():cLastView )			
+		ENDIF		
+	
+RETU ''
 
 METHOD ListApp() CLASS TApp
 

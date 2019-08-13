@@ -3,9 +3,9 @@
 //	Description: Test MVC system for mod_harbour from Hrb Lib
 //	Date.......: 09/07/2019
 //
-//	{% AAdd( getList, hb_milliseconds()  ) %}	//	Ocupará el 1 elemento del array
-//	{% LoadHRB( '/lib/core/core_lib.hrb' ) %}	//	Loading core
-//	{% LoadHRB( '/lib/hmvc/tmvc_lib.hrb' ) %}	//	Loading system MVC Mercury
+//	{% AAdd( getList, hb_milliseconds()  ) %}		//	Ocupará el 1 elemento del array
+//	{% LoadHRB( '/lib/core/core_lib.hrb' ) %}		//	Loading core
+//	{% LoadHRB( '/lib/mercury/mercury.hrb' ) %}	//	Loading system MVC Mercury
 //	------------------------------------------------------------------------------
 
 
