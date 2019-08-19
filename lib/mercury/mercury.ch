@@ -1,9 +1,9 @@
-#define MVC_VERSION 		'Mercury v0.47a'
+#define MVC_VERSION 		'Mercury v0.49a'
 
-#define MAP_METHOD 		1
-#define MAP_ID 			2
+#define MAP_METHOD 			1
+#define MAP_ID 				2
 #define MAP_ROUTE			3
-#define MAP_CONTROLLER	4
+#define MAP_CONTROLLER		4
 #define MAP_QUERY			5
 #define MAP_PARAMS			6
 #define MAP_ORDER			7

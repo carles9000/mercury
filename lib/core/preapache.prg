@@ -192,6 +192,7 @@ FUNCTION AP_ShowCompileError( aError, cTitle )
 	cHtml +=  '</table>' 
 	cHtml +=  '</body>' 
 	
+	//ErrorLevel( 400 )
 	? cHtml
 
 RETU ''

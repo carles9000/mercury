@@ -30,7 +30,7 @@ CLASS TApp
    CLASSDATA cPathController				INIT '/src/controller/'
    CLASSDATA cPathModel					INIT '/src/model/'
    CLASSDATA cPathData						INIT AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_DATA' )
-   CLASSDATA cTitle						INIT 'App'
+   CLASSDATA cTitle							INIT 'App'
    CLASSDATA cFileLog						INIT AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_DATA' ) + '/logview.txt'
    CLASSDATA lLog							INIT .F.
    CLASSDATA aLog							INIT {}							
