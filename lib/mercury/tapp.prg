@@ -26,9 +26,10 @@ CLASS TApp
    //CLASSDATA cPath							INIT AP_GETENV( 'PATH_APP' )
    CLASSDATA cPath							INIT AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_APP' )
    CLASSDATA cUrl							INIT AP_GETENV( 'PATH_URL' )
+   CLASSDATA cPathCss						INIT '/css/'
    CLASSDATA cPathView						INIT '/src/view/'
    CLASSDATA cPathController				INIT '/src/controller/'
-   CLASSDATA cPathModel					INIT '/src/model/'
+   CLASSDATA cPathModel						INIT '/src/model/'
    CLASSDATA cPathData						INIT AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_DATA' )
    CLASSDATA cTitle							INIT 'App'
    CLASSDATA cFileLog						INIT AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_DATA' ) + '/logview.txt'

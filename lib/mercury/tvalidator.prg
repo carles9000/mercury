@@ -31,13 +31,13 @@ METHOD Run( hValidate ) CLASS TValidator
 	IF ValType( ::hValidate ) <> 'H'
 		RETU .T.
 	ENDIF
-	
+
 	FOR n := 1 to len( ::hValidate )
 		aH := hb_HPairAt( ::hValidate, n )
 		
 		cKey 	:= aH[1]
 		cValue 	:= aH[2]
-		
+	
 		hMsg := ::EvalValue( cKey, cValue )		
 	
 		IF hMsg[ 'success' ] == .F.
@@ -47,6 +47,7 @@ METHOD Run( hValidate ) CLASS TValidator
 		ENDIF
 	
 	NEXT
+
 
 	lValidate := len( ::aErrorMessages ) == 0
 

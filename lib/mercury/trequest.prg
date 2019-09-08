@@ -47,7 +47,7 @@ METHOD Get( cKey, uDefault, cType ) CLASS TRequest
 	__defaultNIL( @cKey, '' )
 	__defaultNIL( @uDefault, '' )
 	__defaultNIL( @cType, '' )		
-	
+
 	IF !empty(cKey) .AND. hb_HHasKey( ::hGet, cKey )
 		uValue := hb_UrlDecode(::hGet[ cKey ])
 	ELSE
@@ -85,10 +85,13 @@ METHOD Request( cKey, uDefault, cType ) CLASS TRequest
 	__defaultNIL( @cKey, '' )
 	__defaultNIL( @uDefault, '' )	
 	__defaultNIL( @cType, '' )	
+	
+
 
 	IF hb_HHasKey( ::hRequest, cKey )
 		uValue := hb_UrlDecode(::hRequest[ cKey ])
 	ELSE
+	
 		uValue := uDefault
 	ENDIF
 
@@ -98,11 +101,9 @@ RETU uValue
 
 METHOD ValueToType( uValue, cType ) CLASS TRequest
 
-
 	DO CASE
 		CASE cType == 'C'
-		CASE cType == 'N'		
-			uValue := Val( uValue )
+		CASE cType == 'N'; uValue := If( valtype(uValue) == 'N', uValue, Val( uValue ) )
 	ENDCASE
 
 RETU uValue 
@@ -171,9 +172,9 @@ METHOD LoadPost() CLASS TRequest
 	
 		FOR nI := 1 TO len( hPost )
 		
-			aPair := HB_HPairAt( hPost, nI )
-			
-			HB_HSet( ::hPost, hb_UrlDecode(aPair[1]), aPair[2] )
+			aPair := HB_HPairAt( hPost, nI )			
+
+			HB_HSet( ::hPost, hb_UrlDecode(aPair[1]), hb_UrlDecode(aPair[2]) )
 		
 		NEXT				
 	
@@ -291,4 +292,3 @@ static function _cFilePath( cFile )   // returns path of a filename
    local n := RAt( cSep, cFile )
 
 RETU Substr( cFile, 1, n )
-

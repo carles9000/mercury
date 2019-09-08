@@ -107,9 +107,42 @@ FUNCTION View( cFile, ... )
 	
 	App():cLastView := cFile 
 	
-	cCode := oView:Load( cFile )
-	
+	cCode := oView:Load( cFile )	
 	
 	zReplaceBlocks( @cCode, '{{', '}}', oInfo, ... )					
 
 RETU cCode
+
+
+FUNCTION Css( cFile )
+
+	//	Por defecto la carpeta de los views estaran en src/view
+
+	LOCAL cPath 		:= App():cPath + App():cPathCss
+	LOCAL cCode 		:= ''
+	LOCAL cFileCss
+
+	__defaultNIL( @cFile, '' )
+	
+	cFileCss 			:= cPath + cFile
+	
+	LOG 'Css: ' + cFileCss
+	LOG 'Existe fichero? : ' + ValToChar(file( cFileCss ))
+	
+	IF File ( cFileCss )
+	
+		cCode := '<style>' 
+		cCode += MemoRead( cFileCss )
+		cCode += '</style>'
+		
+	ELSE
+	
+		LOG 'Error: No existe Css: ' + cFileCss
+			
+		App():ShowError( 'No existe Css: ' +  cFileCss,  'Css Error!' )						
+	
+	ENDIF				
+
+RETU cCode
+
+

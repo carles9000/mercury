@@ -30,20 +30,16 @@ RETURN cRet
 function _l( uValue )
 
 	local cFileName 		:= hb_getenv( 'PRGPATH' ) + '/log.txt'
-    local hFile, cLine 	:= DToC( Date() ) + " " + Time() + ": ", n	
+    local hFile, cLine 	:= DToC( Date() ) + " " + Time() + " " + valtype( uValue) + ": ", n	
 	
 	
 	if uValue == '_DEL' 
 		ferase( cFilename )
 		retu nil
 	endif
-   
-   /*if ValType( uValue ) != "A"
-      uValue = { uValue }
-   endif   
-*/
 
-	cLine += valtochar( uValue ) +Chr(13) +Chr(10)
+	cLine += valtochar( uValue ) + Chr(13) + Chr(10)
+	
 /*
    for n = 1 to Len( uValue )
       cLine += ValToChar( uValue[ n ] ) + Chr( 9 )
@@ -51,6 +47,8 @@ function _l( uValue )
    
    cLine += Chr(13) +Chr(10)
 */
+
+
    if ! File( cFileName )
       FClose( FCreate( cFileName ) )
    endif
