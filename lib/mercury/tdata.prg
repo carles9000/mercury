@@ -1,15 +1,17 @@
-FUNCTION _Set( cKey, uValue ) 
+FUNCTION SetValue( cKey, uValue ) 
 
-	App():oData:Set( cKey, uValue )
-	
-RETU NIL
+RETU App():oData:Set( cKey, uValue )	
 
-FUNCTION _Get( cKey, cType ) 	
+
+FUNCTION GetValue( cKey ) 	
 
 RETU App():oData:Get( cKey )	
 
-FUNCTION _GetAll( cKey, cType ) 	
+
+FUNCTION GetValueAll() 	
+
 RETU App():oData:aVar	
+
 
 CLASS TData
 
