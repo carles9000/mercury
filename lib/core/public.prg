@@ -39,7 +39,7 @@ FUNCTION _l( ... )
 	
 		IF nParam == 0
 			IF  fErase( cFilename ) == -1
-				? 'Error eliminando ' + cFilename, fError()
+				//	? 'Error eliminando ' + cFilename, fError()
 			ENDIF
 			RETU NIL		
 		ENDIF
@@ -48,7 +48,7 @@ FUNCTION _l( ... )
 	
 		IF ! File( cFileName )
 			IF fCreate( cFileName ) == -1 
-				? 'Error creando ' + cFilename, fError()
+				//	? 'Error creando ' + cFilename, fError()
 			ELSE
 				fClose( FCreate( cFileName ) )
 			ENDIF
