@@ -27,36 +27,52 @@ FUNCTION UHtmlEncode(cString)
 	
 RETURN cRet
 
-function _l( uValue )
+FUNCTION _l( ... )
 
-	local cFileName 		:= hb_getenv( 'PRGPATH' ) + '/log.txt'
-    local hFile, cLine 	:= DToC( Date() ) + " " + Time() + " " + valtype( uValue) + ": ", n	
-	
-	
-	if uValue == '_DEL' 
-		ferase( cFilename )
-		retu nil
-	endif
+	LOCAL cFileName 		:= IF ( HB_GETENV( 'LOG_FILE' ) == '',  hb_getenv( 'PRGPATH' ) + '/log.txt', HB_GETENV( 'LOG_FILE' ) )
+ 	LOCAL cNow 				:= DToC( Date() ) + " " + Time() 
+	LOCAL cInfo   			:= procname(1) + '(' +  ltrim(str(procline( 1 ))) + ')'	
+	LOCAL nParam 			:= PCount()
+	LOCAL cLine, cType, hFile, nI, uValue				
 
-	cLine += valtochar( uValue ) + Chr(13) + Chr(10)
+	//	Si no hay parámetros borramos el fichero 
 	
-/*
-   for n = 1 to Len( uValue )
-      cLine += ValToChar( uValue[ n ] ) + Chr( 9 )
-   next
+		IF nParam == 0
+			IF  fErase( cFilename ) == -1
+				//	? 'Error eliminando ' + cFilename, fError()
+			ENDIF
+			RETU NIL		
+		ENDIF
+		
+	//	Abrimos fichero log
+	
+		IF ! File( cFileName )
+			IF fCreate( cFileName ) == -1 
+				//	? 'Error creando ' + cFilename, fError()
+			ELSE
+				fClose( FCreate( cFileName ) )
+			ENDIF
+		ENDIF
+
+		IF ( ( hFile := FOpen( cFileName, FO_WRITE ) ) == -1 )
+			RETU NIL
+		ENDIF
+		
+	//	Log	
+	
+		FOR nI := 1 TO nParam 
+		
+			uValue 	:= HB_PValue(nI)			
+			cType 	:= ValType( uValue )	
+			cLine  	:= cNow + ' ' + cInfo + ' ' + cType + ': ' + valtochar( uValue ) + Chr(13) + Chr(10)
+			
+			fSeek( hFile, 0, FS_END )
+			fWrite( hFile, cLine, Len( cLine ) )		
+			
+		NEXT
+	
+	//	Close file log
+
+		fClose( hFile )
    
-   cLine += Chr(13) +Chr(10)
-*/
-
-
-   if ! File( cFileName )
-      FClose( FCreate( cFileName ) )
-   endif
-
-   if( ( hFile := FOpen( cFileName, FO_WRITE ) ) != -1 )
-      FSeek( hFile, 0, FS_END )
-      FWrite( hFile, cLine, Len( cLine ) )
-      FClose( hFile )
-   endif
-   
-retu nil   
+RETU nil   

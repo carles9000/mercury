@@ -1,15 +1,17 @@
-FUNCTION _Set( cKey, uValue ) 
+FUNCTION SetValue( cKey, uValue ) 
 
-	App():oData:Set( cKey, uValue )
-	
-RETU NIL
+RETU App():oData:Set( cKey, uValue )	
 
-FUNCTION _Get( cKey, cType ) 	
 
-RETU App():oData:Get( cKey )	
+FUNCTION GetValue( cKey, uKey ) 	
 
-FUNCTION _GetAll( cKey, cType ) 	
+RETU App():oData:Get( cKey, uKey  )	
+
+
+FUNCTION GetValueAll() 	
+
 RETU App():oData:aVar	
+
 
 CLASS TData
 
@@ -17,8 +19,8 @@ CLASS TData
 
    METHOD  New() CONSTRUCTOR
    
-   METHOD  Set( cKey, uValue ) 		INLINE ::aVar[ lower(cKey) ] := uValue 
-   METHOD  Get( cKey ) 				
+   METHOD  Set( cKey, uValue ) 			INLINE ::aVar[ lower(cKey) ] := uValue 
+   METHOD  Get( cKey, uKey ) 				
    METHOD  show() 						INLINE ::aVar
 
 ENDCLASS
@@ -27,7 +29,7 @@ METHOD New() CLASS TData
 
 RETU Self
 
-METHOD  Get( cKey ) CLASS TData
+METHOD  Get( cKey, uKey ) CLASS TData
 
 	LOCAL uValue := ''
 
@@ -37,11 +39,19 @@ METHOD  Get( cKey ) CLASS TData
 	
 		uValue := ::aVar[ cKey ]
 		
+		IF Valtype( uKey ) <> 'U' .AND. ( ValType( uValue ) == 'A' .OR. ValType( uValue ) == 'H' )
+		
+			uValue := uValue[ uKey ]
+			
+		ENDIF				
+		
 	ELSE
 	
+		/*
 		IF App():lShowError	
 			App():ShowError( "Var doesn't exist: " + cKey, 'Error _Get()' )	
 		ENDIF
+		*/
 	
 	ENDIF		
 

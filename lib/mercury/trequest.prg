@@ -17,7 +17,7 @@ CLASS TRequest
 	METHOD PostAll()							INLINE ::hPost
 	METHOD Cgi ( cKey )	
 	METHOD CountGet()							INLINE len( ::hGet )
-	METHOD CountPost()						INLINE len( ::hPost )
+	METHOD CountPost()							INLINE len( ::hPost )
 	METHOD LoadGet()
 	METHOD LoadPost()
 	METHOD LoadRequest()
