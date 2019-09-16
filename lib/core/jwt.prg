@@ -17,7 +17,7 @@ CLASS JWT
 	DATA aHeader 				INIT {=>}
 	DATA aPayload 				INIT {=>}
 	DATA cKey 					INIT 'HWeB!2019v1'
-	DATA cError				INIT ''
+	DATA cError					INIT ''
 	DATA nLapsus				INIT 10			//	Lapsus in seconds...
 
 	METHOD New() CONSTRUCTOR
