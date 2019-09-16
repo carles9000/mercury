@@ -48,14 +48,19 @@ CLASS TApp
    METHOD Config() 
    METHOD ListApp() 
    
+   METHOD Set( cKey, uValue ) 					INLINE ::oData:Set( cKey, uValue )	
+   METHOD Get( cKey, uKey )						INLINE ::oData:Get( cKey, uKey  )	
+   
    METHOD ShowError( cError, cTitle )		   
    //METHOD Error( cError, cTitle )			INLINE Eval( ::bError, cError, cTitle )
+   
+   
    
 ENDCLASS
 
 METHOD New() CLASS TApp
 
-	::oRequest 	:= TRequest():New()	
+	::oRequest 		:= TRequest():New()	
 	::oResponse 	:= TResponse():New()	
 	::oMiddleware 	:= TMiddleware():New()	
 	::oRoute 		:= TRoute():New( SELF )

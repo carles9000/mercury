@@ -485,10 +485,10 @@ METHOD Execute( cController, hParam, aRouteSelect ) CLASS TRoute
 
 		oTController 						:= TController():New( cAction, hParam )
 		oTController:oRoute  				:= SELF
-		oTController:oRequest  			:= ::oRequest
-		oTController:oResponse 			:= ::oResponse		
+		oTController:oRequest  				:= ::oRequest
+		oTController:oResponse 				:= ::oResponse		
 		oTController:oMiddleware			:= App():oMiddleware
-		oTController:aRouteSelect  		:= aRouteSelect		
+		oTController:aRouteSelect  			:= aRouteSelect		
 		
 		oTController:InitView()
 		
