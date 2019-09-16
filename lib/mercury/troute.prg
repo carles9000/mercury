@@ -453,11 +453,11 @@ METHOD Execute( cController, hParam, aRouteSelect ) CLASS TRoute
 	LOG 'Exist file ? : ' + ValToChar(file( cProg ))
 	
 	IF File ( cProg )	
-		
-		IF cType == 'class'		
 	
+		IF cType == 'class'			
+
 				cNameClass := cFileNoExt( cFileNoPath( cFile ) )
-	
+
 			//	Opcion acceso Controller via Clases
 			
 				cCode := "#include 'hbclass.ch'" + HB_OsNewLine()
@@ -465,12 +465,17 @@ METHOD Execute( cController, hParam, aRouteSelect ) CLASS TRoute
 				
 				cCode += "FUNCTION __RunController( o )" + HB_OsNewLine()  
 				cCode += "	LOCAL oC := " + cNameClass + "():New( o )" + HB_OsNewLine() 
-				cCode += "	IF __objHasMethod( oC, '" + cAction + "' ) "  + HB_OsNewLine() 
-				cCode += "		oC:" + cAction + "(o) "  + HB_OsNewLine() 
-				cCode += "	ELSE "  + HB_OsNewLine() 
-				cCode += "		App():ShowError( 'Método <b>" + cAction  + "()</b> no definido en el controller " + cFile + "', 'TController Error!' ) "  + HB_OsNewLine() 				
-				cCode += "		QUIT "  + HB_OsNewLine() 				
-				cCode += "	ENDIF "  + HB_OsNewLine() 
+				
+				IF !Empty( cAction )
+				
+					cCode += "	IF __objHasMethod( oC, '" + cAction + "' ) "  + HB_OsNewLine() 
+					cCode += "		oC:" + cAction + "(o) "  + HB_OsNewLine() 
+					cCode += "	ELSE "  + HB_OsNewLine() 
+					cCode += "		App():ShowError( 'Método <b>" + cAction  + "()</b> no definido en el controller " + cFile + "', 'TController Error!' ) "  + HB_OsNewLine() 				
+					cCode += "		QUIT "  + HB_OsNewLine() 				
+					cCode += "	ENDIF "  + HB_OsNewLine() 
+				
+				ENDIF
 				
 				cCode += "RETU NIL" + HB_OsNewLine() + memoread( cProg )
 
@@ -479,8 +484,7 @@ METHOD Execute( cController, hParam, aRouteSelect ) CLASS TRoute
 				cCode := memoread( cProg )
 
 		ENDIF
-			
-			
+	
 		//	-----------------------------------
 
 		oTController 						:= TController():New( cAction, hParam )
