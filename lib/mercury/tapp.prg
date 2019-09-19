@@ -50,6 +50,7 @@ CLASS TApp
    
    METHOD Set( cKey, uValue ) 					INLINE ::oData:Set( cKey, uValue )	
    METHOD Get( cKey, uKey )						INLINE ::oData:Get( cKey, uKey  )	
+   METHOD GetAll()								INLINE ::oData:GetAll()	
    
    METHOD ShowError( cError, cTitle )		   
    //METHOD Error( cError, cTitle )			INLINE Eval( ::bError, cError, cTitle )

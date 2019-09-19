@@ -23,7 +23,7 @@ FUNCTION zReplaceBlocks( cCode, cStartBlock, cEndBlock, oInfo, ... )
 	oInfo[ 'block' ] := 0    	
 	
     hPP := __pp_init()
-	__pp_addRule( hPP, "#xcommand PARAM <nParam> => AP_Get( pvalue(<nParam>) )" )
+	__pp_addRule( hPP, "#xcommand PARAM <nParam> => AP_Get( IF( valtype( pvalue(<nParam>) ) <> 'U', pvalue(<nParam>), '' ) )" )
 	__pp_addRule( hPP, "#xcommand PARAM <nParam>,<uIndex> => AP_Get( hb_pvalue(<nParam>),<uIndex> )" )
 
 	WHILE ( nStart := At( cStartBlock, cCode ) ) != 0 .and. ;

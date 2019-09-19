@@ -35,21 +35,25 @@ METHOD Map( cMethod, cId, cRoute, cController ) CLASS TRoute
 	LOCAL aMethod
 	LOCAL nI
 
-	IF At( cMethod, ',' ) > 0
-	
+	IF At( ',', cMethod ) > 0
+
 		aMethod := HB_ATokens( cMethod, ',' )
 		
 		FOR nI := 1 TO len( aMethod )
+
 			Aadd( ::aMap, { alltrim(aMethod[nI]), cId, cRoute, cController, '', '', '' } )		
+			
+			::aMap[ len( ::aMap ) ][ MAP_ORDER ] := len( ::aMap )	
 		NEXT
 		
 	ELSE
 
 		Aadd( ::aMap, { cMethod, cId, cRoute, cController, '', '', '' } )
 		
+		::aMap[ len( ::aMap ) ][ MAP_ORDER ] := len( ::aMap )	
+		
 	ENDIF
 	
-	::aMap[ len( ::aMap ) ][ MAP_ORDER ] := len( ::aMap )	
 
 RETU NIL
 

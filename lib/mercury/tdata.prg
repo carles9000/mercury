@@ -21,6 +21,7 @@ CLASS TData
    
    METHOD  Set( cKey, uValue ) 			INLINE ::aVar[ lower(cKey) ] := uValue 
    METHOD  Get( cKey, uKey ) 				
+   METHOD  GetAll() 					INLINE ::aVar
    METHOD  show() 						INLINE ::aVar
 
 ENDCLASS
@@ -34,14 +35,25 @@ METHOD  Get( cKey, uKey ) CLASS TData
 	LOCAL uValue := ''
 
 	// HB_HGetDef( ::aVar, lower(cKey), '' ) 
-	
+
 	IF hb_HHasKey( ::aVar, cKey )	
 	
+	ckey := lower( cKey )
+	
 		uValue := ::aVar[ cKey ]
-		
+	
 		IF Valtype( uKey ) <> 'U' .AND. ( ValType( uValue ) == 'A' .OR. ValType( uValue ) == 'H' )
-		
-			uValue := uValue[ uKey ]
+
+			DO CASE
+				CASE ValType( uValue ) == 'H'			
+						HB_HCaseMatch( uValue, .F. )
+						uValue := HB_HGetDef( uValue, uKey, '' )
+						
+				CASE ValType( uValue ) == 'A'
+						IF len( uValue ) <= uKey .AND. uKey > 00
+							uValue := ::aVar[ uKey ]
+						ENDIF
+			ENDCASE
 			
 		ENDIF				
 		
