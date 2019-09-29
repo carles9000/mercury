@@ -1,6 +1,5 @@
 #include 'mercury.ch'
 
-
 FUNCTION App()
 	
 	STATIC oApp
@@ -29,9 +28,9 @@ CLASS TApp
    CLASSDATA cPathCss						INIT '/css/'
    CLASSDATA cPathView						INIT '/src/view/'
    CLASSDATA cPathController				INIT '/src/controller/'
-   CLASSDATA cPathModel						INIT '/src/model/'
+   CLASSDATA cPathModel					INIT '/src/model/'
    CLASSDATA cPathData						INIT AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_DATA' )
-   CLASSDATA cTitle							INIT 'App'
+   CLASSDATA cTitle							INIT AP_GETENV( 'APP_TITLE' )
    CLASSDATA cFileLog						INIT AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_DATA' ) + '/logview.txt'
    CLASSDATA lLog							INIT .F.
    CLASSDATA aLog							INIT {}							
@@ -61,11 +60,21 @@ ENDCLASS
 
 METHOD New() CLASS TApp
 
-	::oRequest 		:= TRequest():New()	
+	::oRequest 	:= TRequest():New()	
 	::oResponse 	:= TResponse():New()	
 	::oMiddleware 	:= TMiddleware():New()	
 	::oRoute 		:= TRoute():New( SELF )
-	::oData 		:= TData():New()
+	::oData 		:= TData():New()	
+
+	//	Chequeamos que se ha cargado las variables del .htaccess
+	
+		IF empty( AP_GETENV( 'PATH_APP' ) ) 
+		
+			::cPath					:= HB_GETENV( 'PRGPATH' ) 			//	AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_APP' )				
+		
+		ENDIF
+	
+
 
 RETU Self
 
@@ -218,12 +227,10 @@ METHOD ListApp() CLASS TApp
 
 RETU ''
 
-
-exit procedure Close()
+exit procedure App_End()
 
 	LOCAL o 		:= TApp():New()
 	LOCAL nTotal, nI
-	
 	
 	IF o:lLog
 	
@@ -240,10 +247,8 @@ exit procedure Close()
 		
 		?? '</pre>'
 		
+		o:aLog := array()
+		o:lLog := .F.
 	ENDIF
 
 RETU 
-
-
-
-

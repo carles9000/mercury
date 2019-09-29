@@ -1,4 +1,4 @@
-#define MVC_VERSION 		'Mercury v0.51a'
+#define MVC_VERSION 		'Mercury v0.53'
 
 #define MAP_METHOD 			1
 #define MAP_ID 				2

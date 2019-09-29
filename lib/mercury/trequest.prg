@@ -72,7 +72,7 @@ METHOD Post( cKey, uDefault, cType ) CLASS TRequest
 	ELSE
 		uValue := uDefault
 	ENDIF
-	
+
 	uValue := ::ValueToType( uValue, cType )
 
 RETU uValue
@@ -284,7 +284,7 @@ RETU NIL
 
 
 
-static function _cFilePath( cFile )   // returns path of a filename
+function _cFilePath( cFile )   // returns path of a filename
 
    //local lLinux := If( "Linux" $ OS(), .T., .F. )
    //local cSep := If( lLinux, "\", "/" )

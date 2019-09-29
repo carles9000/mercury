@@ -25,6 +25,8 @@ FUNCTION zReplaceBlocks( cCode, cStartBlock, cEndBlock, oInfo, ... )
     hPP := __pp_init()
 	__pp_addRule( hPP, "#xcommand PARAM <nParam> => AP_Get( IF( valtype( pvalue(<nParam>) ) <> 'U', pvalue(<nParam>), '' ) )" )
 	__pp_addRule( hPP, "#xcommand PARAM <nParam>,<uIndex> => AP_Get( hb_pvalue(<nParam>),<uIndex> )" )
+    __pp_addRule( hPP, "#xcommand DEFAULT <v1> TO <x1> [, <vn> TO <xn> ] => ;" + ;
+                      "IF <v1> == NIL ; <v1> := <x1> ; END [; IF <vn> == NIL ; <vn> := <xn> ; END ]" )	
 
 	WHILE ( nStart := At( cStartBlock, cCode ) ) != 0 .and. ;
           ( nEnd := At( cEndBlock, cCode ) ) != 0		 
@@ -245,7 +247,14 @@ FUNCTION zExecute( cCode, oInfo, ... )
 	LOCAL bLastHandler 	:= ErrorBlock(bErrorHandler)   
     LOCAL oHrb, uRet
     local cHBheaders1 := "~/harbour/include"
-    LOCAL cHBheaders2 := AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_APP' ) + "/include"	//	"c:\harbour\include"
+    LOCAL cHBheaders2 
+	
+	//	Si no funciona htacces...
+	IF empty( AP_GETENV( 'PATH_APP' ) )
+		cHBheaders2 := HB_GETENV( 'PRGPATH' ) + "/include"	
+	ELSE
+		cHBheaders2 := AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_APP' ) + "/include"	//	"c:\harbour\include"
+	ENDIF
 
 	IF hPP == NIL
 
@@ -264,6 +273,8 @@ FUNCTION zExecute( cCode, oInfo, ... )
 		__pp_addRule( hPP, "#xcommand BLOCKS => " + ;
 						  '#pragma __cstream | AP_RPuts( ReplaceBlocks( %s, "{{", "}}" ) )' )
 		__pp_addRule( hPP, "#command ENDTEMPLATE => #pragma __endtext" )		
+		__pp_addRule( hPP, "#xcommand DEFAULT <v1> TO <x1> [, <vn> TO <xn> ] => ;" + ;
+                      "IF <v1> == NIL ; <v1> := <x1> ; END [; IF <vn> == NIL ; <vn> := <xn> ; END ]" )
 	
 	ENDIF
 	

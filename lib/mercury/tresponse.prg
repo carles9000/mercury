@@ -104,7 +104,7 @@ RETU NIL
 
 METHOD SendCode( nCode ) CLASS TResponse
 
-	//ErrorLevel( nCode )
+	ErrorLevel( nCode )
 
 RETU NIL 
 

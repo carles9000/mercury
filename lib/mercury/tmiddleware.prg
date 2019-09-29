@@ -50,14 +50,22 @@ METHOD Exec( oController, cValid, cView ) CLASS TMiddleware
 	
 			IF ! ::ValidateJWT()
 			
-				//	Borrar cookie
-					oResponse:SetCookie( ::cId_Cookie, '', -1 )
+				IF right( lower(cView), 5 ) == '.view'
+			
+					//	Borrar cookie
+						oResponse:SetCookie( ::cId_Cookie, '', -1 )
+					
+					//	Redireccionamos pantalla incial
+						oController:View( cView )
+					
+					//	Exit				
+						QUIT
+					
+				ELSE
 				
-				//	Redireccionamos pantalla incial
-					oController:View( cView )
-				
-				//	Exit				
-					QUIT
+					oResponse:Redirect( cView ) 
+					
+				ENDIF 
 			ENDIF
 			
 		OTHERWISE

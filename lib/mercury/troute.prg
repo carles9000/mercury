@@ -522,7 +522,17 @@ METHOD Execute( cController, hParam, aRouteSelect ) CLASS TRoute
 RETU NIL
 
 
-FUNCTION App_Url(); retu AP_GETENV( 'PATH_URL' )
+FUNCTION App_Url()
+
+	LOCAL cPath := AP_GETENV( 'PATH_URL' )
+	
+	IF empty( cPath )
+		cPath := AP_GETENV( 'REQUEST_URI' )
+		cPath := _cFilePath( cPath )
+		cPath := Substr( cPath, 1, len(cPath)-1 ) 		//	Remove last '/'
+	ENDIF
+
+retu cPath
 
 FUNCTION  Route( cRoute, aParams ) 
 
