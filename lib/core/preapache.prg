@@ -275,6 +275,9 @@ FUNCTION zExecute( cCode, oInfo, ... )
 		__pp_addRule( hPP, "#command ENDTEMPLATE => #pragma __endtext" )		
 		__pp_addRule( hPP, "#xcommand DEFAULT <v1> TO <x1> [, <vn> TO <xn> ] => ;" + ;
                       "IF <v1> == NIL ; <v1> := <x1> ; END [; IF <vn> == NIL ; <vn> := <xn> ; END ]" )
+					  
+		__pp_addRule( hPP, "#xcommand PARAM <nParam> => AP_Get( IF( valtype( pvalue(<nParam>) ) <> 'U', pvalue(<nParam>), '' ) )" )
+		__pp_addRule( hPP, "#xcommand PARAM <nParam>,<uIndex> => AP_Get( hb_pvalue(<nParam>),<uIndex> )" )					  
 	
 	ENDIF
 	

@@ -73,6 +73,14 @@ METHOD New() CLASS TApp
 			::cPath					:= HB_GETENV( 'PRGPATH' ) 			//	AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_APP' )				
 		
 		ENDIF
+		
+		IF empty( AP_GETENV( 'PATH_URL' ) ) 
+		
+			::cUrl					:= App_Url()		
+		
+		ENDIF
+		
+	//	------------------------------------------------------------------------------------
 	
 
 

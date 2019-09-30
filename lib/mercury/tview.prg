@@ -80,7 +80,13 @@ METHOD Exec( cFile, ... ) CLASS TView
 		
 		//	La salida siempre la habr de hacer el objeto oResponse
 		
-			cHtml := zInlinePrg( cCode, oInfo,... ) 		
+			cHtml := zInlinePrg( cCode, oInfo,... ) 
+
+			IF empty( cHtml )
+				cHtml := ''
+			ELSEIF Valtype( cHtml ) <> 'C'
+				cHtml := valtochar( cHtml )
+			ENDIF
 		
 			::oResponse:SendHtml( cHtml )		
 	
