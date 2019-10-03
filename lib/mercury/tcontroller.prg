@@ -26,7 +26,8 @@ CLASS TController
 	METHOD PostValue		( cKey, cDefault, cType )			INLINE ::oRequest:Post	( cKey, cDefault, cType )
 	
 	//	POdria ser algo mas como Autentica() ???
-	METHOD Middleware		( cValid, cRoute )							INLINE ::oMiddleware:Exec( SELF, cValid, cRoute )
+	METHOD Middleware		( cValid, cRoute )					INLINE ::oMiddleware:Exec( SELF, cValid, cRoute )
+
 	
 ENDCLASS 
 

@@ -40,16 +40,15 @@ METHOD Exec( oController, cValid, cView ) CLASS TMiddleware
 	LOCAL lValidate 	:= .F.
 	LOCAL oResponse 	:= App():oResponse
 
-
 	__defaultNIL( @cValid, '' )		//	Por defecto habria de ser 'auth'
 	
 	cValid := lower( cValid )
 
 	DO CASE
 		CASE cValid == 'jwt' 
-	
+
 			IF ! ::ValidateJWT()
-			
+
 				IF right( lower(cView), 5 ) == '.view'
 			
 					//	Borrar cookie
@@ -58,14 +57,16 @@ METHOD Exec( oController, cValid, cView ) CLASS TMiddleware
 					//	Redireccionamos pantalla incial
 						oController:View( cView )
 					
-					//	Exit				
-						QUIT
-					
 				ELSE
-				
+		
 					oResponse:Redirect( cView ) 
+
 					
 				ENDIF 
+				
+			//	Exit				
+				QUIT
+				
 			ENDIF
 			
 		OTHERWISE

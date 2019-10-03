@@ -31,7 +31,6 @@
 #include "trequest.prg"          	//	Sistema Request
 #include "tresponse.prg"          	//	Sistema Response
 #include "tcontroller.prg"   		//	Sistema Controller
-#include "tmodel.prg"   			//	Sistema Model
 #include "tvalidator.prg"   		//	Sistema Validator
 #include "tmiddleware.prg"   		//	Sistema Middleware
 #include "tdata.prg"   				//	Sistema TData

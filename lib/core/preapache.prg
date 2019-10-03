@@ -93,13 +93,14 @@ FUNCTION AP_Get( uValue, uInd )
 				uValue := 'Hash value'
 			ENDIF
 			
-		OTHERWISE
-
-			uValue := ValToChar( uValue )
+		CASE cTypeValue == 'U'
+		
+			uValue := ''
+			
 		
 	ENDCASE		
 
-RETU uValue
+RETU valtochar( uValue )
 
 FUNCTION AP_CompileErrorHandler( oError, oInfo, cTitle )	
 
