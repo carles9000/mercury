@@ -27,9 +27,52 @@ FUNCTION UHtmlEncode(cString)
 	
 RETURN cRet
 
+FUNCTION _l( uValue )
+
+//	LOCAL cFileName 		:= IF ( HB_GETENV( 'LOG_FILE' ) == '',  hb_getenv( 'PRGPATH' ) + '/log.txt', HB_GETENV( 'LOG_FILE' ) )
+	LOCAL cFileName 		:= hb_getenv( 'PRGPATH' ) + '/data/log2.txt'
+ 	LOCAL cNow 				:= DToC( Date() ) + " " + Time() 
+	LOCAL cInfo   			:= procname(1) + '(' +  ltrim(str(procline( 1 ))) + ')'	
+	LOCAL nParam 			:= PCount()
+	LOCAL cLine, cType, hFile, nI			
+
+	//	Si no hay parámetros borramos el fichero 
+	
+		IF nParam == 0
+			IF  fErase( cFilename ) == -1
+				//	? 'Error eliminando ' + cFilename, fError()
+			ENDIF
+			RETU NIL		
+		ENDIF
+		
+	//	Abrimos fichero log
+	
+		IF ! File( cFileName )
+			fClose( FCreate( cFileName ) )	
+		ENDIF
+
+		IF ( ( hFile := FOpen( cFileName, FO_WRITE ) ) == -1 )
+			RETU NIL
+		ENDIF
+		
+	//	Log	
+	
+		cLine  	:= cNow + ' ' + cInfo + ': ' + valtochar( uValue ) + Chr(13) + Chr(10)
+			
+		fSeek( hFile, 0, FS_END )
+		fWrite( hFile, cLine, Len( cLine ) )		
+	
+	//	Close file log
+
+		fClose( hFile )
+   
+RETU nil  
+
+/*
 FUNCTION _l( ... )
 
-	LOCAL cFileName 		:= IF ( HB_GETENV( 'LOG_FILE' ) == '',  hb_getenv( 'PRGPATH' ) + '/log.txt', HB_GETENV( 'LOG_FILE' ) )
+//	LOCAL cFileName 		:= IF ( HB_GETENV( 'LOG_FILE' ) == '',  hb_getenv( 'PRGPATH' ) + '/log.txt', HB_GETENV( 'LOG_FILE' ) )
+	LOCAL cFileName 		:= hb_getenv( 'PRGPATH' ) + '/data/log.txt'
  	LOCAL cNow 				:= DToC( Date() ) + " " + Time() 
 	LOCAL cInfo   			:= procname(1) + '(' +  ltrim(str(procline( 1 ))) + ')'	
 	LOCAL nParam 			:= PCount()
@@ -76,3 +119,4 @@ FUNCTION _l( ... )
 		fClose( hFile )
    
 RETU nil   
+*/

@@ -13,8 +13,11 @@ CLASS TRequest
 	METHOD Method()							INLINE AP_GetEnv( 'REQUEST_METHOD' )
 	METHOD Get( cKey, uDefault, cType )	
 	METHOD GetAll()							INLINE ::hGet
+	
+	METHOD SetPost( cKey, uValue )	
 	METHOD Post( cKey, uDefault, cType )	
 	METHOD PostAll()							INLINE ::hPost
+	
 	METHOD Cgi ( cKey )	
 	METHOD CountGet()							INLINE len( ::hGet )
 	METHOD CountPost()							INLINE len( ::hPost )
@@ -46,7 +49,9 @@ METHOD Get( cKey, uDefault, cType ) CLASS TRequest
 
 	__defaultNIL( @cKey, '' )
 	__defaultNIL( @uDefault, '' )
-	__defaultNIL( @cType, '' )		
+	__defaultNIL( @cType, '' )
+
+	HB_HCaseMatch( ::hGet, .F. )	
 
 	IF !empty(cKey) .AND. hb_HHasKey( ::hGet, cKey )
 		uValue := hb_UrlDecode(::hGet[ cKey ])
@@ -65,7 +70,9 @@ METHOD Post( cKey, uDefault, cType ) CLASS TRequest
 	
 	__defaultNIL( @cKey, '' )
 	__defaultNIL( @uDefault, '' )	
-	__defaultNIL( @cType, '' )			
+	__defaultNIL( @cType, '' )
+
+	HB_HCaseMatch( ::hPost, .F. )
 
 	IF hb_HHasKey( ::hPost, cKey )
 		uValue := hb_UrlDecode(::hPost[ cKey ])
@@ -77,6 +84,19 @@ METHOD Post( cKey, uDefault, cType ) CLASS TRequest
 
 RETU uValue
 
+METHOD SetPost( cKey, uValue ) CLASS TRequest
+	
+	__defaultNIL( @cKey, '' )
+	__defaultNIL( @uValue, '' )	
+
+	HB_HCaseMatch( ::hPost, .F. )
+
+	IF hb_HHasKey( ::hPost, cKey )
+		::hPost[ cKey ] := uValue
+	ENDIF
+
+RETU NIL
+
 METHOD Request( cKey, uDefault, cType ) CLASS TRequest
 
 	LOCAL nType 
@@ -86,7 +106,7 @@ METHOD Request( cKey, uDefault, cType ) CLASS TRequest
 	__defaultNIL( @uDefault, '' )	
 	__defaultNIL( @cType, '' )	
 	
-
+	HB_HCaseMatch( ::hRequest, .F. )
 
 	IF hb_HHasKey( ::hRequest, cKey )
 		uValue := hb_UrlDecode(::hRequest[ cKey ])

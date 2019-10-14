@@ -17,7 +17,7 @@ CLASS TMiddleware
 	CLASSDATA cargo					INIT ''
 	
 	METHOD New( cAction, hPar ) CONSTRUCTOR
-	METHOD Exec( oController, cValid )
+	METHOD Exec( oController, cValid, cView )
 	
 	METHOD SetAutentication( cType, cCargo )
 	METHOD SetAutenticationJWT( cType )			
@@ -44,12 +44,16 @@ METHOD Exec( oController, cValid, cView ) CLASS TMiddleware
 	
 	cValid := lower( cValid )
 
+
+
 	DO CASE
 		CASE cValid == 'jwt' 
 
 			IF ! ::ValidateJWT()
 
+
 				IF right( lower(cView), 5 ) == '.view'
+
 			
 					//	Borrar cookie
 						oResponse:SetCookie( ::cId_Cookie, '', -1 )
@@ -58,8 +62,8 @@ METHOD Exec( oController, cValid, cView ) CLASS TMiddleware
 						oController:View( cView )
 					
 				ELSE
-		
-					oResponse:Redirect( cView ) 
+	
+					oResponse:Redirect( cView ) 					
 
 					
 				ENDIF 
@@ -178,7 +182,5 @@ METHOD SetAutentication( cType, cCargo ) CLASS TMiddleware
 	ENDCASE
 
 RETU NIL
-
-
 
 //	-----------------------------------------------------------	//
