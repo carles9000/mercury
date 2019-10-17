@@ -22,7 +22,9 @@ CLASS TMiddleware
 	METHOD SetAutentication( cType, cCargo )
 	METHOD SetAutenticationJWT( cType )			
 	METHOD ValidateJWT()			
-	METHOD CloseJWT()			
+	METHOD CloseJWT()
+
+	METHOD GetDataJWT()			
 
 	
 ENDCLASS 
@@ -113,6 +115,22 @@ METHOD SetAutenticationJWT( hData, nTime ) CLASS TMiddleware
 
 
 RETU NIL
+
+
+METHOD GetDataJWT() CLASS TMiddleware
+
+	LOCAL oRequest 			:= App():oRequest
+	LOCAL cToken 			:= oRequest:GetCookie( ::cId_Cookie )
+	LOCAL oJWT 				:= JWT():New()	
+	LOCAL lValid 			:= oJWT:Decode( cToken )	
+	LOCAL hData 			:= NIL
+	
+	IF lValid 
+		hData := oJWT:GetData()
+	ENDIF
+	
+RETU hData
+
 
 METHOD ValidateJWT( cRoute ) CLASS TMiddleware
 
