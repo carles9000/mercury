@@ -9,9 +9,10 @@ CLASS TValidator
 	METHOD New() CONSTRUCTOR
 
 	METHOD Run( hValidate )	
+	METHOD Formatter( hData, hFormat )	
 	
 	METHOD EvalValue( cKey, cValue )				
-	METHOD EvalFormat( cKey, cValue )	
+	
 	
 	METHOD ErrorMessages()							INLINE ::aErrorMessages	
 	METHOD ErrorString()							
@@ -24,7 +25,7 @@ METHOD New( hValidate ) CLASS TValidator
 	
 RETU Self
 
-METHOD Run( hValidate, hFormat ) CLASS TValidator
+METHOD Run( hValidate ) CLASS TValidator
 
 	LOCAL lValidate := .T.
 	LOCAL hMsg
@@ -54,23 +55,7 @@ METHOD Run( hValidate, hFormat ) CLASS TValidator
 
 		lValidate := len( ::aErrorMessages ) == 0
 	
-	ENDIF
-	
-	IF lValidate .AND. ValType( hFormat ) == 'H'
-	
-		FOR n := 1 to len( hFormat )
-		
-			aH := hb_HPairAt( hFormat, n )
-			
-			cKey 	:= aH[1]
-			cValue 	:= aH[2]
-		
-			::EvalFormat( cKey, cValue )		
-		
-		NEXT				
-	
-	ENDIF
-	
+	ENDIF		
 
 	//	xec ->getmessages()
 	//	xec ->fails()	
@@ -152,9 +137,27 @@ METHOD EvalValue( cKey, cValue ) CLASS TValidator
 				uValue	:= IF( valtype( uValue ) == 'N', uValue, Val(uValue)) 
 
 				IF  uValue > cargo	
+					RETU { 'success' => .F., 'field' => cKey,   'msg' => 'Maxima valor de ' + ltrim(str(cargo)), 'value' => uValue  }
+					EXIT
+				ENDIF
+
+			CASE substr(cRole,1,7) == 'maxlen:'
+
+				cargo := Val(substr(cRole, 8 ))
+
+				IF valtype( uValue ) == 'C' .AND. len(uValue) > cargo
 					RETU { 'success' => .F., 'field' => cKey,   'msg' => 'Maxima longitud de ' + ltrim(str(cargo)), 'value' => uValue  }
 					EXIT
-				ENDIF				
+				ENDIF	
+
+			CASE substr(cRole,1,7) == 'minlen:'
+
+				cargo := Val(substr(cRole, 8 ))
+
+				IF valtype( uValue ) == 'C' .AND. len(uValue) < cargo
+					RETU { 'success' => .F., 'field' => cKey,   'msg' => 'Minima longitud de ' + ltrim(str(cargo)), 'value' => uValue  }
+					EXIT
+				ENDIF					
 				
 		ENDCASE		
 		
@@ -162,48 +165,55 @@ METHOD EvalValue( cKey, cValue ) CLASS TValidator
 
 RETU { 'success' => .T. }
 
-METHOD EvalFormat( cKey, cValue ) CLASS TValidator
+METHOD Formatter( hData, hFormat ) CLASS TValidator
 
-	LOCAL oReq 		:= App():oRequest     //::oRoute:oTRequest	
-	LOCAL cMethod 		:= oReq:Method()
-	LOCAL aRoles, n, nRoles, cRole
-	LOCAL uValue 		
-	LOCAL cargo
+	LOCAL n, cField, cFormat, aH
+	LOCAL aFormat, nFormat, cFunc, j
+	LOCAL uValue
 	
-	__defaultNIL( @cValue, '' )
+	HB_HCaseMatch( hData, .F. )
 	
-	DO CASE
-		CASE cMethod == 'GET'	;	uValue := oReq:Get( cKey )
-		CASE cMethod == 'POST'	;	uValue := oReq:Post( cKey )
-		OTHERWISE
-			uValue := oReq:hParam[ cKey ]
-	ENDCASE	
+	FOR n := 1 to len( hFormat )
 	
-	aRoles := HB_ATokens( cValue, '|' )
-	nRoles := len( aRoles )	
-	
-	//	Aqui hemos de ponser todos los roles. Escalar !
-	
-	FOR n = 1 to nRoles
-	
-		cRole := alltrim(lower(aRoles[n]))
+		aH := hb_HPairAt( hFormat, n )
 		
-		DO CASE
-			CASE cRole == 'upper'
+		cField 		:= aH[1]
+		cFormat 	:= aH[2]
+	
+		IF HB_HHasKey( hData, cField ) 
+		
+			uValue 	:= hData[ cField ]
+
+			aFormat := HB_ATokens( cFormat, '|' )
+			nFormat := len( aFormat )	
 			
-				IF valtype( uValue ) == 'C'			
-					uValue := Upper( uValue )						
-				ENDIF
+			//	Aqui hemos de ponser todos los roles. Escalar !
+			
+			FOR j = 1 to nFormat
+			
+				cFunc := alltrim(lower(aFormat[n]))
 				
-		ENDCASE		
+				DO CASE
+					CASE cFunc == 'upper'
+					
+						IF valtype( uValue ) == 'C'			
+							uValue := Upper( uValue )						
+						ENDIF
+						
+					CASE cFunc == 'lower'
+					
+						IF valtype( uValue ) == 'C'			
+							uValue := Lower( uValue )						
+						ENDIF						
+						
+				ENDCASE		
+				
+			NEXT
+			
+			hData[ cField ] := uValue 
 		
-	NEXT
+		ENDIF		
 	
-	//	Devolvemos el campo formateado al Request...
-
-	DO CASE
-		CASE cMethod == 'GET'	;	oReq:SetGet( cKey, uValue )
-		CASE cMethod == 'POST'	;	oReq:SetPost( cKey, uValue )
-	ENDCASE		
+	NEXT				
 
 RETU NIL
