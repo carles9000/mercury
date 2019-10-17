@@ -19,8 +19,10 @@ CLASS TApp
    DATA oData
    DATA lShowError							INIT .T.
    DATA cLastView							INIT ''
+
    
    //DATA bError							INIT {|cError, cTitle| ::ShowError( cError, cTitle ) }							
+    DATA bInit								INIT NIL							
    
    //CLASSDATA cPath							INIT AP_GETENV( 'PATH_APP' )
    CLASSDATA cPath							INIT AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_APP' )
@@ -89,10 +91,15 @@ RETU Self
 
 METHOD Init() CLASS TApp
 
+	LOCAL oThis := SELF  
 
 	::Config()	
 	
-	::aSys[ 'time_init' ]	:= hb_milliseconds()	
+	::aSys[ 'time_init' ]	:= hb_milliseconds()
+
+	IF Valtype( ::bInit ) == 'B'
+		Eval( ::bInit, oThis )
+	ENDIF	
 
 	::oRoute:Listen()
 
