@@ -34,4 +34,5 @@
 #include "tvalidator.prg"   		//	Sistema Validator
 #include "tmiddleware.prg"   		//	Sistema Middleware
 #include "tdata.prg"   				//	Sistema TData
+#include "ttemplate.prg"			//	Sistema Template
 //	---------------------------------------------------------------------------- //

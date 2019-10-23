@@ -42,9 +42,9 @@ METHOD Run( hValidate ) CLASS TValidator
 			
 			cKey 	:= aH[1]
 			cValue 	:= aH[2]
-		
+	
 			hMsg := ::EvalValue( cKey, cValue )		
-		
+	
 			IF hMsg[ 'success' ] == .F.
 				
 				Aadd( ::aErrorMessages, hMsg )
@@ -54,6 +54,7 @@ METHOD Run( hValidate ) CLASS TValidator
 		NEXT
 
 		lValidate := len( ::aErrorMessages ) == 0
+	
 	
 	ENDIF		
 
@@ -90,6 +91,7 @@ METHOD EvalValue( cKey, cValue ) CLASS TValidator
 		OTHERWISE
 			uValue := oReq:hParam[ cKey ]
 	ENDCASE	
+	
 	
 	aRoles := HB_ATokens( cValue, '|' )
 	nRoles := len( aRoles )	
@@ -140,6 +142,7 @@ METHOD EvalValue( cKey, cValue ) CLASS TValidator
 					RETU { 'success' => .F., 'field' => cKey,   'msg' => 'Maxima valor de ' + ltrim(str(cargo)), 'value' => uValue  }
 					EXIT
 				ENDIF
+			
 
 			CASE substr(cRole,1,7) == 'maxlen:'
 
