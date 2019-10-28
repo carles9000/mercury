@@ -51,8 +51,9 @@ METHOD Exec( oController, cValid, cView ) CLASS TMiddleware
 	DO CASE
 		CASE cValid == 'jwt' 
 
-			IF ! ::ValidateJWT()
-
+			lValidate := ::ValidateJWT()
+			
+			IF ! lValidate
 
 				IF right( lower(cView), 5 ) == '.view'
 
