@@ -19,14 +19,14 @@ CLASS TController
 	METHOD InitView()
 	METHOD View( cFile, ... ) 					
 	METHOD ListController()
-	METHOD ListRoute()										INLINE ::oRoute:ListRoute()
+	METHOD ListRoute()											INLINE ::oRoute:ListRoute()
 	
 	METHOD RequestValue 	( cKey, cDefault, cType )			INLINE ::oRequest:Request( cKey, cDefault, cType )
-	METHOD GetValue		( cKey, cDefault, cType )			INLINE ::oRequest:Get	 	( cKey, cDefault, cType )
+	METHOD GetValue		( cKey, cDefault, cType )				INLINE ::oRequest:Get	 	( cKey, cDefault, cType )
 	METHOD PostValue		( cKey, cDefault, cType )			INLINE ::oRequest:Post	( cKey, cDefault, cType )
 	
 	//	POdria ser algo mas como Autentica() ???
-	METHOD Middleware		( cValid, cRoute )					INLINE ::oMiddleware:Exec( SELF, cValid, cRoute )
+	METHOD Middleware		( cValid, cRoute )					
 
 	
 ENDCLASS 
@@ -37,6 +37,25 @@ METHOD New( cAction, hPar  ) CLASS TController
 	::hParam 			:= hPar		
 
 RETU Self
+
+METHOD Middleware( cType, cRoute, cargo ) CLASS TController
+
+	DEFAULT cType		:= ''
+	DEFAULT cRoute 	:= ''
+	DEFAULT cargo  	:= ''
+	
+	DO CASE
+		CASE cType == 'jwt'
+			retu ::oMiddleware:Exec( SELF, cType, cRoute )
+	
+		CASE cType == 'rool'				
+		
+	ENDCASE
+
+RETU .F.
+
+
+
 
 METHOD InitView( ) CLASS TController
 

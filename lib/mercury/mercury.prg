@@ -17,6 +17,10 @@
 #xcommand ? [<explist,...>] => AP_RPuts( '<br>' [,<explist>] )
 #xcommand ?? [<explist,...>] => AP_RPuts( [<explist>] )
 #xcommand TEMPLATE [ USING <x> ] [ PARAMS [<v1>] [,<vn>] ] => #pragma __cstream | AP_RPuts( InlinePrg( %s, [@<x>] [,<(v1)>][+","+<(vn)>] [, @<v1>][, @<vn>] ) )
+#xcommand DEFAULT <uVar1> := <uVal1> ;
+               [, <uVarN> := <uValN> ] => ;
+                  If( <uVar1> == nil, <uVar1> := <uVal1>, ) ;;
+                [ If( <uVarN> == nil, <uVarN> := <uValN>, ); ]
 //	-------------------------------------------------------------------------------- 
 
 

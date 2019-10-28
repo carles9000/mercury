@@ -124,10 +124,10 @@ METHOD Echo() CLASS TResponse
 	//	Cabeceras
 	
 		FOR EACH aHeader IN ::aHeaders
-			
+
 			//	Si tenemos alguna cookie por enviar, la enviamos...					
 			IF aHeader[1] == 'Set-Cookie'
-			//? 'Envio Cookie...'
+			//? 'Envio Cookie...'			
 				AP_HeadersOutSet( "Set-Cookie", aHeader[2] )												
 			ELSE
 				AP_HeadersOutSet( aHeader[1], aHeader[2] )															
