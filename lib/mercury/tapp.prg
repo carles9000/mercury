@@ -28,9 +28,10 @@ CLASS TApp
    CLASSDATA cPath							INIT AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_APP' )
    CLASSDATA cUrl							INIT AP_GETENV( 'PATH_URL' )
    CLASSDATA cPathCss						INIT '/css/'
+   CLASSDATA cPathJs						INIT '/js/'
    CLASSDATA cPathView						INIT '/src/view/'
    CLASSDATA cPathController				INIT '/src/controller/'
-   CLASSDATA cPathModel					INIT '/src/model/'
+   CLASSDATA cPathModel						INIT '/src/model/'
    CLASSDATA cPathData						INIT AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_DATA' )
    CLASSDATA cTitle							INIT AP_GETENV( 'APP_TITLE' )
    CLASSDATA cFileLog						INIT AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_DATA' ) + '/logview.txt'
@@ -231,8 +232,10 @@ METHOD ListApp() CLASS TApp
 	
 	cHtml += '<tr><td>Version()</td><td>'			+ ::Version() + '</td>'
 	cHtml += '<tr><td>cPath</td><td>' 				+ ::cPath + '</td>'
+	cHtml += '<tr><td>cPathCss</td><td>' 			+ ::cPathCss + '</td>'
+	cHtml += '<tr><td>cPathJs</td><td>' 			+ ::cPathJs + '</td>'
 	cHtml += '<tr><td>cPathController</td><td>' 	+ ::cPathController + '</td>'
-	cHtml += '<tr><td>cPathModel</td><td>' 		+ ::cPathModel + '</td>'
+	cHtml += '<tr><td>cPathModel</td><td>' 			+ ::cPathModel + '</td>'
 	cHtml += '<tr><td>cPathView</td><td>' 			+ ::cPathView + '</td>'
 	cHtml += '<tr><td>cPathData</td><td>' 			+ ::cPathData + '</td>'	
 	
