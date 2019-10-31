@@ -1,6 +1,5 @@
 //	-----------------------------------------------------------	//
 
-
 CLASS TValidator
 
 	DATA hValidate				INIT {=>}
@@ -181,39 +180,44 @@ METHOD Formatter( hData, hFormat ) CLASS TValidator
 		aH := hb_HPairAt( hFormat, n )
 		
 		cField 		:= aH[1]
-		cFormat 	:= aH[2]
-	
+		cFormat 	:= aH[2]			
+
 		IF HB_HHasKey( hData, cField ) 
-		
+
 			uValue 	:= hData[ cField ]
 
-			aFormat := HB_ATokens( cFormat, '|' )
-			nFormat := len( aFormat )	
-			
-			//	Aqui hemos de ponser todos los roles. Escalar !
-			
-			FOR j = 1 to nFormat
-			
-				cFunc := alltrim(lower(aFormat[n]))
+			IF !empty( uValue )
+
+				aFormat := HB_ATokens( cFormat, '|' )
+	
+				nFormat := len( aFormat )			
 				
-				DO CASE
-					CASE cFunc == 'upper'
-					
-						IF valtype( uValue ) == 'C'			
-							uValue := Upper( uValue )						
-						ENDIF
-						
-					CASE cFunc == 'lower'
-					
-						IF valtype( uValue ) == 'C'			
-							uValue := Lower( uValue )						
-						ENDIF						
-						
-				ENDCASE		
+				//	Aqui hemos de ponser todos los roles. Escalar !
 				
-			NEXT
+				FOR j = 1 to nFormat
+	
+					cFunc := alltrim(lower(aFormat[j]))
+		
+					DO CASE
+						CASE cFunc == 'upper'
+						
+							IF valtype( uValue ) == 'C' .and. !empty( uValue )			
+								uValue := Upper( uValue )						
+							ENDIF
+							
+						CASE cFunc == 'lower'
+						
+							IF valtype( uValue ) == 'C' .and. !empty( uValue )			
+								uValue := Lower( uValue )						
+							ENDIF						
+							
+					ENDCASE		
+					
+				NEXT
+				
+				hData[ cField ] := uValue 
 			
-			hData[ cField ] := uValue 
+			ENDIF
 		
 		ENDIF		
 	
