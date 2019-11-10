@@ -5,6 +5,7 @@ CLASS TRoute
 	DATA oApp
 	DATA oRequest
 	DATA oResponse
+	DATA bLog
 
 	
 	CLASSDATA aMap										INIT {}	
@@ -343,6 +344,8 @@ METHOD Listen() CLASS TRoute
 	//	Si existe un controlador lo ejecutaremos
 	
 
+	
+	
 	IF lFound 
 	
 		IF !empty( uController )	
@@ -356,8 +359,9 @@ METHOD Listen() CLASS TRoute
 			
 				::oRequest:LoadRequest()
 				
-			//	-----------------------------						
-		
+			//	-----------------------------
+
+			
 			::Execute( uController, hParameters, aRouteSelect )
 			
 		ELSE		
@@ -499,6 +503,12 @@ METHOD Execute( cController, hParam, aRouteSelect ) CLASS TRoute
 		oTController:aRouteSelect  			:= aRouteSelect		
 		
 		oTController:InitView()
+		
+			
+			IF valtype( ::bLog ) == 'B'
+				Eval( ::bLog, oTController, cAction )
+			ENDIF		
+		
 		
 		LOG 'Exec :Controller() ' + cController
 		LOG 'Code : ' + cCode

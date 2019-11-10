@@ -10,7 +10,7 @@ CLASS TTemplate
 	METHOD New() 						CONSTRUCTOR	
 	
 	METHOD Section( cSection, cHtml ) 
-	METHOD Code()						INLINE ::cHtml 
+	METHOD Code()						
 	
 ENDCLASS 
 
@@ -46,3 +46,12 @@ METHOD Section( cSection, cCode ) CLASS TTemplate
 
 RETU NIL
 
+
+METHOD Code() CLASS TTemplate
+
+	LOCAL cCode := ::cHtml
+	LOCAL oInfo := { 'file' => 'xxx' }
+	
+	zReplaceBlocks( @cCode, '{{', '}}', oInfo )	
+
+RETU cCode
