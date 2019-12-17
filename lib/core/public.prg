@@ -31,7 +31,7 @@ FUNCTION _l( uValue )
 
 //	LOCAL cFileName 		:= IF ( HB_GETENV( 'LOG_FILE' ) == '',  hb_getenv( 'PRGPATH' ) + '/log.txt', HB_GETENV( 'LOG_FILE' ) )
 	LOCAL cFileName 		:= hb_getenv( 'PRGPATH' ) + '/data/log2.txt'
- 	LOCAL cNow 				:= DToC( Date() ) + " " + Time() 
+ 	LOCAL cNow 			:= DToC( Date() ) + " " + Time() 
 	LOCAL cInfo   			:= procname(1) + '(' +  ltrim(str(procline( 1 ))) + ')'	
 	LOCAL nParam 			:= PCount()
 	LOCAL cLine, cType, hFile, nI			

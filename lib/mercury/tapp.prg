@@ -1,5 +1,6 @@
 #include 'mercury.ch'
 
+
 FUNCTION App()
 	
 	STATIC oApp
@@ -270,3 +271,59 @@ exit procedure App_End()
 	ENDIF
 
 RETU 
+
+
+function _GTrace( cName )
+	GTrace():New( cName )
+RETU NIL
+
+CLASS GTrace
+
+	CLASSDATA	lInit				INIT .F.
+	CLASSDATA	nIndex				INIT 0
+	CLASSDATA	nPosGetList		INIT 0
+
+	METHOD New()					CONSTRUCTOR
+	METHOD GetLaps()				
+	METHOD Total()				
+
+ENDCLASS 
+
+METHOD New( cName ) CLASS GTrace
+
+	DEFAULT cName := ''
+
+	IF !::lInit
+		AAdd( M->getList, {} )
+		::lInit := .T.
+		::nIndex := 0
+		::nPosGetList := len( M->getList )
+	ENDIF
+	
+	IF !Empty( cName )
+	
+		::nIndex++
+	
+		AAdd( M->getlist[::nPosGetList], { 'pos' => ::nIndex, 'trace' => cName, 'time' => hb_milliseconds() } )		
+	
+	ENDIF
+
+RETU SELF
+
+METHOD GetLaps CLASS GTrace
+RETU M->Getlist[::nPosGetList]
+
+METHOD Total CLASS GTrace
+
+	LOCAL nStart 	:= Ascan( M->getlist[::nPosGetList],{ |a| a['trace'] == 'start' })
+	LOCAL nEnd 	:= Ascan( M->getlist[::nPosGetList],{ |a| a['trace'] == 'end' })
+	LOCAL nTotal := 0
+	
+	IF nStart > 0 .and. nEnd > 0
+		nTotal := M->getlist[::nPosGetList][nEnd][ 'time' ] - M->getlist[::nPosGetList][nStart]['time']
+	ENDIF
+	
+RETU nTotal
+	
+
+
