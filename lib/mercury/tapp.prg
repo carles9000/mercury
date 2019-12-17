@@ -1,4 +1,5 @@
 #include 'mercury.ch'
+#include "FileIO.ch"
 
 
 FUNCTION App()
@@ -274,7 +275,73 @@ RETU
 
 
 function _GTrace( cName )
-	GTrace():New( cName )
+/*
+	STATIC nLast			:= 0
+	STATIC nStart			:= 0
+	
+	LOCAL cFileName 		:= hb_getenv( 'PRGPATH' ) + '/data/trace.txt'
+	LOCAL cInfo   			:= procname(1) + '(' +  ltrim(str(procline( 1 ))) + ')'
+	local hFile, cLine				
+	local nNow, nLapsus		
+	
+	DEFAULT cName := ''		
+	
+	IF empty( cName )
+		IF  fErase( cFilename ) == -1
+			//	? 'Error eliminando ' + cFilename, fError()
+		ENDIF
+		RETU NIL		
+	ENDIF
+	
+	//	Abrimos fichero log
+	
+		IF ! File( cFileName )
+			fClose( FCreate( cFileName ) )	
+		ENDIF
+
+		IF ( ( hFile := FOpen( cFileName, FO_WRITE ) ) == -1 )
+			RETU NIL
+		ENDIF
+
+		nNow		:= hb_milliseconds()
+		
+			cLine := 'Now: ' + valtochar(nNow) + ' - Last: '  + valtochar( nLast ) + Chr(13) + Chr(10)
+			fSeek( hFile, 0, FS_END )
+			fWrite( hFile, cLine, Len( cLine ) )		
+		
+		
+	//	Log	
+		IF cName == 'start' 
+			nStart := nNow
+			cLine := Replicate( '-',50) + Chr(13) + Chr(10)
+			fSeek( hFile, 0, FS_END )
+			fWrite( hFile, cLine, Len( cLine ) )				
+		ENDIF	
+	
+		IF cName == 'end'
+			nLapsus	:= nNow - nStart
+		ELSE
+			nLapsus	:= IF (nLast <> 0, nNow - nLast, 0 )
+		ENDIF
+	
+		cLine  	:= cInfo + ': ' + valtochar( cName ) + ' => ' + ltrim(str(nLapsus)) + Chr(13) + Chr(10)
+			
+		
+		fSeek( hFile, 0, FS_END )
+		fWrite( hFile, cLine, Len( cLine ) )
+
+		IF cName == 'end'
+			nLapsus	:= nNow - nStart
+			cLine  	:= '<EndProcess>  ' + ltrim(str(nLapsus)) + Chr(13) + Chr(10)
+			fSeek( hFile, 0, FS_END )
+			fWrite( hFile, cLine, Len( cLine ) )			
+		ENDIF
+		
+		fClose( hFile )			
+	
+		nLast		:= nNow
+*/		
+		GTrace():New( cName )
 RETU NIL
 
 CLASS GTrace
@@ -286,10 +353,13 @@ CLASS GTrace
 	METHOD New()					CONSTRUCTOR
 	METHOD GetLaps()				
 	METHOD Total()				
+	METHOD toLog()				
 
 ENDCLASS 
 
 METHOD New( cName ) CLASS GTrace
+
+	LOCAL cInfo
 
 	DEFAULT cName := ''
 
@@ -303,8 +373,10 @@ METHOD New( cName ) CLASS GTrace
 	IF !Empty( cName )
 	
 		::nIndex++
+		
+		cInfo   			:= procname(2) + '(' +  ltrim(str(procline( 2 ))) + ')'
 	
-		AAdd( M->getlist[::nPosGetList], { 'pos' => ::nIndex, 'trace' => cName, 'time' => hb_milliseconds() } )		
+		AAdd( M->getlist[::nPosGetList], { 'pos' => ::nIndex, 'info' => cInfo,  'trace' => cName, 'time' => hb_milliseconds() } )		
 	
 	ENDIF
 
@@ -324,6 +396,52 @@ METHOD Total CLASS GTrace
 	ENDIF
 	
 RETU nTotal
+
+METHOD toLog() CLASS GTrace
+
+	LOCAL cFileName 		:= hb_getenv( 'PRGPATH' ) + '/data/trace.txt'
+	LOCAL nI, cLine, hFile
+	LOCAL nLapsus := -1
+	local nLast
+	
+	
+	//	Abrimos fichero log
+	
+		IF ! File( cFileName )
+			fClose( FCreate( cFileName ) )	
+		ENDIF
+
+		IF ( ( hFile := FOpen( cFileName, FO_WRITE ) ) == -1 )
+			RETU NIL
+		ENDIF
+		
+		
+	FOR nI := 1 TO len(  M->getlist[::nPosGetList] ) 
+	
+		IF nI == 1	//	start
+			nLapsus := 0			
+		ELSE
+			nLapsus := M->getlist[::nPosGetList][nI][ 'time' ] - M->getlist[::nPosGetList][nI-1][ 'time' ]  
+		ENDIF
+	
+		cLine := M->getlist[::nPosGetList][nI][ 'info' ] + ' - ' + M->getlist[::nPosGetList][nI][ 'trace' ] + ' -> ' + ltrim(str(nLapsus)) + 'ms.' + Chr(13) + Chr(10)
+		fSeek( hFile, 0, FS_END )
+		fWrite( hFile, cLine, Len( cLine ) )			
+		
+	NEXT
+	
+		cLine  	:= '<EndProcess>  ' + ltrim(str(::Total())) + 'ms.' + Chr(13) + Chr(10)
+		fSeek( hFile, 0, FS_END )
+		fWrite( hFile, cLine, Len( cLine ) )		
+
+		cLine := Replicate( '-',50) + Chr(13) + Chr(10)
+		fSeek( hFile, 0, FS_END )
+		fWrite( hFile, cLine, Len( cLine ) )	
+	
+	fClose( hFile )			
+		
+
+RETU NIL
 	
 
 
