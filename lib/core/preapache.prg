@@ -295,3 +295,25 @@ FUNCTION zExecute( cCode, oInfo, ... )
     ErrorBlock(bLastHandler) // Restore handler       
    
 RETU uRet
+
+//	Load file form document_root + PATH_APP
+
+FUNCTION zInclude( cFile ) 
+
+   local cPath 		:= AP_GetEnv( "DOCUMENT_ROOT" ) 
+   local cPath_App 	:= AP_GetEnv( "PATH_APP" ) 
+
+   hb_default( @cFile, '' )
+   cFile = cPath + cPath_App + cFile   
+   
+   if "Linux" $ OS()
+      cFile = StrTran( cFile, '\', '/' )     
+   endif   
+    
+   if File( cFile )
+      return MemoRead( cFile )
+   endif
+
+RETU ''
+
+FUNCTION VersionPreApache(); RETU  'v0.1'
