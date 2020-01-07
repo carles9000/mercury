@@ -302,6 +302,7 @@ FUNCTION zInclude( cFile )
 
    local cPath 		:= AP_GetEnv( "DOCUMENT_ROOT" ) 
    local cPath_App 	:= AP_GetEnv( "PATH_APP" ) 
+   local oError 
 
    hb_default( @cFile, '' )
    cFile = cPath + cPath_App + cFile   
@@ -312,6 +313,13 @@ FUNCTION zInclude( cFile )
     
    if File( cFile )
       return MemoRead( cFile )
+	else
+	
+		oError := ErrorNew()
+		oError:Subsystem   := "System"
+		oError:Severity    := 2	//	ES_ERROR
+		oError:Description := "Include() File not found: " + cFile
+		Eval( ErrorBlock(), oError)
    endif
 
 RETU ''
