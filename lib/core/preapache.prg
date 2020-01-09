@@ -113,7 +113,7 @@ FUNCTION AP_CompileErrorHandler( oError, oInfo, cTitle )
 	//LOCAL a 			:= __objGetMsgList( oError, .T. )
 	
 
-	Aadd( aError, { 'File...', oInfo[ 'file' ] } )
+	Aadd( aError, { 'Filename', oInfo[ 'file' ] } )
 	//Aadd( aError, { 'File...', oError:filename } )
 	Aadd( aError, { 'Error', oError:description } )
 	Aadd( aError, { 'Operation', valtochar( oError:operation)  } )
@@ -146,7 +146,10 @@ FUNCTION AP_CompileErrorHandler( oError, oInfo, cTitle )
 	endif	
 
 	cCode := StrTran( oInfo[ 'code'], CRLF, '<br>' )	
-	Aadd( aError, { 'Source', cCode } )	
+	
+	//	De momento capado para que no muestre code...
+	//	Aadd( aError, { 'Source', cCode } )	
+	//	Quizas podriamos generar un log...
    
 	
 
@@ -173,22 +176,32 @@ FUNCTION AP_ShowCompileError( aError, cTitle )
 	LOCAL cHtml := ''
 
 	cHtml += '<meta charset="utf-8">'
-	cHtml +=  '<body style="background-color: #ececec;">'
-	cHtml +=  '<h2>' + cTitle + '<hr></h2>'	
+	cHtml += '<body style="background-color: #ececec;">'
+	cHtml += '<h4>' + cTitle + '<hr></h4>'
+	cHtml += '<style>'
+	cHtml += '  .errortype {'
+	cHtml += '     text-align: right;'
+	cHtml += '     padding: 5px;'
+	cHtml += '  }'
+	cHtml += '  .errortxt {'
+	cHtml += '     padding: 5px;'
+	cHtml += '  }'	
+	cHtml += '</style>'
 
-	cHtml +=  '<table border="1" style="background-color: white;">'
+	cHtml +=  '<table border="1" style="background-color: white; width: 100%;">'
 	
 	FOR nI := 1 TO nLen	
 
-		cHtml +=  '<tr>'
-		cHtml +=  '<td><b>' + aError[nI][1] + '</b></td>' 
-		
 		//	Sustituyo <br> imprimible por real...
 		cText :=  UHtmlEncode((aError[nI][2])) 		
 		cText := Alltrim(StrTran( cText, '&lt;br&gt;', '<br>' ))
 		
-		cHtml +=  '<td><pre>' + cText + '</pre></td>' 
-		cHtml +=  '</tr>'
+		IF !empty( cText )
+			cHtml +=  '<tr>'
+			cHtml +=  '<td class="errortype"><b>' + aError[nI][1] + '</b></td>' 				
+			cHtml +=  '<td class="errortxt">' + cText + '</td>' 
+			cHtml +=  '</tr>'
+		ENDIF
 		
 	NEXT	
 	
@@ -279,6 +292,7 @@ FUNCTION zExecute( cCode, oInfo, ... )
 					  
 		__pp_addRule( hPP, "#xcommand PARAM <nParam> => AP_Get( IF( valtype( pvalue(<nParam>) ) <> 'U', pvalue(<nParam>), '' ) )" )
 		__pp_addRule( hPP, "#xcommand PARAM <nParam>,<uIndex> => AP_Get( hb_pvalue(<nParam>),<uIndex> )" )					  
+		__pp_addRule( hPP, "#xcommand TEXT <into:TO,INTO> <v> => #pragma __cstream|<v>:=%s" )					  
 	
 	ENDIF
 	
@@ -314,11 +328,11 @@ FUNCTION zInclude( cFile )
    if File( cFile )
       return MemoRead( cFile )
 	else
-	
+
 		oError := ErrorNew()
 		oError:Subsystem   := "System"
 		oError:Severity    := 2	//	ES_ERROR
-		oError:Description := "Include() File not found: " + cFile
+		oError:Description := "Include() File not found: " + cFile 
 		Eval( ErrorBlock(), oError)
    endif
 
