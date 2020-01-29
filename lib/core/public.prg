@@ -1,4 +1,5 @@
 #include "FileIO.ch"
+#include "common.ch"
 
 //	------------------------------------------------------------
 //	FUNCTION from Mindaugas code -> esshop
@@ -27,14 +28,23 @@ FUNCTION UHtmlEncode(cString)
 	
 RETURN cRet
 
-FUNCTION _l( uValue )
+FUNCTION _l( uValue, cFile )
 
+	STATIC _l_file 		:= '/log.txt'
+	
 //	LOCAL cFileName 		:= IF ( HB_GETENV( 'LOG_FILE' ) == '',  hb_getenv( 'PRGPATH' ) + '/log.txt', HB_GETENV( 'LOG_FILE' ) )
-	LOCAL cFileName 		:= hb_getenv( 'PRGPATH' ) + '/data/log2.txt'
+	LOCAL cFileName 		
  	LOCAL cNow 			:= DToC( Date() ) + " " + Time() 
 	LOCAL cInfo   			:= procname(1) + '(' +  ltrim(str(procline( 1 ))) + ')'	
 	LOCAL nParam 			:= PCount()
 	LOCAL cLine, cType, hFile, nI			
+	
+	IF valtype( cFile ) == 'C'
+		_l_file := cFile	
+	ENDIF
+	
+	cFileName := hb_getenv( 'PRGPATH' ) + _l_file
+	
 
 	//	Si no hay parámetros borramos el fichero 
 	
