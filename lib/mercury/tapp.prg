@@ -252,6 +252,8 @@ exit procedure App_End()
 	LOCAL o 		:= TApp():New()
 	LOCAL nTotal, nI
 	
+	retu nil
+	
 	IF o:lLog
 	
 		nTotal := len( o:aLog )
@@ -275,73 +277,7 @@ RETU
 
 
 function _GTrace( cName )
-/*
-	STATIC nLast			:= 0
-	STATIC nStart			:= 0
-	
-	LOCAL cFileName 		:= hb_getenv( 'PRGPATH' ) + '/data/trace.txt'
-	LOCAL cInfo   			:= procname(1) + '(' +  ltrim(str(procline( 1 ))) + ')'
-	local hFile, cLine				
-	local nNow, nLapsus		
-	
-	DEFAULT cName := ''		
-	
-	IF empty( cName )
-		IF  fErase( cFilename ) == -1
-			//	? 'Error eliminando ' + cFilename, fError()
-		ENDIF
-		RETU NIL		
-	ENDIF
-	
-	//	Abrimos fichero log
-	
-		IF ! File( cFileName )
-			fClose( FCreate( cFileName ) )	
-		ENDIF
-
-		IF ( ( hFile := FOpen( cFileName, FO_WRITE ) ) == -1 )
-			RETU NIL
-		ENDIF
-
-		nNow		:= hb_milliseconds()
-		
-			cLine := 'Now: ' + valtochar(nNow) + ' - Last: '  + valtochar( nLast ) + Chr(13) + Chr(10)
-			fSeek( hFile, 0, FS_END )
-			fWrite( hFile, cLine, Len( cLine ) )		
-		
-		
-	//	Log	
-		IF cName == 'start' 
-			nStart := nNow
-			cLine := Replicate( '-',50) + Chr(13) + Chr(10)
-			fSeek( hFile, 0, FS_END )
-			fWrite( hFile, cLine, Len( cLine ) )				
-		ENDIF	
-	
-		IF cName == 'end'
-			nLapsus	:= nNow - nStart
-		ELSE
-			nLapsus	:= IF (nLast <> 0, nNow - nLast, 0 )
-		ENDIF
-	
-		cLine  	:= cInfo + ': ' + valtochar( cName ) + ' => ' + ltrim(str(nLapsus)) + Chr(13) + Chr(10)
-			
-		
-		fSeek( hFile, 0, FS_END )
-		fWrite( hFile, cLine, Len( cLine ) )
-
-		IF cName == 'end'
-			nLapsus	:= nNow - nStart
-			cLine  	:= '<EndProcess>  ' + ltrim(str(nLapsus)) + Chr(13) + Chr(10)
-			fSeek( hFile, 0, FS_END )
-			fWrite( hFile, cLine, Len( cLine ) )			
-		ENDIF
-		
-		fClose( hFile )			
-	
-		nLast		:= nNow
-*/		
-		GTrace():New( cName )
+	GTrace():New( cName )
 RETU NIL
 
 CLASS GTrace

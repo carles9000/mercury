@@ -127,7 +127,7 @@ METHOD Listen() CLASS TRoute
 	//	Analizamos todas las rutas. Inicialmente solo se analizaban las del mismo método
 	//	pero se ha detectado que en una vista se puede pedir Route() de otros metodo.
 	
-	_GTrace( 'Listen Ini' )
+	//_GTrace( 'Listen Ini' )
 
 
 	FOR n := 1 TO nLen 
@@ -359,7 +359,7 @@ METHOD Listen() CLASS TRoute
 				::oRequest:LoadRequest()
 				
 			//	-----------------------------
-			_GTrace( 'Listen Found: ' + valtochar( uController)  )
+			//_GTrace( 'Listen Found: ' + valtochar( uController)  )
 			
 			::Execute( uController, hParameters, aRouteSelect )
 			
