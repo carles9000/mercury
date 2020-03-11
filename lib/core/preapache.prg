@@ -252,7 +252,9 @@ RETU cText
 
 FUNCTION zExecInline( cCode, oInfo, ... )
 
-RETU zExecute( "function __Inline()" + HB_OsNewLine() + cCode, oInfo, ... )   
+RETU zExecute( "function __Inline()" + HB_OsNewLine() + cCode, oInfo, ... )
+
+
 
 FUNCTION zExecute( cCode, oInfo, ... )
 
@@ -312,6 +314,7 @@ RETU uRet
 
 //	Load file form document_root + PATH_APP
 
+
 FUNCTION zInclude( cFile ) 
 
    local cPath 		:= AP_GetEnv( "DOCUMENT_ROOT" ) 
@@ -337,5 +340,37 @@ FUNCTION zInclude( cFile )
    endif
 
 RETU ''
+
+//	zInclude() no queda bonita en el prg. Crearemos LoadFile()
+
+FUNCTION LoadFile( cFile ) 
+
+   local cPath 		:= AP_GetEnv( "DOCUMENT_ROOT" ) 
+   local cPath_App 	:= AP_GetEnv( "PATH_APP" ) 
+   local oError 
+
+   hb_default( @cFile, '' )
+   cFile = cPath + cPath_App + cFile   
+   
+   if "Linux" $ OS()
+      cFile = StrTran( cFile, '\', '/' )     
+   endif   
+    
+   if File( cFile )
+      return MemoRead( cFile )
+	else
+
+		oError := ErrorNew()
+		oError:Subsystem   := "System"
+		oError:Severity    := 2	//	ES_ERROR
+		oError:Description := "LoadFile() File not found: " + cFile 
+		Eval( ErrorBlock(), oError)
+   endif
+
+RETU ''
+
+
+
+
 
 FUNCTION VersionPreApache(); RETU  'v0.1'
