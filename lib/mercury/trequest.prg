@@ -127,7 +127,7 @@ METHOD ValueToType( uValue, cType ) CLASS TRequest
 	DO CASE
 		CASE cType == 'C'
 		CASE cType == 'N'; uValue := If( valtype(uValue) == 'N', uValue, Val( uValue ) )
-		CASE cType == 'L'; uValue := If( lower( uValue ) == 'true', .T., .F. )
+		CASE cType == 'L'; uValue := If( valtype(uValue) == 'L', uValue, IF( lower( valtochar(uValue) ) == 'true', .T., .F. ) )
 	ENDCASE
 
 RETU uValue 
