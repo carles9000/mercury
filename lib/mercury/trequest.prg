@@ -121,9 +121,13 @@ RETU uValue
 
 METHOD ValueToType( uValue, cType ) CLASS TRequest
 
+	__defaultNIL( @uValue, '' )
+	__defaultNIL( @cType, '' )
+
 	DO CASE
 		CASE cType == 'C'
 		CASE cType == 'N'; uValue := If( valtype(uValue) == 'N', uValue, Val( uValue ) )
+		CASE cType == 'L'; uValue := If( lower( uValue ) == 'true', .T., .F. )
 	ENDCASE
 
 RETU uValue 
