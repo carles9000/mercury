@@ -105,14 +105,14 @@ METHOD EvalValue( cKey, cValue ) CLASS TValidator
 			CASE cRole == 'required'
 			
 				IF empty( uValue )
-					RETU { 'success' => .F., 'field' => cKey,  'msg' => 'ParÃ metro requerido', 'value' => uValue }
+					RETU { 'success' => .F., 'field' => cKey,  'msg' => 'Paràmetro requerido', 'value' => uValue }
 					EXIT
 				ENDIF
 				
 			CASE cRole == 'numeric'
 	
 				IF ! ISDIGIT( uValue )
-					RETU { 'success' => .F., 'field' => cKey,   'msg' => 'Valor no numÃ©rico', 'value' => uValue }
+					RETU { 'success' => .F., 'field' => cKey,   'msg' => 'Valor no numérico', 'value' => uValue }
 					EXIT
 				ENDIF
 
