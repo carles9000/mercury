@@ -11,7 +11,7 @@
 	tengamos la libreria generada, la tendremos de llamar desde el módulo principal
 	con ...
 -------------------------------------------------------------------------------- */	
-
+static hKeySecure := {=>}
 
 //	Se han de definir estos comandos pues los usamos en algunos módulos...
 #xcommand ? [<explist,...>] => AP_RPuts( '<br>' [,<explist>] )
@@ -22,7 +22,6 @@
                   If( <uVar1> == nil, <uVar1> := <uVal1>, ) ;;
                 [ If( <uVarN> == nil, <uVarN> := <uValN>, ); ]
 //	-------------------------------------------------------------------------------- 
-
 
 #include "hbclass.ch" 
 #include "hboo.ch"   

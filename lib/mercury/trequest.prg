@@ -1,5 +1,4 @@
 
-
 CLASS TRequest
 
 	DATA hGet								INIT {=>}
@@ -31,6 +30,8 @@ CLASS TRequest
 	METHOD Request( cKey, uDefault, cType )
 	METHOD RequestAll()						INLINE ::hRequest
 	METHOD ValueToType( uValue, cType )
+	
+	METHOD GetStamp( cKey )
 
 ENDCLASS
 
@@ -303,6 +304,81 @@ METHOD LoadHeaders() CLASS TRequest
 	NEXT	
 
 RETU NIL
+
+//	----------------------------------------------------------------------------
+
+METHOD GetStamp( cKey ) CLASS TRequest
+
+	LOCAL cToken 	:= ::Request( cKey )
+	LOCAL hToken	:= __wDecrypt( cToken )
+	
+	SetSecure( cKey, hToken )
+
+RETU hToken
+
+//	----------------------------------------------------------------------------
+
+
+function __wCrypt( hKey, cFeed )
+
+	local a,cKey 
+	
+	DEFAULT cFeed := 'mykey' 
+
+	a 		:= hb_base64Encode( hb_jsonencode( hKey ) )
+	cKey 	:= hb_base64Encode( HB_MD5ENCRYPT( a, cFeed ) )	
+	
+	//	A veces en la codificacion base64 se usa el simbolo + y por la url puede haber lio
+	//	lo susituimos y al recibirlo ya lo dejaremos donde estaba
+	
+		cKey	:= hb_StrReplace( cKey , '+/=', '-_ ' )
+
+retu cKey 
+
+function __wDecrypt( cKey, cFeed )
+
+	local a, hKey
+	
+	DEFAULT cFeed := 'mykey' 	
+
+	cKey	:= hb_StrReplace( cKey , '-_ ', '+/=' )
+	a 		:= HB_MD5DECRYPT( hb_base64Decode( cKey ), cFeed )
+	hKey 	:= hb_jsondecode( hb_base64Decode( a ) )
+	
+retu hKey
+
+function SetSecure( cKey, uData )
+	
+	DEFAULT cKey := ''
+	
+	IF empty( cKey )
+		retu ''
+	endif	
+	
+	IF PCount() == 2
+	
+		DO CASE
+			CASE valtype( uData ) == 'C'
+				hKeySecure[ cKey ] := __wCrypt( { 'data' => uData } )
+			CASE valtype( uData ) == 'H'
+				hKeySecure[ cKey ] := __wCrypt( uData )
+			OTHERWISE
+				retu ''
+		ENDCASE						
+		
+	ENDIF
+		
+retu ''
+
+function StampSecure( cKey )
+	
+	DEFAULT cKey := ''
+	
+	IF empty( cKey )
+		retu ''
+	endif	
+
+retu  '<input type="hidden" name="' + cKey + '" value="' + hKeySecure[ cKey ] + '">'
 
 //	SetCookie() en oResponse
 

@@ -28,6 +28,20 @@ FUNCTION UHtmlEncode(cString)
 	
 RETURN cRet
 
+
+/*
+	cString := StrTran( cString, "<", "&lt;")
+	cString := StrTran( cString, ">", "&gt;")
+	cString := StrTran( cString, "&", "&amp;")
+	cString := StrTran( cString, '"', "&quot;")		
+	cString := StrTran( cString, "'", "&apos;")	
+RETURN cString
+*/
+	
+
+
+
+
 FUNCTION _l( uValue, cFile )
 
 	STATIC _l_file 		:= '/log.txt'
