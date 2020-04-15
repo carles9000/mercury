@@ -1,0 +1,338 @@
+15-04-20 08:40:15 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:40:15 TVIEW:EXEC(87): <html>
+<body>
+	<h2>Default<hr></h2>
+	
+	<a href="/hfw/mercury/app/principal">Pantalla Principal</a>
+	
+	<br><br>
+	
+	<a href="/hfw/mercury/app/login">Acceso al sistema.Login</a>
+</body>
+</html>
+15-04-20 08:40:15 TVIEW:EXEC(88): ==========================
+15-04-20 08:40:15 TVIEW:EXEC(93): <html>
+<body>
+	<h2>Default<hr></h2>
+	
+	<a href="/hfw/mercury/app/principal">Pantalla Principal</a>
+	
+	<br><br>
+	
+	<a href="/hfw/mercury/app/login">Acceso al sistema.Login</a>
+</body>
+</html>
+15-04-20 08:40:18 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:40:18 TVIEW:EXEC(87): <html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+	<h2>Login<hr></h2>
+
+	<?prg
+		LOCAL hResponse := PValue(1)
+		LOCAL nI
+		LOCAL cHtml 	:= ''
+		
+		IF ValType( hResponse ) == 'H'
+		
+			IF ! hResponse[ 'success' ]
+			
+				DO CASE 
+				
+					CASE hResponse[ 'type' ] == 'validator'
+					
+						aMsgError := hResponse[ 'error' ]
+			
+						FOR nI := 1 TO len( aMsgError )
+						
+							h := aMsgError[nI] 
+								
+							cHtml += '<br>Field: ' + h[ 'field' ] + ', ' + h[ 'msg' ] + ', value ==> ' + h[ 'value' ]					
+				
+						NEXT	
+
+					CASE hResponse[ 'type' ] == 'user'	
+
+						cHtml +=  hResponse[ 'error' ]
+						
+				ENDCASE
+
+				RETU cHtml
+				
+			ENDIF						
+			
+		ENDIF
+		
+		RETU ''	
+	?>			
+	
+	
+	<form action="/hfw/mercury/app/autentica" method="POST">
+
+		<br><input type="text"     name="user"   placeholder="User  (dummy)"   value="dummy">
+		<br><input type="password" name="psw"    placeholder="Password  (1234)" value="">		
+
+		<br><br><button type="submit">Login</button>
+		
+	</form>						
+	
+	<br><br>
+	<a href="/hfw/mercury/app">Pantalla default...</a>
+	
+</body>
+</html>
+15-04-20 08:40:18 TVIEW:EXEC(88): ==========================
+15-04-20 08:40:18 TVIEW:EXEC(93): <html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+	<h2>Login<hr></h2>
+
+				
+	
+	
+	<form action="/hfw/mercury/app/autentica" method="POST">
+
+		<br><input type="text"     name="user"   placeholder="User  (dummy)"   value="dummy">
+		<br><input type="password" name="psw"    placeholder="Password  (1234)" value="">		
+
+		<br><br><button type="submit">Login</button>
+		
+	</form>						
+	
+	<br><br>
+	<a href="/hfw/mercury/app">Pantalla default...</a>
+	
+</body>
+</html>
+15-04-20 08:40:25 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:40:25 TVIEW:EXEC(87): <html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+	<h2>Login<hr></h2>
+
+	<?prg
+		LOCAL hResponse := PValue(1)
+		LOCAL nI
+		LOCAL cHtml 	:= ''
+		
+		IF ValType( hResponse ) == 'H'
+		
+			IF ! hResponse[ 'success' ]
+			
+				DO CASE 
+				
+					CASE hResponse[ 'type' ] == 'validator'
+					
+						aMsgError := hResponse[ 'error' ]
+			
+						FOR nI := 1 TO len( aMsgError )
+						
+							h := aMsgError[nI] 
+								
+							cHtml += '<br>Field: ' + h[ 'field' ] + ', ' + h[ 'msg' ] + ', value ==> ' + h[ 'value' ]					
+				
+						NEXT	
+
+					CASE hResponse[ 'type' ] == 'user'	
+
+						cHtml +=  hResponse[ 'error' ]
+						
+				ENDCASE
+
+				RETU cHtml
+				
+			ENDIF						
+			
+		ENDIF
+		
+		RETU ''	
+	?>			
+	
+	
+	<form action="/hfw/mercury/app/autentica" method="POST">
+
+		<br><input type="text"     name="user"   placeholder="User  (dummy)"   value="dummy">
+		<br><input type="password" name="psw"    placeholder="Password  (1234)" value="">		
+
+		<br><br><button type="submit">Login</button>
+		
+	</form>						
+	
+	<br><br>
+	<a href="/hfw/mercury/app">Pantalla default...</a>
+	
+</body>
+</html>
+15-04-20 08:40:25 TVIEW:EXEC(88): ==========================
+15-04-20 08:40:25 TVIEW:EXEC(93): <html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+	<h2>Login<hr></h2>
+
+	<br>Field: psw, Paràmetro requerido, value ==> 			
+	
+	
+	<form action="/hfw/mercury/app/autentica" method="POST">
+
+		<br><input type="text"     name="user"   placeholder="User  (dummy)"   value="dummy">
+		<br><input type="password" name="psw"    placeholder="Password  (1234)" value="">		
+
+		<br><br><button type="submit">Login</button>
+		
+	</form>						
+	
+	<br><br>
+	<a href="/hfw/mercury/app">Pantalla default...</a>
+	
+</body>
+</html>
+15-04-20 08:40:36 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:40:36 TVIEW:EXEC(87): <html>
+<body>
+	<h2>Pantalla Principal<hr></h2>
+	
+	<a href="/hfw/mercury/app/test1">Test 1</a>
+	<br>
+	<a href="/hfw/mercury/app/test2">Test 2</a>
+	<br>
+	<a href="/hfw/mercury/app/test3">Test 3</a>
+	<br><br><br>
+	<a href="/hfw/mercury/app/logout">Salir del Sistema - Logout</a>	
+	
+</body>
+</html>
+15-04-20 08:40:36 TVIEW:EXEC(88): ==========================
+15-04-20 08:40:36 TVIEW:EXEC(93): <html>
+<body>
+	<h2>Pantalla Principal<hr></h2>
+	
+	<a href="/hfw/mercury/app/test1">Test 1</a>
+	<br>
+	<a href="/hfw/mercury/app/test2">Test 2</a>
+	<br>
+	<a href="/hfw/mercury/app/test3">Test 3</a>
+	<br><br><br>
+	<a href="/hfw/mercury/app/logout">Salir del Sistema - Logout</a>	
+	
+</body>
+</html>
+15-04-20 08:40:39 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:40:39 TVIEW:EXEC(87): <html>
+<body>
+	<h2>Test2<hr></h2>
+	
+	<form action="/hfw/mercury/app/principal" method="GET">
+
+		<br><br><button type="submit">Pantalla Principal</button>
+		
+	</form>		
+
+</body>
+</html>
+15-04-20 08:40:39 TVIEW:EXEC(88): ==========================
+15-04-20 08:40:39 TVIEW:EXEC(93): <html>
+<body>
+	<h2>Test2<hr></h2>
+	
+	<form action="/hfw/mercury/app/principal" method="GET">
+
+		<br><br><button type="submit">Pantalla Principal</button>
+		
+	</form>		
+
+</body>
+</html>
+15-04-20 08:40:41 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:40:41 TVIEW:EXEC(87): <html>
+<body>
+	<h2>Pantalla Principal<hr></h2>
+	
+	<a href="/hfw/mercury/app/test1">Test 1</a>
+	<br>
+	<a href="/hfw/mercury/app/test2">Test 2</a>
+	<br>
+	<a href="/hfw/mercury/app/test3">Test 3</a>
+	<br><br><br>
+	<a href="/hfw/mercury/app/logout">Salir del Sistema - Logout</a>	
+	
+</body>
+</html>
+15-04-20 08:40:41 TVIEW:EXEC(88): ==========================
+15-04-20 08:40:41 TVIEW:EXEC(93): <html>
+<body>
+	<h2>Pantalla Principal<hr></h2>
+	
+	<a href="/hfw/mercury/app/test1">Test 1</a>
+	<br>
+	<a href="/hfw/mercury/app/test2">Test 2</a>
+	<br>
+	<a href="/hfw/mercury/app/test3">Test 3</a>
+	<br><br><br>
+	<a href="/hfw/mercury/app/logout">Salir del Sistema - Logout</a>	
+	
+</body>
+</html>
+15-04-20 08:40:43 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:40:43 TVIEW:EXEC(87): <html>
+<body>
+	<h2>Test1<hr></h2>
+	
+	<form action="/hfw/mercury/app/principal" method="GET">
+
+		<br><br><button type="submit">Pantalla Principal</button>
+		
+	</form>		
+
+</body>
+</html>
+15-04-20 08:40:43 TVIEW:EXEC(88): ==========================
+15-04-20 08:40:43 TVIEW:EXEC(93): <html>
+<body>
+	<h2>Test1<hr></h2>
+	
+	<form action="/hfw/mercury/app/principal" method="GET">
+
+		<br><br><button type="submit">Pantalla Principal</button>
+		
+	</form>		
+
+</body>
+</html>
+15-04-20 08:40:45 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:40:45 TVIEW:EXEC(87): <html>
+<body>
+	<h2>Pantalla Principal<hr></h2>
+	
+	<a href="/hfw/mercury/app/test1">Test 1</a>
+	<br>
+	<a href="/hfw/mercury/app/test2">Test 2</a>
+	<br>
+	<a href="/hfw/mercury/app/test3">Test 3</a>
+	<br><br><br>
+	<a href="/hfw/mercury/app/logout">Salir del Sistema - Logout</a>	
+	
+</body>
+</html>
+15-04-20 08:40:45 TVIEW:EXEC(88): ==========================
+15-04-20 08:40:45 TVIEW:EXEC(93): <html>
+<body>
+	<h2>Pantalla Principal<hr></h2>
+	
+	<a href="/hfw/mercury/app/test1">Test 1</a>
+	<br>
+	<a href="/hfw/mercury/app/test2">Test 2</a>
+	<br>
+	<a href="/hfw/mercury/app/test3">Test 3</a>
+	<br><br><br>
+	<a href="/hfw/mercury/app/logout">Salir del Sistema - Logout</a>	
+	
+</body>
+</html>

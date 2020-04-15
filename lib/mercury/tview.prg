@@ -70,7 +70,9 @@ METHOD Exec( cFile, ... ) CLASS TView
 		oInfo[ 'file' ] := cFile 
 		
 		zReplaceBlocks( @cCode, '{{', '}}', oInfo, ... )
-		
+		//ReplaceBlocks( @cCode, '{{', '}}', ... )
+	
+	
 		oInfo := {=>}
 		oInfo[ 'file' ] := cFile 
 		
@@ -80,7 +82,16 @@ METHOD Exec( cFile, ... ) CLASS TView
 		
 		//	La salida siempre la habr de hacer el objeto oResponse
 		
-			cHtml := zInlinePrg( cCode, oInfo,... ) 
+
+_l( 'Exec Executare-------------------')		
+_l( cCode )
+_l( '==========================')		
+			cHtml := zInlinePrg( cCode, oInfo,... )  
+			//cHtml := InlinePrg( @cCode,... )  
+	
+
+_l( cHtml  )	
+
 
 			IF empty( cHtml )
 				cHtml := ''
@@ -116,6 +127,7 @@ FUNCTION View( cFile, ... )
 	cCode := oView:Load( cFile )	
 	
 	zReplaceBlocks( @cCode, '{{', '}}', oInfo, ... )					
+				
 
 RETU cCode
 

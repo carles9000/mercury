@@ -401,7 +401,7 @@ METHOD Execute( cController, hParam, aRouteSelect ) CLASS TRoute
     LOCAL cHBheaders1 := "~/harbour/include"
     LOCAL cHBheaders2 := App():Path() + "/include"
 	LOCAL z
-	
+
 	LOG ' '
 	LOG 'TRoute():Execute()'
 	LOG '=================='
@@ -515,11 +515,26 @@ METHOD Execute( cController, hParam, aRouteSelect ) CLASS TRoute
 
 		oInfo[ 'file' ] := cFile
 		oInfo[ 'code' ] := cCode
- 
+		
+		
+		
 		WHILE zReplaceBlocks( @cCode, ("{"+"%"), ("%"+"}"), oInfo, oTController )	
 		END						
 
 		zExecute( cCode, oInfo, oTController )
+		
+		
+		
+		/*
+		WHILE ReplaceBlocks( @cCode, ("{"+"%"), ("%"+"}"), oTController )	
+		END						
+		_l( 'CODE===================================================================')
+		_l( cCode )
+		Execute( @cCode, oTController )		
+		*/
+		
+		
+		
 
 	ELSE
 	

@@ -53,5 +53,6 @@ METHOD Code() CLASS TTemplate
 	LOCAL oInfo := { 'file' => 'xxx' }
 	
 	zReplaceBlocks( @cCode, '{{', '}}', oInfo )	
+	
 
 RETU cCode

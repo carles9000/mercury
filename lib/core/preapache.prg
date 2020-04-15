@@ -219,7 +219,7 @@ FUNCTION zInlinePRG( cText, oInfo, ... )
 
 	LOCAl BlocA, BlocB
 	LOCAL nStart, nEnd, cCode, cResult
-	
+
 	oInfo[ 'block' ] := 0  
 	
 	WHILE ( nStart := At( "<?prg", cText ) ) != 0
@@ -259,11 +259,13 @@ RETU zExecute( "function __Inline()" + HB_OsNewLine() + cCode, oInfo, ... )
 FUNCTION zExecute( cCode, oInfo, ... )
 
 	STATIC hPP
-    LOCAL bErrorHandler 	:= { |oError | AP_CompileErrorHandler(oError, oInfo, 'Error PRG' ) }
-	LOCAL bLastHandler 	:= ErrorBlock(bErrorHandler)   
+    //LOCAL bErrorHandler 	:= { |oError | AP_CompileErrorHandler(oError, oInfo, 'Error PRG' ) }
+	//LOCAL bLastHandler 	:= ErrorBlock(bErrorHandler)   
     LOCAL oHrb, uRet
     local cHBheaders1 := "~/harbour/include"
     LOCAL cHBheaders2 
+	
+	ErrorBlock( { | oError | AP_RPuts( GetErrorInfo( oError, @cCode ) ), Break( oError ) } )
 	
 	//	Si no funciona htacces...
 	IF empty( AP_GETENV( 'PATH_APP' ) )
@@ -297,8 +299,7 @@ FUNCTION zExecute( cCode, oInfo, ... )
 		__pp_addRule( hPP, "#xcommand TEXT <into:TO,INTO> <v> => #pragma __cstream|<v>:=%s" )					  
 	
 	ENDIF
-	
-	
+
 	cCode = __pp_process( hPP, cCode )
 
     oHrb = HB_CompileFromBuf( cCode, .T., "-n", "-I" + cHBheaders1, "-I" + cHBheaders2,;
@@ -308,7 +309,7 @@ FUNCTION zExecute( cCode, oInfo, ... )
        uRet = hb_HrbDo( hb_HrbLoad( oHrb ), ... )
     ENDIF
  
-    ErrorBlock(bLastHandler) // Restore handler       
+    //ErrorBlock(bLastHandler) // Restore handler       
    
 RETU uRet
 
@@ -370,7 +371,7 @@ FUNCTION LoadFile( cFile )
 RETU ''
 
 
-
-
+function LoadInclude( cPathPluggin )
+RETU '"' + AP_GetEnv( "DOCUMENT_ROOT" ) + AP_GetEnv( "PATH_APP" ) + cPathPluggin
 
 FUNCTION VersionPreApache(); RETU  'v0.1'
