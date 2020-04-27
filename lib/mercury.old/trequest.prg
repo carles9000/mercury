@@ -35,17 +35,11 @@ CLASS TRequest
 
 ENDCLASS
 
-METHOD New( lRedirect ) CLASS TRequest
-
-	DEFAULT lRedirect := .F.
-	
-	IF lRedirect
-
-	ELSE
-		::LoadGet()	
-		::LoadPost()
-		::LoadHeaders()
-	ENDIF
+METHOD New() CLASS TRequest
+		
+	::LoadGet()	
+	::LoadPost()
+	::LoadHeaders()
 
 return Self
 

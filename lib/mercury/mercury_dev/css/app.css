@@ -1,0 +1,115 @@
+	.myhead {			
+		padding: 5px;
+		background-color: white;
+		margin-bottom: 20px;
+	}
+
+	.myhead > span {		
+		font-family: 'Architects Daughter';
+		font-size: 50px;
+		font-weight: bold;
+		color: #4f5b9e;
+		margin-left: 20px;			
+		line-height: 40px;
+		letter-spacing: -1px;
+		margin-top: 0px;
+		padding-top: 4px;
+		position: absolute;			
+	}
+
+
+	#mylogo {
+		width: 100px;
+		margin-left: 10px;
+		margin-right: 10px;
+		vertical-align: middle;
+	}
+
+	
+	#harbour {
+		height: 180px;
+		margin-bottom: 50px;
+		margin-top: 60px;		
+	}
+	
+	#content {
+		margin: 50px;
+		text-align: center;
+	}
+	
+	input[type=text], select {
+	  width: 50%;
+	  padding: 12px 20px;
+	  margin: 8px 0;
+	  display: inline-block;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	  box-sizing: border-box;
+	  font-size: 20px;
+	}
+
+	.btn {
+	  width: 15%;
+	  background-color: #4CAF50;
+	  color: white;
+	  padding: 13px 20px;
+	  margin: 8px 0;
+	  border: none;
+	  border-radius: 4px;
+	  cursor: pointer;
+	  margin-top: 30px;
+	  margin-bottom: 20px;
+	  margin-right: 10px;
+	  margin-left: 10px;
+	  font-size: 20px;
+	}
+
+	.btn:hover {
+	  background-color: #45a049;
+	}	
+	
+	#entry {
+	    bottom: 0;
+		position: fixed;
+		width: 100%;
+	}
+	
+	#log {
+		background-color:black;
+		color:#00d600;
+		border:1px solid gray;
+		text-align: left;
+		bottom: 100px;
+		position: fixed;
+		right: 50px;
+		left: 50px;
+		top: 100px;	
+		padding: 10px;	
+		overflow: auto;	
+		box-shadow: 4px 4px 5px grey;	
+		border-bottom: 1px solid white;		
+		border-right: 1px solid white;	
+		font: 1.3rem Inconsolata, monospace;
+		/*	----	*/
+		background-image: radial-gradient( rgba(0, 150, 0, 0.75), black 120% );
+		color: white;
+		
+	}
+	
+	.myiframe_view {
+		border:1px solid red;
+		width: 100%;
+	}
+	
+	.myitems {
+		color:#ff9800;
+		list-style-type: square;
+	}
+	
+	.code {
+		font-family: courier, courier new, serif;
+		color: #80b6ef;
+		font-size:16px;			
+	}
+	
+	

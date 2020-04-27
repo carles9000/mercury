@@ -222,6 +222,7 @@ FUNCTION zInlinePRG( cText, oInfo, ... )
 
 	oInfo[ 'block' ] := 0  
 	
+	
 	WHILE ( nStart := At( "<?prg", cText ) ) != 0
 	
 		oInfo[ 'block' ]++
@@ -233,8 +234,11 @@ FUNCTION zInlinePRG( cText, oInfo, ... )
 		cCode := SubStr( cText, nStart + 5, nEnd - 1 )
 
 		oInfo[ 'code' ] := cCode 
+		
+		
 	  
 		cResult := zExecInline( cCode, oInfo, ... ) 
+
 		
 		IF Valtype( cResult ) <> 'C' 
 			//	Pendiente de provocar Error
@@ -301,6 +305,7 @@ FUNCTION zExecute( cCode, oInfo, ... )
 	ENDIF
 
 	cCode = __pp_process( hPP, cCode )
+	
 
     oHrb = HB_CompileFromBuf( cCode, .T., "-n", "-I" + cHBheaders1, "-I" + cHBheaders2,;
                               "-I" + hb_GetEnv( "HB_INCLUDE" ), hb_GetEnv( "HB_USER_PRGFLAGS" ) )   
@@ -309,6 +314,7 @@ FUNCTION zExecute( cCode, oInfo, ... )
        uRet = hb_HrbDo( hb_HrbLoad( oHrb ), ... )
     ENDIF
  
+
     //ErrorBlock(bLastHandler) // Restore handler       
    
 RETU uRet

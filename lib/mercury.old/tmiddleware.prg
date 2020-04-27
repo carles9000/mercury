@@ -66,8 +66,8 @@ METHOD Exec( oController, cValid, cView ) CLASS TMiddleware
 					
 				ELSE
 	
-					//oController:Redirect( cView )
-					oResponse:Redirect( cView )
+					oResponse:Redirect( cView ) 					
+
 					
 				ENDIF 
 				

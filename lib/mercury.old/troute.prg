@@ -18,7 +18,7 @@ CLASS TRoute
 	METHOD ListRoute()
 	METHOD Listen()
 	METHOD Execute()
-	METHOD ShowError( cError )	INLINE ::oApp:ShowError( cError, 'Route Error! ')
+	METHOD ShowError( cError )							INLINE ::oApp:ShowError( cError, 'Route Error! ')
 	
 	METHOD GetMapSort()
 
@@ -67,6 +67,7 @@ METHOD GetMapSort() CLASS TRoute
 	
 RETU aMapSort
 
+
 METHOD ListRoute() CLASS TRoute
 
 	LOCAl cHtml
@@ -111,29 +112,17 @@ METHOD Listen() CLASS TRoute
 	LOCAL cMethod 			:= ::oRequest:Method()
 	LOCAL cRoute, aRoute
 	LOCAL cURLQuery 		:= ::oRequest:GetQuery()
-	LOCAL cURLFriendly 		:= ::oRequest:GetUrlFriendly()
+	LOCAL cURLFriendly 	:= ::oRequest:GetUrlFriendly()
 	LOCAL nMask, nOptional, nPosParam, nPosMapingQuery
 	LOCAL cParamsMap, aParamsMap, nParamsMap, aParamsQuery, cParamURL, aParamsURL, cParamsInQuery, nParamsQuery
-	LOCAL uController 		:= ''
+	LOCAL uController 	:= ''
 	LOCAL nJ, nPar
-	LOCAL hParameters 		:= {=>}
+	LOCAL hParameters 	:= {=>}
 	LOCAL cParamName
-	LOCAL aRouteSelect 		:= {}
+	LOCAL aRouteSelect 	:= {}
 	LOCAL lFound 			:= .F.
 	LOCAL cMap, nIni, nFin, bSort
-	LOCAL cUrlDev
-	
-	if substr(lower( cUrlQuery ), 1, 7 ) == 'mercury' 
-		
-		cUrlDev := TApp():cUrl + '/lib/mercury_dev/'
-				
-		AP_HeadersOutSet( "Location", cUrlDev + 'm_main'  )
-		ErrorLevel( 302 ) 	//	REDIRECTION 
-		QUIT					
 
-	endif
-	
-	
 	//	Buscamos en la lista de Maps, cualquier RUTA que coincida
 	//	con la Query que nos han pasado. Tambien ha de coincidir
 	//	con el method llamado, que en principio sera GET/POST 
@@ -406,7 +395,7 @@ RETU NIL
 //	En principio TRouter se ejecuta desde la raiz del programa...
 //	En lugar de cojer ap_getenv( path prog), podemos cojer el path del cgi script_filename
 
-METHOD Execute( cController, hParam, aRouteSelect, lTEST, oNewRequest, oNewResponse ) CLASS TRoute
+METHOD Execute( cController, hParam, aRouteSelect ) CLASS TRoute
 
 	//	Por defecto la carpeta de los controladores estara en srv/controller
 	
@@ -422,8 +411,6 @@ METHOD Execute( cController, hParam, aRouteSelect, lTEST, oNewRequest, oNewRespo
     LOCAL cHBheaders1 := "~/harbour/include"
     LOCAL cHBheaders2 := App():Path() + "/include"
 	LOCAL z
-	
-	DEFAULT lTEST := .F.
 
 	LOG ' '
 	LOG 'TRoute():Execute()'
@@ -431,13 +418,14 @@ METHOD Execute( cController, hParam, aRouteSelect, lTEST, oNewRequest, oNewRespo
 	LOG 'Headers: ' + cHBheaders2
 	
 	LOG 'Exec: ' + cController
+	
 /*	
-? 'Execute()=================================='
-? cController
-? hParam
-? aRouteSelect	
-? '==========================================='
-*/	
+? 'Route:Execute() cCotroller', cController
+? 'Param', hParam
+? 'RouteSelect', aRouteSelect 
+? '--------------------'
+*/
+	
 	//	Chequeamos de que tipo es el controller
 	//	tipo clase -> @
 	//	tipo function -> ()
@@ -481,10 +469,7 @@ METHOD Execute( cController, hParam, aRouteSelect, lTEST, oNewRequest, oNewRespo
 		
 	//	Si es una clase o function....
 
-	//? 'Path', cPath 
-	//? 'File', cFile
 	cProg := cPath + cFile
-	//? 'Prog', cProg
 	
 	LOG 'Program: ' + cProg	
 	LOG 'Tipo Controller: ' +  cType	
@@ -494,11 +479,9 @@ METHOD Execute( cController, hParam, aRouteSelect, lTEST, oNewRequest, oNewRespo
 	IF File ( cProg )	
 	
 		IF cType == 'class'			
-//? 'CLASS'
+
 				cNameClass := cFileNoExt( cFileNoPath( cFile ) )
-//? 'nameclass', cNameClass
-//? 'action ===> ', cAction 
-//? '***************************'
+
 			//	Opcion acceso Controller via Clases
 			
 				cCode := "#include 'hbclass.ch'" + HB_OsNewLine()
@@ -525,18 +508,15 @@ METHOD Execute( cController, hParam, aRouteSelect, lTEST, oNewRequest, oNewRespo
 				cCode := memoread( cProg )
 
 		ENDIF
-		
-//? 'Code', cCode
-//? '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'
 	
 		//	-----------------------------------
 
 		oTController 						:= TController():New( cAction, hParam )
-		oTController:oRoute  			:= SELF
-		oTController:oRequest  			:= ::oRequest
-		oTController:oResponse 			:= ::oResponse		
+		oTController:oRoute  				:= SELF
+		oTController:oRequest  				:= ::oRequest
+		oTController:oResponse 				:= ::oResponse		
 		oTController:oMiddleware			:= App():oMiddleware
-		oTController:aRouteSelect  		:= aRouteSelect		
+		oTController:aRouteSelect  			:= aRouteSelect		
 		
 		oTController:InitView()
 		
@@ -556,44 +536,21 @@ METHOD Execute( cController, hParam, aRouteSelect, lTEST, oNewRequest, oNewRespo
 		
 		
 		WHILE zReplaceBlocks( @cCode, ("{"+"%"), ("%"+"}"), oInfo, oTController )	
-	
 		END						
-//? 'TEST ===============> ', lTEST
-//? 'Executare ===============> ', cCode 
-		IF lTEST
-			? 'TESSSSSSSSSt'
-			
-			//? oNewRequest
 
-			
-			oTController 						:= TController():New( cAction, hParam )
-			//oTController:oRoute  			:= SELF
-			oTController:oRequest  			:= oNewRequest // TRequest():New(.T.) 	//App():oRequest //oNewRequest  	//TRequest():New() 	//::oRequest
-			oTController:oResponse 			:= oNewResponse // App():oResponse //::oResponse		
-			oTController:oMiddleware			:= App():oMiddleware
-			oTController:aRouteSelect  		:= aRouteSelect										
-			? 'INSPECT TRequest REDIRECT'  //, oTController:oRequest
-			? oNewResponse, 'RESP---------------'
-			//zexecute( cCode, oInfo , oTController )
-			execute( cCode, oTController )
-			QUIT
-		ELSE
-			//? 'INSPECT TRequest', oTController:oRequest
-			zExecute( cCode, oInfo, oTController )
-		ENDIF
-//? 'FINAL DE EXECUTE======================================================'		
+		zExecute( cCode, oInfo, oTController )
+
 		
 		
-		/*
+		
+/*		
 		WHILE ReplaceBlocks( @cCode, ("{"+"%"), ("%"+"}"), oTController )	
 		END						
 		_l( 'CODE===================================================================')
 		_l( cCode )
 		Execute( @cCode, oTController )		
-		*/
-		
-		
-		
+*/		
+			
 
 	ELSE
 	
@@ -601,9 +558,6 @@ METHOD Execute( cController, hParam, aRouteSelect, lTEST, oNewRequest, oNewRespo
 		LOG 'Error: No existe Controller: ' + cFile 
 	
 	ENDIF
-	
-//? 'SURTU DE TROUTE():EXECUTE()'
-//? '---------------------------'	
 
 RETU NIL
 
@@ -732,46 +686,3 @@ FUNCTION RouteError( hError )
 	QUIT
 	
 RETU NIL
-
-static function M_Menu() 
-
-	local c := ''
-
-	
-	TEXT TO  c 
-
-		<h1>Mercury assitance...</h1><hr>
-		<ul style="list-style-type:disc;">
-			<li><a href="mercury_init" >Mercury Init</a></li>
-			<li><a href="#t1">Test 1</a></li>
-			<li><a href="#t3">Test 3</a></li>
-		</ul>
-		
-		<script>
-			function t2() {
-				alert('ep')
-			}
-		</script>
-		
-		
-	ENDTEXT
-	
-	?? c
-
-retu nil
-
-static function M_Test() 
-
-	local c := ''
-
-	
-	TEXT TO  c 
-
-		<h1>Mercury assitance...</h1><hr>
-		Test !
-
-	ENDTEXT
-	
-	?? c
-
-retu nil

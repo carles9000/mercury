@@ -336,3 +336,805 @@
 	
 </body>
 </html>
+15-04-20 08:42:00 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:42:00 TVIEW:EXEC(87): <html>
+<body>
+	<h2>Default<hr></h2>
+	
+	<a href="/hfw/mercury/app/principal">Pantalla Principal</a>
+	
+	<br><br>
+	
+	<a href="/hfw/mercury/app/login">Acceso al sistema.Login</a>
+</body>
+</html>
+15-04-20 08:42:00 TVIEW:EXEC(88): ==========================
+15-04-20 08:42:00 TVIEW:EXEC(93): <html>
+<body>
+	<h2>Default<hr></h2>
+	
+	<a href="/hfw/mercury/app/principal">Pantalla Principal</a>
+	
+	<br><br>
+	
+	<a href="/hfw/mercury/app/login">Acceso al sistema.Login</a>
+</body>
+</html>
+15-04-20 08:43:52 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:43:52 TVIEW:EXEC(87): <html>
+<body>
+	<h2>Default<hr></h2>
+	
+	<a href="/hfw/mercury/app/principal">Pantalla Principal</a>
+	
+	<br><br>
+	
+	<a href="/hfw/mercury/app/login">Acceso al sistema.Login</a>
+</body>
+</html>
+15-04-20 08:43:52 TVIEW:EXEC(88): ==========================
+15-04-20 08:43:52 TVIEW:EXEC(93): <html>
+<body>
+	<h2>Default<hr></h2>
+	
+	<a href="/hfw/mercury/app/principal">Pantalla Principal</a>
+	
+	<br><br>
+	
+	<a href="/hfw/mercury/app/login">Acceso al sistema.Login</a>
+</body>
+</html>
+15-04-20 08:44:01 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:44:01 TVIEW:EXEC(87): <html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+	<h2>Login<hr></h2>
+
+	<?prg
+		LOCAL hResponse := PValue(1)
+		LOCAL nI
+		LOCAL cHtml 	:= ''
+		
+		IF ValType( hResponse ) == 'H'
+		
+			IF ! hResponse[ 'success' ]
+			
+				DO CASE 
+				
+					CASE hResponse[ 'type' ] == 'validator'
+					
+						aMsgError := hResponse[ 'error' ]
+			
+						FOR nI := 1 TO len( aMsgError )
+						
+							h := aMsgError[nI] 
+								
+							cHtml += '<br>Field: ' + h[ 'field' ] + ', ' + h[ 'msg' ] + ', value ==> ' + h[ 'value' ]					
+				
+						NEXT	
+
+					CASE hResponse[ 'type' ] == 'user'	
+
+						cHtml +=  hResponse[ 'error' ]
+						
+				ENDCASE
+
+				RETU cHtml
+				
+			ENDIF						
+			
+		ENDIF
+		
+		RETU ''	
+	?>			
+	
+	
+	<form action="/hfw/mercury/app/autentica" method="POST">
+
+		<br><input type="text"     name="user"   placeholder="User  (dummy)"   value="dummy">
+		<br><input type="password" name="psw"    placeholder="Password  (1234)" value="">		
+
+		<br><br><button type="submit">Login</button>
+		
+	</form>						
+	
+	<br><br>
+	<a href="/hfw/mercury/app">Pantalla default...</a>
+	
+</body>
+</html>
+15-04-20 08:44:01 TVIEW:EXEC(88): ==========================
+15-04-20 08:44:01 TVIEW:EXEC(93): <html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+	<h2>Login<hr></h2>
+
+				
+	
+	
+	<form action="/hfw/mercury/app/autentica" method="POST">
+
+		<br><input type="text"     name="user"   placeholder="User  (dummy)"   value="dummy">
+		<br><input type="password" name="psw"    placeholder="Password  (1234)" value="">		
+
+		<br><br><button type="submit">Login</button>
+		
+	</form>						
+	
+	<br><br>
+	<a href="/hfw/mercury/app">Pantalla default...</a>
+	
+</body>
+</html>
+15-04-20 08:44:03 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:44:03 TVIEW:EXEC(87): <html>
+<body>
+	<h2>Default<hr></h2>
+	
+	<a href="/hfw/mercury/app/principal">Pantalla Principal</a>
+	
+	<br><br>
+	
+	<a href="/hfw/mercury/app/login">Acceso al sistema.Login</a>
+</body>
+</html>
+15-04-20 08:44:03 TVIEW:EXEC(88): ==========================
+15-04-20 08:44:03 TVIEW:EXEC(93): <html>
+<body>
+	<h2>Default<hr></h2>
+	
+	<a href="/hfw/mercury/app/principal">Pantalla Principal</a>
+	
+	<br><br>
+	
+	<a href="/hfw/mercury/app/login">Acceso al sistema.Login</a>
+</body>
+</html>
+15-04-20 08:44:06 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:44:06 TVIEW:EXEC(87): <html>
+<body>
+	<h2>Default<hr></h2>
+	
+	<a href="/hfw/mercury/app/principal">Pantalla Principal</a>
+	
+	<br><br>
+	
+	<a href="/hfw/mercury/app/login">Acceso al sistema.Login</a>
+</body>
+</html>
+15-04-20 08:44:06 TVIEW:EXEC(88): ==========================
+15-04-20 08:44:06 TVIEW:EXEC(93): <html>
+<body>
+	<h2>Default<hr></h2>
+	
+	<a href="/hfw/mercury/app/principal">Pantalla Principal</a>
+	
+	<br><br>
+	
+	<a href="/hfw/mercury/app/login">Acceso al sistema.Login</a>
+</body>
+</html>
+15-04-20 08:44:08 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:44:08 TVIEW:EXEC(87): <html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+	<h2>Login<hr></h2>
+
+	<?prg
+		LOCAL hResponse := PValue(1)
+		LOCAL nI
+		LOCAL cHtml 	:= ''
+		
+		IF ValType( hResponse ) == 'H'
+		
+			IF ! hResponse[ 'success' ]
+			
+				DO CASE 
+				
+					CASE hResponse[ 'type' ] == 'validator'
+					
+						aMsgError := hResponse[ 'error' ]
+			
+						FOR nI := 1 TO len( aMsgError )
+						
+							h := aMsgError[nI] 
+								
+							cHtml += '<br>Field: ' + h[ 'field' ] + ', ' + h[ 'msg' ] + ', value ==> ' + h[ 'value' ]					
+				
+						NEXT	
+
+					CASE hResponse[ 'type' ] == 'user'	
+
+						cHtml +=  hResponse[ 'error' ]
+						
+				ENDCASE
+
+				RETU cHtml
+				
+			ENDIF						
+			
+		ENDIF
+		
+		RETU ''	
+	?>			
+	
+	
+	<form action="/hfw/mercury/app/autentica" method="POST">
+
+		<br><input type="text"     name="user"   placeholder="User  (dummy)"   value="dummy">
+		<br><input type="password" name="psw"    placeholder="Password  (1234)" value="">		
+
+		<br><br><button type="submit">Login</button>
+		
+	</form>						
+	
+	<br><br>
+	<a href="/hfw/mercury/app">Pantalla default...</a>
+	
+</body>
+</html>
+15-04-20 08:44:08 TVIEW:EXEC(88): ==========================
+15-04-20 08:44:08 TVIEW:EXEC(93): <html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+	<h2>Login<hr></h2>
+
+				
+	
+	
+	<form action="/hfw/mercury/app/autentica" method="POST">
+
+		<br><input type="text"     name="user"   placeholder="User  (dummy)"   value="dummy">
+		<br><input type="password" name="psw"    placeholder="Password  (1234)" value="">		
+
+		<br><br><button type="submit">Login</button>
+		
+	</form>						
+	
+	<br><br>
+	<a href="/hfw/mercury/app">Pantalla default...</a>
+	
+</body>
+</html>
+15-04-20 08:44:17 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:44:17 TVIEW:EXEC(87): <html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+	<h2>Login<hr></h2>
+
+	<?prg
+		LOCAL hResponse := PValue(1)
+		LOCAL nI
+		LOCAL cHtml 	:= ''
+		
+		IF ValType( hResponse ) == 'H'
+		
+			IF ! hResponse[ 'success' ]
+			
+				DO CASE 
+				
+					CASE hResponse[ 'type' ] == 'validator'
+					
+						aMsgError := hResponse[ 'error' ]
+			
+						FOR nI := 1 TO len( aMsgError )
+						
+							h := aMsgError[nI] 
+								
+							cHtml += '<br>Field: ' + h[ 'field' ] + ', ' + h[ 'msg' ] + ', value ==> ' + h[ 'value' ]					
+				
+						NEXT	
+
+					CASE hResponse[ 'type' ] == 'user'	
+
+						cHtml +=  hResponse[ 'error' ]
+						
+				ENDCASE
+
+				RETU cHtml
+				
+			ENDIF						
+			
+		ENDIF
+		
+		RETU ''	
+	?>			
+	
+	
+	<form action="/hfw/mercury/app/autentica" method="POST">
+
+		<br><input type="text"     name="user"   placeholder="User  (dummy)"   value="dummy">
+		<br><input type="password" name="psw"    placeholder="Password  (1234)" value="">		
+
+		<br><br><button type="submit">Login</button>
+		
+	</form>						
+	
+	<br><br>
+	<a href="/hfw/mercury/app">Pantalla default...</a>
+	
+</body>
+</html>
+15-04-20 08:44:17 TVIEW:EXEC(88): ==========================
+15-04-20 08:44:17 TVIEW:EXEC(93): <html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+	<h2>Login<hr></h2>
+
+	No se ha podido autenticar correctamente			
+	
+	
+	<form action="/hfw/mercury/app/autentica" method="POST">
+
+		<br><input type="text"     name="user"   placeholder="User  (dummy)"   value="dummy">
+		<br><input type="password" name="psw"    placeholder="Password  (1234)" value="">		
+
+		<br><br><button type="submit">Login</button>
+		
+	</form>						
+	
+	<br><br>
+	<a href="/hfw/mercury/app">Pantalla default...</a>
+	
+</body>
+</html>
+15-04-20 08:44:22 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:44:22 TVIEW:EXEC(87): <html>
+<body>
+	<h2>Pantalla Principal<hr></h2>
+	
+	<a href="/hfw/mercury/app/test1">Test 1</a>
+	<br>
+	<a href="/hfw/mercury/app/test2">Test 2</a>
+	<br>
+	<a href="/hfw/mercury/app/test3">Test 3</a>
+	<br><br><br>
+	<a href="/hfw/mercury/app/logout">Salir del Sistema - Logout</a>	
+	
+</body>
+</html>
+15-04-20 08:44:22 TVIEW:EXEC(88): ==========================
+15-04-20 08:44:22 TVIEW:EXEC(93): <html>
+<body>
+	<h2>Pantalla Principal<hr></h2>
+	
+	<a href="/hfw/mercury/app/test1">Test 1</a>
+	<br>
+	<a href="/hfw/mercury/app/test2">Test 2</a>
+	<br>
+	<a href="/hfw/mercury/app/test3">Test 3</a>
+	<br><br><br>
+	<a href="/hfw/mercury/app/logout">Salir del Sistema - Logout</a>	
+	
+</body>
+</html>
+15-04-20 08:44:24 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:44:24 TVIEW:EXEC(87): <html>
+<body>
+	<h2>Test3<hr></h2>
+	
+	<?prg
+		LOCAL hResponse := PValue(1)
+		LOCAL nI, h
+		LOCAL cHtml 	:= ''
+
+		IF ValType( hResponse ) == 'H'		
+		
+			cHtml += '<h3>Token Data</h3>'
+			cHtml += '<table border="1">'
+			
+			FOR nI := 1 TO len( hResponse )
+			
+				h := HB_HPairAt( hResponse, nI )
+				
+				cHtml += '<tr><td>' + h[1] + '</td><td>' + valtochar(h[2]) + '</td></tr>'
+	
+			NEXT
+			
+			cHtml += '</table>'							
+			
+		ENDIF
+	
+		
+		RETU cHtml
+	?>	
+	
+	
+	
+	
+	<form action="/hfw/mercury/app/principal" method="GET">
+
+		<br><br><button type="submit">Pantalla Principal</button>
+		
+	</form>		
+
+</body>
+</html>
+15-04-20 08:44:24 TVIEW:EXEC(88): ==========================
+15-04-20 08:44:24 TVIEW:EXEC(93): <html>
+<body>
+	<h2>Test3<hr></h2>
+	
+	<h3>Token Data</h3><table border="1"><tr><td>entrada</td><td>08:44:22</td></tr><tr><td>empresa</td><td>Intelligence System</td></tr><tr><td>user</td><td>{<br>&nbsp;&nbsp;"id":&nbsp;1234,<br>&nbsp;&nbsp;"user":&nbsp;"dummy",<br>&nbsp;&nbsp;"name":&nbsp;"Usuario&nbsp;Dummy..."<br>}<br></td></tr><tr><td>iss</td><td>mod_harbour</td></tr><tr><td>exp</td><td>31474.75</td></tr><tr><td>lap</td><td>10</td></tr></table>	
+	
+	
+	
+	
+	<form action="/hfw/mercury/app/principal" method="GET">
+
+		<br><br><button type="submit">Pantalla Principal</button>
+		
+	</form>		
+
+</body>
+</html>
+15-04-20 08:44:29 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:44:29 TVIEW:EXEC(87): <html>
+<body>
+	<h2>Pantalla Principal<hr></h2>
+	
+	<a href="/hfw/mercury/app/test1">Test 1</a>
+	<br>
+	<a href="/hfw/mercury/app/test2">Test 2</a>
+	<br>
+	<a href="/hfw/mercury/app/test3">Test 3</a>
+	<br><br><br>
+	<a href="/hfw/mercury/app/logout">Salir del Sistema - Logout</a>	
+	
+</body>
+</html>
+15-04-20 08:44:29 TVIEW:EXEC(88): ==========================
+15-04-20 08:44:29 TVIEW:EXEC(93): <html>
+<body>
+	<h2>Pantalla Principal<hr></h2>
+	
+	<a href="/hfw/mercury/app/test1">Test 1</a>
+	<br>
+	<a href="/hfw/mercury/app/test2">Test 2</a>
+	<br>
+	<a href="/hfw/mercury/app/test3">Test 3</a>
+	<br><br><br>
+	<a href="/hfw/mercury/app/logout">Salir del Sistema - Logout</a>	
+	
+</body>
+</html>
+15-04-20 08:44:45 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:44:45 TVIEW:EXEC(87): <html>
+<body>
+	<h2>Default<hr></h2>
+	
+	<a href="/hfw/mercury/app/principal">Pantalla Principal</a>
+	
+	<br><br>
+	
+	<a href="/hfw/mercury/app/login">Acceso al sistema.Login</a>
+</body>
+</html>
+15-04-20 08:44:45 TVIEW:EXEC(88): ==========================
+15-04-20 08:44:45 TVIEW:EXEC(93): <html>
+<body>
+	<h2>Default<hr></h2>
+	
+	<a href="/hfw/mercury/app/principal">Pantalla Principal</a>
+	
+	<br><br>
+	
+	<a href="/hfw/mercury/app/login">Acceso al sistema.Login</a>
+</body>
+</html>
+15-04-20 08:46:02 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:46:02 TVIEW:EXEC(87): <html>
+<body>
+	<h2>Test JWT<hr></h2>	
+	
+	<form action="/hfw/mercury/jwt/valid" method="POST">
+
+		<textarea name="token" rows="4" cols="80" readonly>eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiSmFtZXMgQnJvd24iLCJpYm4iOiJBQkMtMDEyMzQtNjU0LTIzNCIsImlkIjoxMjM0NSwiaXNzIjoibW9kX2hhcmJvdXIiLCJleHAiOjMxNTcyLjkxLCJsYXAiOjEwfQ  .Y2E3YzJhOTY3NWRjZDRkZjc0NjFjNjM4OGFmYzYxNmM0OGMwZDdjY2ZlMThiODcxNWJiODJhYmE1ZDZmZDI2Ng  </textarea>
+
+		<br><br><button type="submit">Validate Token</button>
+		
+	</form>						
+
+</body>
+</html>
+15-04-20 08:46:02 TVIEW:EXEC(88): ==========================
+15-04-20 08:46:02 TVIEW:EXEC(93): <html>
+<body>
+	<h2>Test JWT<hr></h2>	
+	
+	<form action="/hfw/mercury/jwt/valid" method="POST">
+
+		<textarea name="token" rows="4" cols="80" readonly>eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiSmFtZXMgQnJvd24iLCJpYm4iOiJBQkMtMDEyMzQtNjU0LTIzNCIsImlkIjoxMjM0NSwiaXNzIjoibW9kX2hhcmJvdXIiLCJleHAiOjMxNTcyLjkxLCJsYXAiOjEwfQ  .Y2E3YzJhOTY3NWRjZDRkZjc0NjFjNjM4OGFmYzYxNmM0OGMwZDdjY2ZlMThiODcxNWJiODJhYmE1ZDZmZDI2Ng  </textarea>
+
+		<br><br><button type="submit">Validate Token</button>
+		
+	</form>						
+
+</body>
+</html>
+15-04-20 08:46:07 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:46:07 TVIEW:EXEC(87): <html>
+	<meta charset="utf-8">
+	
+<body style="background-color: #ececec;">
+
+	<h2>Test JWT - Validator<hr></h2>	
+	
+		<?prg 
+			LOCAL lValid 	:= PValue(1)
+			LOCAL hData 	:= PValue(2)
+			LOCAL cError 	:= PValue(3)
+			LOCAL cHtml 	:= ''
+			LOCAL nI
+			LOCAL aReg 
+		
+			IF lValid 
+			
+				cHtml += '<h3>Token Validado</h3>'
+				
+				cHtml += '<table border="1" style="background-color: white;">'	
+				
+				FOR nI := 1 TO len( hData )
+				
+					aReg := HB_HPairAt( hData, nI )
+					
+					cHtml += '<tr>'
+					cHtml += '<td><b>' + aReg[1] + '</b></td><td>' + valtochar(aReg[2]) + '</td>'
+					cHtml += '</tr>'
+					
+				NEXT	
+
+				cHtml += '</table>' 				
+			
+			ELSE
+			
+				cHtml += '<h3>Error Token !</h3>'
+				cHtml += cError		
+			
+			ENDIF	
+
+			RETU cHtml
+		
+		?>
+	
+		<br><br>
+		<button onclick="window.location.href='/hfw/mercury/jwt'">Go to Test...</button>	
+
+</body>
+</html>
+15-04-20 08:46:07 TVIEW:EXEC(88): ==========================
+15-04-20 08:46:07 TVIEW:EXEC(93): <html>
+	<meta charset="utf-8">
+	
+<body style="background-color: #ececec;">
+
+	<h2>Test JWT - Validator<hr></h2>	
+	
+		<h3>Token Validado</h3><table border="1" style="background-color: white;"><tr><td><b>name</b></td><td>James Brown</td></tr><tr><td><b>ibn</b></td><td>ABC-01234-654-234</td></tr><tr><td><b>id</b></td><td>12345</td></tr><tr><td><b>iss</b></td><td>mod_harbour</td></tr><tr><td><b>exp</b></td><td>31572.91</td></tr><tr><td><b>lap</b></td><td>10</td></tr></table>
+	
+		<br><br>
+		<button onclick="window.location.href='/hfw/mercury/jwt'">Go to Test...</button>	
+
+</body>
+</html>
+15-04-20 08:46:11 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:46:11 TVIEW:EXEC(87): <html>
+<body>
+	<h2>Test JWT<hr></h2>	
+	
+	<form action="/hfw/mercury/jwt/valid" method="POST">
+
+		<textarea name="token" rows="4" cols="80" readonly>eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiSmFtZXMgQnJvd24iLCJpYm4iOiJBQkMtMDEyMzQtNjU0LTIzNCIsImlkIjoxMjM0NSwiaXNzIjoibW9kX2hhcmJvdXIiLCJleHAiOjMxNTgxLjAxLCJsYXAiOjEwfQ  .YTAxNmE0MDI1NWFkNDAzYjhhY2QyZDVjMjIxMDFhNTlhMzc3ZTMwZjU4OTIwZGZiYWEwY2UwYjk2NzVmNzQ3MQ  </textarea>
+
+		<br><br><button type="submit">Validate Token</button>
+		
+	</form>						
+
+</body>
+</html>
+15-04-20 08:46:11 TVIEW:EXEC(88): ==========================
+15-04-20 08:46:11 TVIEW:EXEC(93): <html>
+<body>
+	<h2>Test JWT<hr></h2>	
+	
+	<form action="/hfw/mercury/jwt/valid" method="POST">
+
+		<textarea name="token" rows="4" cols="80" readonly>eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiSmFtZXMgQnJvd24iLCJpYm4iOiJBQkMtMDEyMzQtNjU0LTIzNCIsImlkIjoxMjM0NSwiaXNzIjoibW9kX2hhcmJvdXIiLCJleHAiOjMxNTgxLjAxLCJsYXAiOjEwfQ  .YTAxNmE0MDI1NWFkNDAzYjhhY2QyZDVjMjIxMDFhNTlhMzc3ZTMwZjU4OTIwZGZiYWEwY2UwYjk2NzVmNzQ3MQ  </textarea>
+
+		<br><br><button type="submit">Validate Token</button>
+		
+	</form>						
+
+</body>
+</html>
+15-04-20 08:46:22 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:46:22 TVIEW:EXEC(87): <html>
+<body>
+	<h2>Test JWT<hr></h2>	
+	
+	<form action="/hfw/mercury/jwt/valid" method="POST">
+
+		<textarea name="token" rows="4" cols="80" readonly>eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiSmFtZXMgQnJvd24iLCJpYm4iOiJBQkMtMDEyMzQtNjU0LTIzNCIsImlkIjoxMjM0NSwiaXNzIjoibW9kX2hhcmJvdXIiLCJleHAiOjMxNTkyLjkzLCJsYXAiOjEwfQ  .MjljZmNhMGExNjhmMmNmNjEwMDEyYTEyNmJhNjE0YmQyODI2MjNlZmRhMzBmZDZkMjk4ZWJlNDhhMWMzYjhmYg  </textarea>
+
+		<br><br><button type="submit">Validate Token</button>
+		
+	</form>						
+
+</body>
+</html>
+15-04-20 08:46:22 TVIEW:EXEC(88): ==========================
+15-04-20 08:46:22 TVIEW:EXEC(93): <html>
+<body>
+	<h2>Test JWT<hr></h2>	
+	
+	<form action="/hfw/mercury/jwt/valid" method="POST">
+
+		<textarea name="token" rows="4" cols="80" readonly>eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiSmFtZXMgQnJvd24iLCJpYm4iOiJBQkMtMDEyMzQtNjU0LTIzNCIsImlkIjoxMjM0NSwiaXNzIjoibW9kX2hhcmJvdXIiLCJleHAiOjMxNTkyLjkzLCJsYXAiOjEwfQ  .MjljZmNhMGExNjhmMmNmNjEwMDEyYTEyNmJhNjE0YmQyODI2MjNlZmRhMzBmZDZkMjk4ZWJlNDhhMWMzYjhmYg  </textarea>
+
+		<br><br><button type="submit">Validate Token</button>
+		
+	</form>						
+
+</body>
+</html>
+15-04-20 08:46:24 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:46:24 TVIEW:EXEC(87): <html>
+<body>
+	<h2>Test JWT<hr></h2>	
+	
+	<form action="/hfw/mercury/jwt/valid" method="POST">
+
+		<textarea name="token" rows="4" cols="80" readonly>eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiSmFtZXMgQnJvd24iLCJpYm4iOiJBQkMtMDEyMzQtNjU0LTIzNCIsImlkIjoxMjM0NSwiaXNzIjoibW9kX2hhcmJvdXIiLCJleHAiOjMxNTk0Ljk4LCJsYXAiOjEwfQ  .YTJhM2NhOGE4YmM2ZDUwOWZiZGNiODY1OTZmZTQ2NTRhNzUxNTkyMzhkZmRlYjQ2OWNkNWNjYWE3NDJmNGVhNw  </textarea>
+
+		<br><br><button type="submit">Validate Token</button>
+		
+	</form>						
+
+</body>
+</html>
+15-04-20 08:46:24 TVIEW:EXEC(88): ==========================
+15-04-20 08:46:24 TVIEW:EXEC(93): <html>
+<body>
+	<h2>Test JWT<hr></h2>	
+	
+	<form action="/hfw/mercury/jwt/valid" method="POST">
+
+		<textarea name="token" rows="4" cols="80" readonly>eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiSmFtZXMgQnJvd24iLCJpYm4iOiJBQkMtMDEyMzQtNjU0LTIzNCIsImlkIjoxMjM0NSwiaXNzIjoibW9kX2hhcmJvdXIiLCJleHAiOjMxNTk0Ljk4LCJsYXAiOjEwfQ  .YTJhM2NhOGE4YmM2ZDUwOWZiZGNiODY1OTZmZTQ2NTRhNzUxNTkyMzhkZmRlYjQ2OWNkNWNjYWE3NDJmNGVhNw  </textarea>
+
+		<br><br><button type="submit">Validate Token</button>
+		
+	</form>						
+
+</body>
+</html>
+15-04-20 08:46:27 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:46:27 TVIEW:EXEC(87): <html>
+<body>
+	<h2>Test JWT<hr></h2>	
+	
+	<form action="/hfw/mercury/jwt/valid" method="POST">
+
+		<textarea name="token" rows="4" cols="80" readonly>eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiSmFtZXMgQnJvd24iLCJpYm4iOiJBQkMtMDEyMzQtNjU0LTIzNCIsImlkIjoxMjM0NSwiaXNzIjoibW9kX2hhcmJvdXIiLCJleHAiOjMxNTk3LjU3LCJsYXAiOjEwfQ  .MDI4ZDM5NDkzOWIyMTQ3MTU0N2U2NGY1NjQ0YTQwNDIzMzU0NDY3MTRjYjEzZGE5OTE3YjgzOThhZDNiZDkyZQ  </textarea>
+
+		<br><br><button type="submit">Validate Token</button>
+		
+	</form>						
+
+</body>
+</html>
+15-04-20 08:46:27 TVIEW:EXEC(88): ==========================
+15-04-20 08:46:27 TVIEW:EXEC(93): <html>
+<body>
+	<h2>Test JWT<hr></h2>	
+	
+	<form action="/hfw/mercury/jwt/valid" method="POST">
+
+		<textarea name="token" rows="4" cols="80" readonly>eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiSmFtZXMgQnJvd24iLCJpYm4iOiJBQkMtMDEyMzQtNjU0LTIzNCIsImlkIjoxMjM0NSwiaXNzIjoibW9kX2hhcmJvdXIiLCJleHAiOjMxNTk3LjU3LCJsYXAiOjEwfQ  .MDI4ZDM5NDkzOWIyMTQ3MTU0N2U2NGY1NjQ0YTQwNDIzMzU0NDY3MTRjYjEzZGE5OTE3YjgzOThhZDNiZDkyZQ  </textarea>
+
+		<br><br><button type="submit">Validate Token</button>
+		
+	</form>						
+
+</body>
+</html>
+15-04-20 08:46:29 TVIEW:EXEC(86): Exec Executare-------------------
+15-04-20 08:46:29 TVIEW:EXEC(87): <html>
+	<meta charset="utf-8">
+	
+<body style="background-color: #ececec;">
+
+	<h2>Test JWT - Validator<hr></h2>	
+	
+		<?prg 
+			LOCAL lValid 	:= PValue(1)
+			LOCAL hData 	:= PValue(2)
+			LOCAL cError 	:= PValue(3)
+			LOCAL cHtml 	:= ''
+			LOCAL nI
+			LOCAL aReg 
+		
+			IF lValid 
+			
+				cHtml += '<h3>Token Validado</h3>'
+				
+				cHtml += '<table border="1" style="background-color: white;">'	
+				
+				FOR nI := 1 TO len( hData )
+				
+					aReg := HB_HPairAt( hData, nI )
+					
+					cHtml += '<tr>'
+					cHtml += '<td><b>' + aReg[1] + '</b></td><td>' + valtochar(aReg[2]) + '</td>'
+					cHtml += '</tr>'
+					
+				NEXT	
+
+				cHtml += '</table>' 				
+			
+			ELSE
+			
+				cHtml += '<h3>Error Token !</h3>'
+				cHtml += cError		
+			
+			ENDIF	
+
+			RETU cHtml
+		
+		?>
+	
+		<br><br>
+		<button onclick="window.location.href='/hfw/mercury/jwt'">Go to Test...</button>	
+
+</body>
+</html>
+15-04-20 08:46:29 TVIEW:EXEC(88): ==========================
+15-04-20 08:46:29 TVIEW:EXEC(93): <html>
+	<meta charset="utf-8">
+	
+<body style="background-color: #ececec;">
+
+	<h2>Test JWT - Validator<hr></h2>	
+	
+		<h3>Token Validado</h3><table border="1" style="background-color: white;"><tr><td><b>name</b></td><td>James Brown</td></tr><tr><td><b>ibn</b></td><td>ABC-01234-654-234</td></tr><tr><td><b>id</b></td><td>12345</td></tr><tr><td><b>iss</b></td><td>mod_harbour</td></tr><tr><td><b>exp</b></td><td>31597.57</td></tr><tr><td><b>lap</b></td><td>10</td></tr></table>
+	
+		<br><br>
+		<button onclick="window.location.href='/hfw/mercury/jwt'">Go to Test...</button>	
+
+</body>
+</html>
+17-04-20 12:24:54 TVIEW:EXEC(86): Exec Executare-------------------
+17-04-20 12:24:54 TVIEW:EXEC(87): <html>
+<body>
+	<h2>Default<hr></h2>
+	
+	<a href="/hfw/mercury/app/principal">Pantalla Principal</a>
+	
+	<br><br>
+	
+	<a href="/hfw/mercury/app/login">Acceso al sistema.Login</a>
+</body>
+</html>
+17-04-20 12:24:54 TVIEW:EXEC(88): ==========================
+17-04-20 12:24:54 TVIEW:EXEC(93): <html>
+<body>
+	<h2>Default<hr></h2>
+	
+	<a href="/hfw/mercury/app/principal">Pantalla Principal</a>
+	
+	<br><br>
+	
+	<a href="/hfw/mercury/app/login">Acceso al sistema.Login</a>
+</body>
+</html>

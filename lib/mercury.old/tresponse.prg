@@ -71,8 +71,8 @@ RETU NIL
 METHOD SendHtml( uResult, nCode ) CLASS TResponse
 
 	::cContentType 	:= "text/html"	
-	::cBody 			:= IF( HB_IsString( uResult ), uResult, '' )
-	
+	::cBody 		:= IF( HB_IsString( uResult ), uResult, '' )
+
 	::echo()
 
 RETU NIL
@@ -141,7 +141,9 @@ METHOD Echo() CLASS TResponse
 		
 	//	Sino salida del Body...
 
-		AP_RPUTS( ::cBody )								
+		AP_RPUTS( ::cBody )						
+
+		
 
 RETU NIL
 

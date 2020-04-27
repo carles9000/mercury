@@ -8,10 +8,8 @@ CLASS TController
 	DATA oMiddleware
 	DATA oView
 	DATA cAction 				INIT ''
-	DATA hParam				INIT {=>}
+	DATA hParam					INIT {=>}
 	DATA aRouteSelect			INIT {=>}
-
-
 	
 	CLASSDATA oRoute					
 	
@@ -19,7 +17,7 @@ CLASS TController
 	METHOD InitView()
 	METHOD View( cFile, ... ) 					
 	METHOD ListController()
-	METHOD ListRoute()											INLINE ::oRoute:ListRoute()
+	METHOD ListRoute()										INLINE ::oRoute:ListRoute()
 	
 	METHOD RequestValue 	( cKey, cDefault, cType )			INLINE ::oRequest:Request( cKey, cDefault, cType )
 	METHOD GetValue		( cKey, cDefault, cType )			INLINE ::oRequest:Get	 	( cKey, cDefault, cType )
@@ -27,8 +25,8 @@ CLASS TController
 	
 	//	POdria ser algo mas como Autentica() ???
 	METHOD Middleware		( cValid, cRoute )					
-
-	METHOD Redirect		( cRoute )
+	
+	METHOD Redirect		( cRoute )					
 
 	
 ENDCLASS 
@@ -62,7 +60,7 @@ RETU .F.
 METHOD InitView( ) CLASS TController
 
 	::oView 			:= TView():New()
-	::oView:oRoute	:= ::oRoute					//	Xec oApp():oRoute !!!!
+	::oView:oRoute		:= ::oRoute					//	Xec oApp():oRoute !!!!
 	::oView:oResponse	:= ::oResponse
 	
 RETU NIL
@@ -73,130 +71,33 @@ METHOD View( cFile, ... ) CLASS TController
 
 RETU ''
 
-/*
-	Habriamos de tener en cuenta que si venimos por ejemplo de un proces de autenticacion
-	la llamada al controller seria de tipo POST y si una vez autenticado venimos a Redirect()
-	y no le pasamo method cojera el del controller que es POST. Esto implica en q en este 
-	caso deberiamos tener definido en el map una entrada para cRoute con POST	
-*/
-
-METHOD Redirect( cRoute, cMethod ) CLASS TController
+METHOD Redirect( cRoute ) CLASS TController
 
 	local aMap 	:= ::oRoute:GetMapSort()
+	local cMethod 	:= ::oRequest:Method()
 	local nPos, cController, aRouteSelect, hParam
-	local cAction, cFile, cType, cCode, cPath, cProg, cNameClass		
+	
+	? 'Ep Redirect'
+	retu
 
-	DEFAULT cMethod :=  ::oRequest:Method()
 	
 	//	Buscaremos la ruta en el mapa (index.prg)	
-
-		nPos := Ascan( aMap, {|x,n| lower(x[ MAP_ID ] ) == lower( cRoute ) .AND. x[ MAP_METHOD ] == cMethod }) 	//	cMethod == GET ?
+	
+		nPos := Ascan( aMap, {|x,n| lower(x[ MAP_ID ] ) == lower( cRoute ) .AND. x[ MAP_METHOD ] == cMethod }) 
 		
 	//	Si existe, Volvemos a ejecutar el método execute del TRoute, para REDIRECCIONAR la peticion...
 	
-		IF nPos > 0			
-		
-			cPath 			:= App():cPath + App():cPathController
+		IF nPos > 0
+					
 			aRouteSelect 	:= aMap[nPos]
 			cController  	:= aRouteSelect[ MAP_CONTROLLER ]
 			hParam			:= ::oRequest:RequestAll()
 			
-			//	Esta parte esta igual en el Route, pero la he querido aislar para pruebas
-			//	independientes...
-		
-			//	Chequeamos de que tipo es el controller
-			//	tipo clase -> @
-			//	tipo function -> ()
-			//	Por defecto sera function
-			
-				nPos := At( '@', cController )
-				
-				IF ( nPos >  0 )
-					
-					cAction 	:= alltrim( Substr( cController, 1, nPos-1) )
-					cFile 		:= alltrim( Substr( cController, nPos+1 ) )
-					cType		:= 'class'
-				
-				ELSEIF ( nPos := At( '()', cController ) ) > 0 
-
-					cAction 	:= alltrim( Substr( cController, 1, nPos-1) )
-					cFile 		:= alltrim( Substr( cController, nPos+2 ) )
-					cType		:= 'func'		
-					
-				ELSEIF ( right( lower( cController ), 5 ) == '.view' ) 
-
-					cType	 	:= 'view'				
-				
-				ELSE 
-				
-					cFile 	:= cController
-					cType	:= 'func'					
-				
-				ENDIF
-
-			//	------------------------------------------------------------			
-			
-			cProg := cPath + cFile
-			
-			IF File ( cProg )				
-			
-				IF cType == 'class'			
-
-					cNameClass := cFileNoExt( cFileNoPath( cFile ) )
-
-				//	Opcion acceso Controller via Clases
-				
-					cCode := "#include 'hbclass.ch'" + HB_OsNewLine()
-					cCode += "#include 'hboo.ch' " + HB_OsNewLine()  
-					
-					cCode += "FUNCTION __RunController( o )" + HB_OsNewLine()  
-					cCode += "	LOCAL oC := " + cNameClass + "():New( o )" + HB_OsNewLine() 
-					
-					IF !Empty( cAction )
-					
-						cCode += "	IF __objHasMethod( oC, '" + cAction + "' ) "  + HB_OsNewLine() 
-						cCode += "		oC:" + cAction + "(o) "  + HB_OsNewLine() 
-						cCode += "	ELSE "  + HB_OsNewLine() 
-						cCode += "		App():ShowError( 'Método <b>" + cAction  + "()</b> no definido en el controller " + cFile + "', 'TController Error!' ) "  + HB_OsNewLine() 				
-						cCode += "		QUIT "  + HB_OsNewLine() 				
-						cCode += "	ENDIF "  + HB_OsNewLine() 
-					
-					ENDIF
-					
-					cCode += "RETU NIL" + HB_OsNewLine() + memoread( cProg )
-
-				ELSE
-
-					cCode := memoread( cProg )
-
-				ENDIF								
-			
-			ENDIF			
-
-			//oInfo[ 'file' ] := cFile
-			//oInfo[ 'code' ] := cCode					
-			
-			//	Usareos el mismo oController, porque venimos de un Redirect y es posible 
-			//	que hayamos hecho una respuesta de cookie -> oController:oResponse:SetCookie() y
-			//  esta pendiente de salida. Con el nuevo execute, en este caso se generaria 
-			//	la cookie + la salida
-			
-			//WHILE zReplaceBlocks( @cCode, ("{"+"%"), ("%"+"}"), oInfo, oController )	
-			WHILE ReplaceBlocks( @cCode, ("{"+"%"), ("%"+"}"), SELF )		
-			END							
-
-			//zExecute( cCode, oInfo, oController )			
-			Execute( @cCode, SELF )												
-			
-			QUIT
+			::oRoute:Execute( cController, hParam, aRouteSelect )								
 			
 		ENDIF
 
 RETU NIL
-
-
-
-
 
 METHOD ListController() CLASS TController
 

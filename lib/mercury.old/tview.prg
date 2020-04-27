@@ -52,8 +52,7 @@ METHOD Load( cFile ) CLASS TView
 			
 		App():ShowError( 'No existe Vista: ' +  cFile,  'TView Error!' )						
 	
-	ENDIF	
-	
+	ENDIF				
 
 RETU cCode
 
@@ -65,18 +64,21 @@ METHOD Exec( cFile, ... ) CLASS TView
 	LOCAL oInfo 	:= { => }
 	LOCAL oExecute 
 
-
-	
 	IF !empty( cCode )
-
-
+	
 		oInfo := {=>}
 		oInfo[ 'file' ] := cFile 
-
-		zReplaceBlocks( @cCode, '{{', '}}', oInfo, ... )
-		//ReplaceBlocks( @cCode, '{{', '}}', ... )
-
-
+/*
+_l()		
+_l( 'Exec Replace Blocks i Ole-------------------')		
+_l( cCode )
+_l( '==========================')			
+		ReplaceBlocks( @cCode, '{{', '}}', ... )
+*/		
+		
+		zReplaceBlocks( cCode, '{{', '}}', oInfo, ... )		
+	
+	
 		oInfo := {=>}
 		oInfo[ 'file' ] := cFile 
 		
@@ -86,10 +88,17 @@ METHOD Exec( cFile, ... ) CLASS TView
 		
 		//	La salida siempre la habr de hacer el objeto oResponse
 		
-
-			cHtml := zInlinePrg( @cCode, oInfo,... )  
-			//cHtml := InlinePrg( @cCode,... )  
+/*
+_l( 'Exec Executare-------------------')		
+_l( cCode )
+_l( '==========================')		
+			cHtml := InlinePrg( @cCode,... )  
+*/			
+			//cHtml := zInlinePrg( cCode, oInfo,... )  
 	
+
+//_l( cHtml  )	
+
 
 			IF empty( cHtml )
 				cHtml := ''
@@ -97,9 +106,8 @@ METHOD Exec( cFile, ... ) CLASS TView
 				cHtml := valtochar( cHtml )
 			ENDIF
 		
-			::oResponse:SendHtml( cHtml )
-
-
+			::oResponse:SendHtml( cHtml )		
+	
 	ELSE
 	
 	
@@ -126,6 +134,7 @@ FUNCTION View( cFile, ... )
 	cCode := oView:Load( cFile )	
 	
 	zReplaceBlocks( @cCode, '{{', '}}', oInfo, ... )					
+	//ReplaceBlocks( @cCode, '{{', '}}', ... )					
 				
 
 RETU cCode

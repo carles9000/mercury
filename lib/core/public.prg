@@ -7,40 +7,21 @@
 
 FUNCTION UHtmlEncode(cString)
 
-	LOCAL nI, cI, cRet := ""
+   local cChar, cRet := "" 
 
-	FOR nI := 1 TO LEN(cString)
-		cI := SUBSTR(cString, nI, 1)
-
-		IF cI == "<"
-		  cRet += "&lt;"
-		ELSEIF cI == ">"
-		  cRet += "&gt;"
-		ELSEIF cI == "&"
-		  cRet += "&amp;"
-		ELSEIF cI == '"'
-		  cRet += "&quot;"
-		ELSE
-		  cRet += cI
-		ENDIF	
+   for each cChar in cString
+		do case
+			case cChar == "<"	; cChar := "&lt;"
+			case cChar == '>'	; cChar := "&gt;"     				
+			case cChar == "&"	; cChar := "&amp;"     
+			case cChar == '"'	; cChar := "&quot;" 
+			case cChar == "'"	; cChar := "&apos;"   			          
+		endcase
 		
-	NEXT
+		cRet += cChar 
+   next
 	
 RETURN cRet
-
-
-/*
-	cString := StrTran( cString, "<", "&lt;")
-	cString := StrTran( cString, ">", "&gt;")
-	cString := StrTran( cString, "&", "&amp;")
-	cString := StrTran( cString, '"', "&quot;")		
-	cString := StrTran( cString, "'", "&apos;")	
-RETURN cString
-*/
-	
-
-
-
 
 FUNCTION _l( uValue, cFile )
 

@@ -29,7 +29,6 @@ CLASS TApp
    //CLASSDATA cPath							INIT AP_GETENV( 'PATH_APP' )
    CLASSDATA cPath							INIT AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_APP' )
    CLASSDATA cUrl							INIT AP_GETENV( 'PATH_URL' )
-   CLASSDATA cPathDev						INIT '/lib/'
    CLASSDATA cPathCss						INIT '/css/'
    CLASSDATA cPathJs						INIT '/js/'
    CLASSDATA cPathView						INIT '/src/view/'
@@ -253,7 +252,7 @@ exit procedure App_End()
 	LOCAL o 		:= TApp():New()
 	LOCAL nTotal, nI
 	
-	retu 
+	retu nil
 	
 	IF o:lLog
 	
