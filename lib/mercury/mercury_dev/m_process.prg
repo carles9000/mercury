@@ -21,6 +21,7 @@ function main()
 		case cKey == '?' 			; Help( aParams )			
 		
 		case cKey == 'controller' 	; Controller( cKey, aParams  )
+		case cKey == 'project'		; Project( cKey, aParams  )
 		case cKey == 'hello' 		; Send( 'Hello! Now is ' + time() )
 		case cKey == 'time' 		; Send( time() )
 		case cKey == 'info' 		; Send( 'Information<hr>Developer Mercury. Version: ' + VERSION  + '<hr>')
@@ -89,3 +90,4 @@ retu nil
 
 
 #include "{% hb_getenv( 'prgpath' ) + '/m_controller.prg'%}" 
+#include "{% hb_getenv( 'prgpath' ) + '/m_project.prg'%}" 

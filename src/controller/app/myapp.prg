@@ -1,3 +1,5 @@
+#include {% MercuryInclude( 'lib/mercury' ) %}
+
 CLASS MyApp
 
 	METHOD New() 	CONSTRUCTOR
@@ -16,13 +18,17 @@ METHOD New( o ) CLASS MyApp
 	//	Control de acceso al sistema. El middleware se aplicará a todos los metodos
 	//	excepto a los que indiquemos aqui
 
+	// Si method direct...
+	
 	IF o:cAction $ 'default' 			//	Modulo que no se validan: publicos, defaults,...
 	
 		// 'No middleware...'
 		
 	ELSE
 
-		o:Middleware( 'jwt', 'app/default.view'  )			
+		AUTENTICATE WITH o DEFAULT 'app.login'
+
+		//o:Middleware( 'jwt', 'app/default.view'  )			
 
 		//Podriamos ejecutar mas middleware... (not yet)
 		//	o:Middleware( 'roles', Route( 'app' ), ... )

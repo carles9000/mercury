@@ -8,7 +8,7 @@ function Controller( cMsg, aParams )
 	local lRenew 			:= .F.
 
 	if len( aParams ) == 0
-		Send( 'Controller wrong. See => help controller  or  /controller ', 'info' )
+		Send( 'Controller wrong. See => help controller  or  /controller ', 'error' )
 		retu nil
 	endif		
 	

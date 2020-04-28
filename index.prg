@@ -7,22 +7,28 @@
 //	{% LoadHRB( '/lib/mercury/mercury.hrb' ) %}	//	Loading system MVC Mercury
 //	------------------------------------------------------------------------------
 
-
+#include {% MercuryInclude( 'lib/mercury' ) %}
 
 FUNCTION Main()
 
-	LOCAL oApp 	:= App()
+	//LOCAL oApp 	:= App()
+	local oApp
+	
+		DEFINE APP oApp TITLE 'My First App'
 
 	//	Configuramos nuestra Aplicacion
 	
-		oApp:cTitle		:= 'My First App'
+		//oApp:cTitle		:= 'My First App'
 
 	//	Configuramos las Rutas
 	
 		//			     		Method	,  ID					, Mascara				, Controller 			
 		//	Basic pages...
-			oApp:oRoute:Map( 'GET'	, 'default'				, '/'					, 'default.prg' )
-			oApp:oRoute:Map( 'GET'	, 'help'				, '?'					, 'help.prg' )
+			DEFINE ROUTE 'default' URL '/' CONTROLLER 'default.prg' 	METHOD 'GET' OF oApp
+			DEFINE ROUTE 'help' 	URL '?' CONTROLLER 'help.prg' 		METHOD 'GET' OF oApp
+		
+			//oApp:oRoute:Map( 'GET'	, 'default'				, '/'					, 'default.prg' )
+			//oApp:oRoute:Map( 'GET'	, 'help'				, '?'					, 'help.prg' )
 			
 		//	Test Controller and parameter received and oRoute:Get()
 			oApp:oRoute:Get( 'vista'				, 'vista'				, 'vista.prg' )
@@ -48,7 +54,7 @@ FUNCTION Main()
 
 		//	Test TValidator	/ Test oRoute:Get()		
 			oApp:oRoute:Map( 'GET'	, 'validator'			, 'validator'			, 'test@validator.prg' )
-			oApp:oRoute:Map( 'POST'   , 'validator.run'		, 'validator/run'		, 'run@validator.prg' )
+			oApp:oRoute:Map( 'POST'   , 'validator.run'	, 'validator/run'		, 'run@validator.prg' )
 				
 		//	Test Model/Validator	
 			oApp:oRoute:Map( 'GET'	,'users'				, 'users/(id)'			, 'info@users.prg' )								
@@ -60,7 +66,7 @@ FUNCTION Main()
 		//	Test Login				
 			oApp:oRoute:Map( 'GET'  , 'app'					, 'app'					, 'default@app/myapp.prg' )		
 			oApp:oRoute:Map( 'GET'  , 'app.login'				, 'app/login'			, 'login@app/access.prg' )		
-			oApp:oRoute:Map( 'GET'  , 'app.logout'			, 'app/logout'			, 'logout@app/access.prg' )	
+			oApp:oRoute:Map( 'GET'  , 'app.logout'				, 'app/logout'			, 'logout@app/access.prg' )	
 			oApp:oRoute:Map( 'POST' , 'app.autentica'			, 'app/autentica'		, 'autentica@app/access.prg' )	
 			oApp:oRoute:Map( 'GET'  , 'app.principal'			, 'app/principal'		, 'principal@app/myapp.prg' )		
 			oApp:oRoute:Map( 'GET'  , 'app.test1'				, 'app/test1'			, 'test1@app/myapp.prg' )		
@@ -84,7 +90,8 @@ FUNCTION Main()
 			
 			
 	//	Iniciamos el sistema
-		oApp:Init()
+		//oApp:Init()
+		INIT APP oApp
 	
 
 RETU NIL

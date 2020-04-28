@@ -64,9 +64,11 @@ CLASS TApp
    
 ENDCLASS
 
-METHOD New() CLASS TApp
+METHOD New( cTitle ) CLASS TApp
 
-	::oRequest 	:= TRequest():New()	
+	::cTitle 		:= IF( valtype( cTitle ) == 'C', cTitle, AP_GETENV( 'APP_TITLE' ) )
+
+	::oRequest 		:= TRequest():New()	
 	::oResponse 	:= TResponse():New()	
 	::oMiddleware 	:= TMiddleware():New()	
 	::oRoute 		:= TRoute():New( SELF )

@@ -37,7 +37,7 @@ METHOD New() CLASS TMiddleware
 RETU Self
 
 
-METHOD Exec( oController, cValid, cView ) CLASS TMiddleware
+METHOD Exec( oController, cValid, cRoute ) CLASS TMiddleware
 
 	LOCAL lValidate 	:= .F.
 	LOCAL oResponse 	:= App():oResponse
@@ -46,8 +46,6 @@ METHOD Exec( oController, cValid, cView ) CLASS TMiddleware
 	
 	cValid := lower( cValid )
 
-
-
 	DO CASE
 		CASE cValid == 'jwt' 
 
@@ -55,19 +53,20 @@ METHOD Exec( oController, cValid, cView ) CLASS TMiddleware
 			
 			IF ! lValidate
 
-				IF right( lower(cView), 5 ) == '.view'
+				IF right( lower(cRoute), 5 ) == '.view'
 
 			
 					//	Borrar cookie
 						oResponse:SetCookie( ::cId_Cookie, '', -1 )
 					
 					//	Redireccionamos pantalla incial
-						oController:View( cView )
+						oController:View( cRoute )
 					
 				ELSE
 	
-					//oController:Redirect( cView )
-					oResponse:Redirect( cView )
+					//oController:Redirect( cRoute )
+					//oResponse:Redirect( cRoute )
+					oResponse:Redirect( Route( cRoute ) )
 					
 				ENDIF 
 				

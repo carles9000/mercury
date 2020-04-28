@@ -33,7 +33,7 @@ function main()
    <body>
 		<div class="myhead">
 			<img id="mylogo" src="images/mini_mercury.png">
-			<span>Developer site</span>			
+			<span>Developer Site</span>			
 			<hr>
 		</div>
 		

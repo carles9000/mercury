@@ -6,7 +6,37 @@
 	#xcommand log <cText> =>
 #endif
 
-#define FILELOG   App():cFileLog
+#define MERCURY_PATH 		'lib/'
+#define FILELOG   			App():cFileLog
+
+
+function MercuryInclude( cPath )
+
+	local cFile, oError
+
+	DEFAULT cPath := MERCURY_PATH
+	
+	IF Right( cPath, 1 ) != '/'
+		cPath += '/'
+	ENDIF
+	
+	cFile := HB_GetEnv( "PRGPATH" ) + '/' + cPath + 'mercury.ch'
+	
+	if ! File( cFile )
+		oError := ErrorNew()
+		oError:Subsystem   := "System"
+		oError:Severity    := 2	//	ES_ERROR
+		oError:Description := "MercuryInclude() File not found: " + cFile 
+		Eval( ErrorBlock(), oError)
+   endif
+
+	//	RETU '#include "' + cFile + '"'
+	
+RETU '"' + cFile + '"'
+
+
+
+
 
 FUNCTION SetLogView()
 

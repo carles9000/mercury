@@ -1,4 +1,4 @@
-#define MVC_VERSION 		'Mercury v0.57'
+#define MVC_VERSION 		'Mercury v0.68'
 
 #define MAP_METHOD 			1
 #define MAP_ID 				2
@@ -10,3 +10,16 @@
 
 
 #xcommand log <cText> => Aadd( TApp():aLog, <cText> )  //	Tracear el sistema
+
+#xcommand DEFINE APP <oApp> [ TITLE <cTitle> ] => <oApp> := TApp():New( <cTitle> )
+#xcommand DEFINE ROUTE <cRoute> URL <cUrl> CONTROLLER <cController> [ METHOD <cMethod> ] OF <oApp> ;
+=> ;
+	<oApp>:oRoute:Map( [<cMethod>], <cRoute>, <cUrl>, <cController> )
+
+#xcommand INIT APP <oApp> => <oApp>:Init()
+
+
+#xcommand AUTENTICATE WITH <oController> DEFAULT <cRoute> ;
+=> ;
+	<oController>:Middleware( 'jwt', <cRoute> )
+

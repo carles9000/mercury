@@ -1,0 +1,19 @@
+#	----------------------------------------------
+#	Name.......: Default 
+#	Description: Default project. Hello Harbour !
+#	----------------------------------------------
+index.test
+css/
+css/app.css
+include/
+include/dbinfo.ch
+include/fileio.ch
+include/hbclass.ch
+include/hbhash.ch
+include/hboo.ch
+include/netio.ch
+src/
+src/controller/
+src/controller/xxxexamplecontroller.prg
+src/view/
+src/view/hello.view

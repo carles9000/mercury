@@ -37,6 +37,8 @@ METHOD Map( cMethod, cId, cRoute, cController ) CLASS TRoute
 
 	LOCAL aMethod
 	LOCAL nI
+	
+	DEFAULT cMethod := 'GET,POST'
 
 	IF At( ',', cMethod ) > 0
 
@@ -149,6 +151,10 @@ METHOD Listen() CLASS TRoute
 	//	pero se ha detectado que en una vista se puede pedir Route() de otros metodo.
 	
 	//_GTrace( 'Listen Ini' )
+	
+	if nLen == 0	//No Routes...
+		quit
+	endif
 
 
 	FOR n := 1 TO nLen 
