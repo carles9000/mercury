@@ -1,6 +1,7 @@
 #include 'mercury.ch'
 #include "FileIO.ch"
 
+FUNCTION MercuryVersion() ; RETU MVC_VERSION 
 
 FUNCTION App()
 	
@@ -45,7 +46,7 @@ CLASS TApp
 
    METHOD New() CONSTRUCTOR
 
-   METHOD Version() 							INLINE MVC_VERSION
+   METHOD Version()								INLINE MVC_VERSION
    METHOD Path() 								INLINE ::cPath
    METHOD Url() 								INLINE ::cUrl
    METHOD Route() 								

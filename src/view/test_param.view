@@ -3,7 +3,7 @@
   <meta charset="UTF-8">
 </head>
 <body>
-	<h2>Test Parameters: _Get()<hr></h2>
+	<h2>Test Parameters: App():Get()<hr></h2>
 	
 	<h3>Método parametros</h3>
 	
@@ -13,12 +13,12 @@
 	
 	<h3>Método Setter/Getter</h3>	
 	
-	{{ _Get( 'name' ) }} => {{ _Get( 'age' ) }} 
+	{{ App():Get( 'name' ) }} => {{ App():Get( 'age' ) }} 
 
 
 		<?prg 
 		
-			LOCAL aData 	 := _Get( 'fruit' )
+			LOCAL aData 	 := App():Get( 'fruit' )
 			LOCAL cHtml 	 := '<hr><h3>Fruits..</h3>'
 			LOCAL nI
 			

@@ -22,7 +22,7 @@ CLASS TController
 	METHOD ListRoute()											INLINE ::oRoute:ListRoute()
 	
 	METHOD RequestValue 	( cKey, cDefault, cType )			INLINE ::oRequest:Request( cKey, cDefault, cType )
-	METHOD GetValue		( cKey, cDefault, cType )			INLINE ::oRequest:Get	 	( cKey, cDefault, cType )
+	METHOD GetValue			( cKey, cDefault, cType )			INLINE ::oRequest:Get	 	( cKey, cDefault, cType )
 	METHOD PostValue		( cKey, cDefault, cType )			INLINE ::oRequest:Post	( cKey, cDefault, cType )
 	
 	//	POdria ser algo mas como Autentica() ???
@@ -62,8 +62,8 @@ RETU .F.
 METHOD InitView( ) CLASS TController
 
 	::oView 			:= TView():New()
-	::oView:oRoute	:= ::oRoute					//	Xec oApp():oRoute !!!!
-	::oView:oResponse	:= ::oResponse
+	::oView:oRoute		:= ::oRoute					//	Xec oApp():oRoute !!!!
+	::oView:oResponse	:= App():oResponse 			//::oResponse
 	
 RETU NIL
 
@@ -73,6 +73,26 @@ METHOD View( cFile, ... ) CLASS TController
 
 RETU ''
 
+/*	
+	Como mod harbour aun no podemos crear un redirect correctamente, simularemos de esta manera
+	https://stackoverflow.com/questions/503093/how-do-i-redirect-to-another-webpage/506004#506004
+*/
+
+METHOD Redirect( cRoute ) CLASS TController
+
+	local oResponse 	:= App():oResponse
+	local cHtml := ''
+
+	cHtml += '<script>'
+	cHtml += "window.location.replace( '" + cRoute + "'); "
+	cHtml += '</script>'
+	
+	//	Ejecutamos el metodo SendHtml y si hay alguna cookie la enviare previamente...
+	
+		oResponse:SendHtml( cHtml )	
+
+RETU NIL
+
 /*
 	Habriamos de tener en cuenta que si venimos por ejemplo de un proces de autenticacion
 	la llamada al controller seria de tipo POST y si una vez autenticado venimos a Redirect()
@@ -80,6 +100,7 @@ RETU ''
 	caso deberiamos tener definido en el map una entrada para cRoute con POST	
 */
 
+/* Version working...
 METHOD Redirect( cRoute, cMethod ) CLASS TController
 
 	local aMap 	:= ::oRoute:GetMapSort()
@@ -193,7 +214,7 @@ METHOD Redirect( cRoute, cMethod ) CLASS TController
 		ENDIF
 
 RETU NIL
-
+*/
 
 
 

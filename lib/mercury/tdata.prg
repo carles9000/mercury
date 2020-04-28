@@ -38,7 +38,7 @@ METHOD  Get( cKey, uKey ) CLASS TData
 
 	IF hb_HHasKey( ::aVar, cKey )	
 	
-	ckey := lower( cKey )
+		ckey := lower( cKey )
 	
 		uValue := ::aVar[ cKey ]
 	

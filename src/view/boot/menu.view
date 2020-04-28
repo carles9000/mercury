@@ -23,19 +23,19 @@
                         </li>
                     </ul>
                 </li>
-                <li class="{{ if( _Get( 'menu' ) == '1', 'active', '') }}" >
+                <li class="{{ if( App():Get( 'menu' ) == '1', 'active', '') }}" >
                     <a href="{{ Route( 'boot.test1' ) }}">
                         <i class="fas fa-briefcase"></i>
                         Test 1
                     </a>
 				</li>
-				<li class="{{ if( _Get( 'menu' ) == '2', 'active', '') }}" >
+				<li class="{{ if( App():Get( 'menu' ) == '2', 'active', '') }}" >
                     <a href="{{ Route( 'boot.test2' ) }}">
                         <i class="fas fa-paper-plane"></i>
                         Test 2
                     </a>					
                 </li>
-                <li class="{{ if( _Get( 'menu' ) == '3', 'active', '') }}" >
+                <li class="{{ if( App():Get( 'menu' ) == '3', 'active', '') }}" >
                     <a href="{{ Route( 'boot.test3' ) }}">
                         <i class="fas fa-image"></i>
                         Test 3

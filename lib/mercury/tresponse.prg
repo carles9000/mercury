@@ -111,7 +111,7 @@ RETU NIL
 METHOD Echo() CLASS TResponse
 
 	LOCAL aHeader 
-	
+
 	//	La salida de retorno de la respuesta tendra 3 capas de envio:
 	//	Errorlevel
 
@@ -123,11 +123,11 @@ METHOD Echo() CLASS TResponse
 		
 	//	Cabeceras
 	
+
 		FOR EACH aHeader IN ::aHeaders
 
 			//	Si tenemos alguna cookie por enviar, la enviamos...					
-			IF aHeader[1] == 'Set-Cookie'
-			//? 'Envio Cookie...'			
+			IF aHeader[1] == 'Set-Cookie'							
 				AP_HeadersOutSet( "Set-Cookie", aHeader[2] )												
 			ELSE
 				AP_HeadersOutSet( aHeader[1], aHeader[2] )															
@@ -169,12 +169,14 @@ METHOD SetCookie( cName, cValue, nSecs, cPath, cDomain, lHttps, lOnlyHttp ) CLAS
 		cCookie += 'path=' + cPath + ';'
 		cCookie += 'domain=' + cDomain + ';'
 		
+
 	//	Pendiente valores logicos de https y OnlyHttp
 
 	//	Envio de la Cookie
 
 		//AP_HeadersOutSet( "Set-Cookie", cCookie )
-		::SetHeader( "Set-Cookie", cCookie )		
+		::SetHeader( "Set-Cookie", cCookie )
+	
 
 RETU NIL
 

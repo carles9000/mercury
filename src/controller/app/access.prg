@@ -73,7 +73,8 @@ METHOD Autentica( o ) CLASS Access
 			
 			//	Mostramos página principal
 			
-				o:View( 'app/principal.view', hTokenData )
+				//o:View( 'app/principal.view', hTokenData )
+				o:Redirect( Route( 'app.principal' ) )
 				
 		ELSE
 		

@@ -27,8 +27,9 @@ METHOD New( o ) CLASS MyApp
 	ELSE
 
 		AUTENTICATE WITH o DEFAULT 'app.login'
-
+		
 		//o:Middleware( 'jwt', 'app/default.view'  )			
+
 
 		//Podriamos ejecutar mas middleware... (not yet)
 		//	o:Middleware( 'roles', Route( 'app' ), ... )

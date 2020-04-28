@@ -86,7 +86,7 @@ RETU lValidate
 
 METHOD SetAutenticationJWT( hData, nTime ) CLASS TMiddleware
 
-	LOCAL oJWT 		:= JWT():New()	
+	LOCAL oJWT 			:= JWT():New()	
 	LOCAL oResponse 	:= App():oResponse
 	LOCAL cToken 
 	
@@ -96,7 +96,7 @@ METHOD SetAutenticationJWT( hData, nTime ) CLASS TMiddleware
 	::lHasAutenticate	:= .T.
 	::cType 			:= 'jwt'
 	::hTokenData 		:= hData
-	
+
 	//	Crearemos un JWT. Tiempo de validez (10 seg.). Default system 3600
 	
 		oJWT:SetTime( nTime )	
@@ -110,6 +110,7 @@ METHOD SetAutenticationJWT( hData, nTime ) CLASS TMiddleware
 		cToken := oJWT:Encode()		
 	
 	//	Preparamos la Cookie. NO se envia aun, hasta que haya un sendhtml()...
+
 
 		oResponse:SetCookie( ::cId_Cookie, cToken, nTime )
 

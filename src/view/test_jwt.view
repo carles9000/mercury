@@ -1,10 +1,11 @@
 <html>
 <body>
-	<h2>Test JWT<hr></h2>	
+	<h2>Test JWT<hr></h2>
+	<h3>You can try to modify token. Time to valid token 10 seconds...
 	
 	<form action="{{ Route( 'jwt.valid' ) }}" method="POST">
 
-		<textarea name="token" rows="4" cols="80" readonly>{{ PARAM 1 }}</textarea>
+		<textarea name="token" rows="4" cols="80" >{{ PARAM 1 }}</textarea>
 
 		<br><br><button type="submit">Validate Token</button>
 		

@@ -2,47 +2,33 @@
 {% include( AP_GETENV( 'PATH_APP' ) + "/include/hboo.ch" )  %}
 
 
-CLASS TUsers FROM THDO
+CLASS TUsers 
+
+	DATA oDb 
 
    METHOD  New() CONSTRUCTOR			
    
-   METHOD  List() 
+   METHOD  Get( n ) 
 
 ENDCLASS
 
 METHOD New() CLASS TUsers
 
-	::cTable 	:= 'users.dbf'	
-	::cFocus 	:= 'id'	
+	local	o := WDO():Dbf()
+			o:cDefaultPath 	:= hb_getenv( 'PRGPATH' ) + '/data'				
+			o:cDefaultRdd 	:= 'DBFCDX'	
 	
-	::AddField( 'id' )
-	::AddField( 'name' )
-	::AddField( 'phone' )
-	::AddField( 'dpt' )
+	::oDb := WDO():Dbf( 'users.dbf', 'users.cdx' )
+
 
 RETU Self
 
-METHOD List() CLASS TUsers
+METHOD Get( n ) CLASS TUsers
 
-	LOCAL aRows := {}
-
-	::Open()
-
-	( ::cAlias )->( DbGoTop() )
-
-	WHILE ( ::cAlias )->( !EOF() )
-		
-		Aadd( aRows, ::Load() )
+	::oDb:Focus( 'ID' )
+	::oDb:Seek( n )
 	
-		( ::cAlias )->( DbSkip() )
+RETU ::oDb:Load()
+
 	
-	END	
-	
-RETU aRows
 
-
-exit procedure CloseDb()
-
-	DbCloseAll()
-   
-return 

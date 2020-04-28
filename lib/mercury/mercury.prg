@@ -30,7 +30,6 @@ static hKeySecure := {=>}
 #include "hboo.ch"   
 #include "hbhash.ch" 
 
-#include "tools.prg"   				//	Soporte...
 #include "tapp.prg"   				//	Sistema TApp
 #include "tview.prg"   				//	Sistema View
 #include "troute.prg"   			//	Sistema Router
@@ -41,4 +40,11 @@ static hKeySecure := {=>}
 #include "tmiddleware.prg"   		//	Sistema Middleware
 #include "tdata.prg"   				//	Sistema TData
 #include "ttemplate.prg"			//	Sistema Template
+
+#include "jwt.prg"					//	Sistema JWT (Json Web Token)
+#include "preapache.prg"			//	Funcs. mod harbour apache
+#include "public.prg"				//	Funcs. public
+
+
+
 //	---------------------------------------------------------------------------- //

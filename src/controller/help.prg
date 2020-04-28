@@ -1,6 +1,7 @@
 FUNCTION Controller( oTController )
 	
-	?? '<h2>Help<hr></h2>'
+	?? '<h2>Help. Routes defined</h2></hr>'
+	?? 'Version: ' + MercuryVersion()
 	
 	oTController:ListRoute()
 

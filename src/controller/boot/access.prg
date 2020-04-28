@@ -66,9 +66,10 @@ METHOD Autentica( o ) CLASS Access
 			
 			//	Mostramos página principal
 			
-				_Set( 'menu', '1' )
+				App():Set( 'menu', '1' )
 			
-				o:View( 'boot/principal.view', hTokenData )
+				o:Redirect( Route( 'boot.principal' ) )
+				//o:View( 'boot/principal.view', hTokenData )
 				
 		ELSE
 		
@@ -84,6 +85,7 @@ METHOD logout( o ) CLASS Access
 	
 	oMiddleware:CloseJWT()
 
-	o:View( 'boot/default.view' )
+	o:Redirect( Route( 'boot' ) )
+	//o:View( 'boot/default.view' )
 
 RETU NIL

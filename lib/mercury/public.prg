@@ -1,6 +1,32 @@
 #include "FileIO.ch"
 #include "common.ch"
 
+#define MERCURY_PATH 		'lib/'
+
+function MercuryInclude( cPath )
+
+	local cFile, oError
+
+	DEFAULT cPath := MERCURY_PATH
+	
+	IF Right( cPath, 1 ) != '/'
+		cPath += '/'
+	ENDIF
+	
+	cFile := HB_GetEnv( "PRGPATH" ) + '/' + cPath + 'mercury.ch'
+	
+	if ! File( cFile )
+		oError := ErrorNew()
+		oError:Subsystem   := "System"
+		oError:Severity    := 2	//	ES_ERROR
+		oError:Description := "MercuryInclude() File not found: " + cFile 
+		Eval( ErrorBlock(), oError)
+   endif
+
+	//	RETU '#include "' + cFile + '"'
+	
+RETU '"' + cFile + '"'
+
 //	------------------------------------------------------------
 //	FUNCTION from Mindaugas code -> esshop
 //	------------------------------------------------------------
@@ -73,55 +99,24 @@ FUNCTION _l( uValue, cFile )
    
 RETU nil  
 
-/*
-FUNCTION _l( ... )
+//	-------------------------------------------------------	//
+//	From Fivewin.lib
+//	-------------------------------------------------------	//
 
-//	LOCAL cFileName 		:= IF ( HB_GETENV( 'LOG_FILE' ) == '',  hb_getenv( 'PRGPATH' ) + '/log.txt', HB_GETENV( 'LOG_FILE' ) )
-	LOCAL cFileName 		:= hb_getenv( 'PRGPATH' ) + '/data/log.txt'
- 	LOCAL cNow 				:= DToC( Date() ) + " " + Time() 
-	LOCAL cInfo   			:= procname(1) + '(' +  ltrim(str(procline( 1 ))) + ')'	
-	LOCAL nParam 			:= PCount()
-	LOCAL cLine, cType, hFile, nI, uValue				
+function cFileNoExt( cPathMask ) // returns the filename without ext
 
-	//	Si no hay parámetros borramos el fichero 
-	
-		IF nParam == 0
-			IF  fErase( cFilename ) == -1
-				//	? 'Error eliminando ' + cFilename, fError()
-			ENDIF
-			RETU NIL		
-		ENDIF
-		
-	//	Abrimos fichero log
-	
-		IF ! File( cFileName )
-			IF fCreate( cFileName ) == -1 
-				//	? 'Error creando ' + cFilename, fError()
-			ELSE
-				fClose( FCreate( cFileName ) )
-			ENDIF
-		ENDIF
+   local cName := AllTrim( cFileNoPath( cPathMask ) )
+   local n     := RAt( ".", cName )
 
-		IF ( ( hFile := FOpen( cFileName, FO_WRITE ) ) == -1 )
-			RETU NIL
-		ENDIF
-		
-	//	Log	
-	
-		FOR nI := 1 TO nParam 
-		
-			uValue 	:= HB_PValue(nI)			
-			cType 	:= ValType( uValue )	
-			cLine  	:= cNow + ' ' + cInfo + ' ' + cType + ': ' + valtochar( uValue ) + Chr(13) + Chr(10)
-			
-			fSeek( hFile, 0, FS_END )
-			fWrite( hFile, cLine, Len( cLine ) )		
-			
-		NEXT
-	
-	//	Close file log
+return AllTrim( If( n > 0, Left( cName, n - 1 ), cName ) )
 
-		fClose( hFile )
-   
-RETU nil   
-*/
+
+function cFileNoPath( cPathMask )  // returns just the filename no path
+
+    local n := RAt( "/", cPathMask )
+
+return If( n > 0 .and. n < Len( cPathMask ),;
+           Right( cPathMask, Len( cPathMask ) - n ),;
+           If( ( n := At( ":", cPathMask ) ) > 0,;
+           Right( cPathMask, Len( cPathMask ) - n ),;
+           cPathMask ) )

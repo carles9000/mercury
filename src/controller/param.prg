@@ -22,10 +22,10 @@ METHOD Test( o ) CLASS Param
 
 	//	Solicitud de Vista
 
-		_Set( 'name'	, cName )
-		_Set( 'age'		, nAge  )
-		_Set( 'fruit'	, aData )
+		App():Set( 'name'	, cName )
+		App():Set( 'age'	, nAge  )
+		App():Set( 'fruit'	, aData )
 
 		o:View( 'test_param.view', cName, nAge )
 	
-RETU NIL
+RETU NIL 

@@ -36,7 +36,7 @@ RETU NIL
 
 METHOD Principal( o ) CLASS MyApp	
 
-	_Set( 'menu', '1' )
+	App():Set( 'menu', '1' )
 
 	o:View( 'boot/principal.view' )
 
@@ -45,7 +45,7 @@ RETU NIL
 
 METHOD Test1( o ) CLASS MyApp
 
-	_Set( 'menu', '1' )
+	App():Set( 'menu', '1' )
 
 	o:View( 'boot/test1.view' )
 	
@@ -53,7 +53,7 @@ RETU NIL
 
 METHOD Test2( o ) CLASS MyApp
 
-	_Set( 'menu', '2' )
+	App():Set( 'menu', '2' )
 	
 	o:View( 'boot/test2.view' )
 	
@@ -63,7 +63,7 @@ METHOD Test3( o ) CLASS MyApp
 	
 	LOCAl oMiddleware := o:oMiddleware
 	
-	_Set( 'menu', '3' )
+	App():Set( 'menu', '3' )
 
 	o:View( 'boot/test3.view', oMiddleware:hJWTData )
 	

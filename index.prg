@@ -1,9 +1,9 @@
 //	------------------------------------------------------------------------------
 //	Title......: MVC_MERCURY
-//	Description: Test MVC system for mod_harbour from Hrb Lib
+//	Description: Test MVC system for mod_harbour with Hrb Lib
 //	Date.......: 09/07/2019
-//
-//	{% LoadHRB( '/lib/core/core_lib.hrb' ) %}		//	Loading core
+//	Last Upd...: 28/04/2020
+//	------------------------------------------------------------------------------
 //	{% LoadHRB( '/lib/mercury/mercury.hrb' ) %}	//	Loading system MVC Mercury
 //	------------------------------------------------------------------------------
 
@@ -11,86 +11,100 @@
 
 FUNCTION Main()
 
-	//LOCAL oApp 	:= App()
 	local oApp
 	
 		DEFINE APP oApp TITLE 'My First App'
 
-	//	Configuramos nuestra Aplicacion
-	
-		//oApp:cTitle		:= 'My First App'
-
-	//	Configuramos las Rutas
-	
-		//			     		Method	,  ID					, Mascara				, Controller 			
-		//	Basic pages...
-			DEFINE ROUTE 'default' URL '/' CONTROLLER 'default.prg' 	METHOD 'GET' OF oApp
-			DEFINE ROUTE 'help' 	URL '?' CONTROLLER 'help.prg' 		METHOD 'GET' OF oApp
+	//	Config Routes
 		
-			//oApp:oRoute:Map( 'GET'	, 'default'				, '/'					, 'default.prg' )
-			//oApp:oRoute:Map( 'GET'	, 'help'				, '?'					, 'help.prg' )
+		//	Basic pages...
+		
+			DEFINE ROUTE 'default' 	URL '/' CONTROLLER 'default.prg' 	METHOD 'GET' OF oApp
+			DEFINE ROUTE 'help' 	URL '?' CONTROLLER 'help.prg' 		METHOD 'GET' OF oApp
 			
 		//	Test Controller and parameter received and oRoute:Get()
-			oApp:oRoute:Get( 'vista'				, 'vista'				, 'vista.prg' )
-			oApp:oRoute:Get( 'vista1'				, 'vista/(id)'			, 'vista.prg' )
+		
+			DEFINE ROUTE 'vista' 	URL 'vista' 		VIEW 'vista.prg'	METHOD 'GET' OF oApp
+			DEFINE ROUTE 'vista1' 	URL 'vista/(id)' 	VIEW 'vista.prg'	METHOD 'GET' OF oApp
 			
 		//	Test Router() function 
-			oApp:oRoute:Map( 'GET'	, 'router'				, 'router'				, 'router.prg' )
-				
+		
+			DEFINE ROUTE 'router' 	URL 'router' 		VIEW 'router.prg'	METHOD 'GET' OF oApp
+			
 		//	Test controller via function/class
+		/*
 			oApp:oRoute:Map( 'GET'	, 'client'				, 'client'				, 'clientfunction.prg' )
 			oApp:oRoute:Map( 'GET'	, 'client.edit'			, 'client/edit'			, 'edit()clientfunction.prg' )
 			oApp:oRoute:Map( 'GET'	, 'client.edit2'		, 'client/edit2'		, 'edit@clientcontroller.prg' )
+			*/
 				
-		//	Test TResponse
-			oApp:oRoute:Map( 'GET'	, 'response.json'		, 'response/json'		, 'json@response.prg' )
-			oApp:oRoute:Map( 'GET'	, 'response.xml'		, 'response/xml'		, 'xml@response.prg' )
-			oApp:oRoute:Map( 'GET'	, 'response.html'		, 'response/html'		, 'html@response.prg' )
-			oApp:oRoute:Map( 'GET'	, 'response.401'		, 'response/401'		, 'error401@response.prg' )
-			oApp:oRoute:Map( 'GET'	, 'response.redirect'	, 'response/redirect'	, 'redirect@response.prg' )
+		//	Test TResponse	
+		
+			DEFINE ROUTE 'response.json' 		URL 'response/json' 	CONTROLLER 'json@response.prg'		OF oApp
+			DEFINE ROUTE 'response.xml' 		URL 'response/xml' 		CONTROLLER 'xml@response.prg'		OF oApp
+			DEFINE ROUTE 'response.html' 		URL 'response/html'		CONTROLLER 'html@response.prg'		OF oApp
+			DEFINE ROUTE 'response.401' 		URL 'response/401'		CONTROLLER 'error401@response.prg'	OF oApp
+			DEFINE ROUTE 'response.redirect'	URL 'response/redirect'	CONTROLLER 'redirect@response.prg'	OF oApp
+
 			
 		//	Test sub-folder Controller
-			oApp:oRoute:Map( 'GET'	, 'my_new'				, 'new'					, 'module_A/new.prg' )
-
+		
+			DEFINE ROUTE 'my_new'	URL 'new' 	CONTROLLER 'module_A/new.prg'		OF oApp
+			
+			
 		//	Test TValidator	/ Test oRoute:Get()		
-			oApp:oRoute:Map( 'GET'	, 'validator'			, 'validator'			, 'test@validator.prg' )
-			oApp:oRoute:Map( 'POST'   , 'validator.run'	, 'validator/run'		, 'run@validator.prg' )
-				
+		
+			DEFINE ROUTE 'validator'		URL 'validator' 	CONTROLLER 'test@validator.prg'	METHOD 'GET'	OF oApp
+			DEFINE ROUTE 'validator.run'	URL 'validator/run' CONTROLLER 'run@validator.prg'	METHOD 'POST'	OF oApp
+
+			
 		//	Test Model/Validator	
-			oApp:oRoute:Map( 'GET'	,'users'				, 'users/(id)'			, 'info@users.prg' )								
+		
+			DEFINE ROUTE 'users'			URL 'users/(id)' 	CONTROLLER 'info@users.prg'		METHOD 'GET'	OF oApp
+			
 	
 		//	Test JWT	
-			oApp:oRoute:Map( 'GET'	, 'jwt'					, 'jwt'					, 'create@test_jwt.prg' )
-			oApp:oRoute:Map( 'POST'	, 'jwt.valid'			, 'jwt/valid'			, 'valid@test_jwt.prg' )
+		
+			DEFINE ROUTE 'jwt'				URL 'jwt' 			CONTROLLER 'create@test_jwt.prg'	METHOD 'GET'	OF oApp
+			DEFINE ROUTE 'jwt.valid'		URL 'jwt/valid' 	CONTROLLER 'valid@test_jwt.prg'		METHOD 'POST'	OF oApp
+	
 	
 		//	Test Login				
-			oApp:oRoute:Map( 'GET'  , 'app'					, 'app'					, 'default@app/myapp.prg' )		
-			oApp:oRoute:Map( 'GET'  , 'app.login'				, 'app/login'			, 'login@app/access.prg' )		
-			oApp:oRoute:Map( 'GET'  , 'app.logout'				, 'app/logout'			, 'logout@app/access.prg' )	
-			oApp:oRoute:Map( 'POST' , 'app.autentica'			, 'app/autentica'		, 'autentica@app/access.prg' )	
-			oApp:oRoute:Map( 'GET'  , 'app.principal'			, 'app/principal'		, 'principal@app/myapp.prg' )		
-			oApp:oRoute:Map( 'GET'  , 'app.test1'				, 'app/test1'			, 'test1@app/myapp.prg' )		
-			oApp:oRoute:Map( 'GET'  , 'app.test2'				, 'app/test2'			, 'test2@app/myapp.prg' )		
-			oApp:oRoute:Map( 'GET'  , 'app.test3'				, 'app/test3'			, 'test3@app/myapp.prg' )
-	
-		//	Test Login - Bootstrap		
-			oApp:oRoute:Map( 'GET'  , 'boot'					, 'boot'				, 'default@boot/myapp.prg' )
-			oApp:oRoute:Map( 'POST' , 'boot.autentica'		, 'boot/autentica'		, 'autentica@boot/access.prg' )
-			oApp:oRoute:Map( 'GET'  , 'boot.logout'			, 'boot/logout'			, 'logout@boot/access.prg' )
-			oApp:oRoute:Map( 'GET'  , 'boot.principal'		, 'boot/principal'		, 'principal@boot/myapp.prg' )				
-			oApp:oRoute:Map( 'GET'  , 'boot.test1'			, 'boot/test1'			, 'test1@boot/myapp.prg' )		
-			oApp:oRoute:Map( 'GET'  , 'boot.test2'			, 'boot/test2'			, 'test2@boot/myapp.prg' )		
-			oApp:oRoute:Map( 'GET'  , 'boot.test3'			, 'boot/test3'			, 'test3@boot/myapp.prg' )			
+		
+			DEFINE ROUTE 'app'				URL 'app' 				CONTROLLER 'default@app/myapp.prg'		METHOD 'GET'	OF oApp
+			DEFINE ROUTE 'app.login'		URL 'app/login'			CONTROLLER 'login@app/access.prg'		METHOD 'GET'	OF oApp
+			DEFINE ROUTE 'app.logout'		URL 'app/logout'		CONTROLLER 'logout@app/access.prg'		METHOD 'GET'	OF oApp
+			DEFINE ROUTE 'app.autentica'	URL 'app/autentica'		CONTROLLER 'autentica@app/access.prg'	METHOD 'POST'	OF oApp
+			DEFINE ROUTE 'app.principal'	URL 'app/principal'		CONTROLLER 'principal@app/myapp.prg'	METHOD 'GET'	OF oApp
+			DEFINE ROUTE 'app.test1'		URL 'app/test1'			CONTROLLER 'test1@app/myapp.prg'		METHOD 'GET'	OF oApp
+			DEFINE ROUTE 'app.test2'		URL 'app/test2'			CONTROLLER 'test2@app/myapp.prg'		METHOD 'GET'	OF oApp
+			DEFINE ROUTE 'app.test3'		URL 'app/test3'			CONTROLLER 'test3@app/myapp.prg'		METHOD 'GET'	OF oApp
 
+			
+		//	Test Login - Bootstrap		
+		
+			DEFINE ROUTE 'boot'				URL 'boot' 				CONTROLLER 'default@boot/myapp.prg'		METHOD 'GET'	OF oApp
+			DEFINE ROUTE 'boot.autentica'	URL 'boot/autentica' 	CONTROLLER 'autentica@boot/access.prg'	METHOD 'POST'	OF oApp
+			DEFINE ROUTE 'boot.logout'		URL 'boot/logout' 		CONTROLLER 'logout@boot/access.prg'		METHOD 'GET'	OF oApp
+			DEFINE ROUTE 'boot.principal'	URL 'boot/principal' 	CONTROLLER 'principal@boot/myapp.prg'	METHOD 'GET'	OF oApp
+			DEFINE ROUTE 'boot.test1'		URL 'boot/test1' 		CONTROLLER 'test1@boot/myapp.prg'		METHOD 'GET'	OF oApp
+			DEFINE ROUTE 'boot.test2'		URL 'boot/test2' 		CONTROLLER 'test2@boot/myapp.prg'		METHOD 'GET'	OF oApp
+			DEFINE ROUTE 'boot.test3'		URL 'boot/test3' 		CONTROLLER 'test3@boot/myapp.prg'		METHOD 'GET'	OF oApp
+
+			
 		//	Test Paramaters	
-			oApp:oRoute:Map( 'GET'  , 'param'					, 'param'				, 'test@param.prg' )
+		
+			DEFINE ROUTE 'param'			URL 'param'		 		CONTROLLER 'test@param.prg'	OF oApp
+			
 
 		//	View Direct
-			oApp:oRoute:Map( 'GET'  , 'view'					, 'view'				, 'vista_default.view' )
+		
+			DEFINE ROUTE 'view'				URL 'view'		 		VIEW 'vista_default.view'	OF oApp
 			
 			
-	//	Iniciamos el sistema
-		//oApp:Init()
+			
+	//	Init Aplication
+	
 		INIT APP oApp
 	
 

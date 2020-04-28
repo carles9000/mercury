@@ -99,7 +99,6 @@ METHOD Exec( cFile, ... ) CLASS TView
 		
 			::oResponse:SendHtml( cHtml )
 
-
 	ELSE
 	
 	

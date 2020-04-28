@@ -80,7 +80,7 @@ RETU NIL
 
 METHOD Error401( o ) CLASS Response
 
-	o:oResponse:send( 401 )
+	o:oResponse:sendcode( 401 )
 
 RETU NIL
 	
