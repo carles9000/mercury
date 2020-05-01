@@ -122,10 +122,8 @@ METHOD Init() CLASS TApp
 	
 	//	Middleware. Si hemos entrado un psw, inicializaremos middleware
 	
-		if !empty( ::cPsw )
-? 'Init ', ::cId_Cookie, ::cPsw, ::nTime		
-			::oMiddleware:Credentials( 'jwt', ::cId_Cookie, ::cPsw, ::nTime )
-		
+		if !empty( ::cPsw )		
+			::oMiddleware:Credentials( 'jwt', ::cId_Cookie, ::cPsw, ::nTime )		
 		endif		
 	
 	//	-----------------------------------------------------------------
