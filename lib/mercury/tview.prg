@@ -160,3 +160,32 @@ FUNCTION Css( cFile )
 	ENDIF				
 
 RETU cCode
+
+FUNCTION Js( cFile )
+
+	//	Por defecto la carpeta de los js estaran en js
+
+	LOCAL cPath 		:= App():cPath + App():cPathJs
+	LOCAL cCode 		:= ''
+	LOCAL cFileJs
+
+	__defaultNIL( @cFile, '' )
+	
+	cFileJs 			:= cPath + cFile
+	
+	LOG 'Css: ' + cFileJs
+	LOG 'Existe fichero? : ' + ValToChar(file( cFileJs ))
+	
+	IF File ( cFileJs )
+	
+		cCode := MemoRead( cFileJs )		
+		
+	ELSE
+	
+		LOG 'Error: No existe Css: ' + cFileJs
+			
+		App():ShowError( 'No existe Js: ' +  cFileJs,  'Js Error!' )						
+	
+	ENDIF				
+
+RETU cCode

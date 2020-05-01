@@ -2,7 +2,7 @@
 
 function main()
 	local cHtml		:= ''
-	local hParam 		:= ap_postpairs()
+	local hParam 	:= ap_postpairs()
 	local cCmd 		:= lower( HB_HGetDef( hParam, 'cmd', '' ) )
 
 	DO CASE
@@ -75,6 +75,7 @@ function main()
 				
 				var o = new Object()
 					o[ 'msg' ] 	= cCmd;
+					o[ 'lang' ]	= 'es';
 
 				console.log( 'PARAm', o )
 				

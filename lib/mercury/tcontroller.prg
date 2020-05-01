@@ -42,7 +42,7 @@ RETU Self
 
 METHOD Middleware( cType, cRoute, cargo ) CLASS TController
 
-	DEFAULT cType		:= ''
+	DEFAULT cType	:= ''
 	DEFAULT cRoute 	:= ''
 	DEFAULT cargo  	:= ''
 	

@@ -1,13 +1,18 @@
 #define VERSION 	'v0.2'
 
+static aStr := {=>}
+
 function main() 
 
 	local hParam 	:= AP_PostPairs()
-	local cMsg 	:= hb_urldecode( alltrim( HB_HGetDef( hParam, 'msg', '' ))) 
+	local cMsg 		:= hb_urldecode( alltrim( HB_HGetDef( hParam, 'msg', '' ))) 
+	local cLang		:= 'es' //	Funciona pero de momento fijo -> hb_urldecode( alltrim( HB_HGetDef( hParam, 'lang', 'es' ))) 
 	local aParams, cKey
 	
+	LoadLang()
+
 	if empty( cMsg )
-		Send( 'No message...')
+		Send( _s('no message') )
 		retu nil
 	endif
 	
@@ -22,11 +27,11 @@ function main()
 		
 		case cKey == 'controller' 	; Controller( cKey, aParams  )
 		case cKey == 'project'		; Project( cKey, aParams  )
-		case cKey == 'hello' 		; Send( 'Hello! Now is ' + time() )
+		case cKey == 'hello' 		; Send( _s( 'hello', time() ) )
 		case cKey == 'time' 		; Send( time() )
 		case cKey == 'info' 		; Send( 'Information<hr>Developer Mercury. Version: ' + VERSION  + '<hr>')
 		otherwise
-			Send( 'Unknown ' + cKey, 'error' )
+			Send( _s( 'desconocido', cKey ), 'error' )
 	endcase
 
 retu nil
@@ -48,7 +53,7 @@ function Help( aParams )
 		case cTopic == 'view' 			; cFile := 'view.html' 
 		
 		otherwise						
-			Send( "Help don't exist " + cTopic, 'alert' )
+			Send( _s( "no help", cTopic) , 'alert' )
 			retu nil
 	endcase
 	
@@ -88,6 +93,29 @@ function Send( cTxt, cType )
 
 retu nil
 
+function _s( cKey, ... )
 
+	local cTxt 	:= HB_HGetDef( aStr, cKey, '' )
+	local nI 
+	
+	if !empty( cTxt )
+	
+		for nI := 2 to pcount()
+		
+			cTag := '%'  + ltrim(str(nI-1))
+		
+			cTxt := Strtran( cTxt, cTag, valtochar(pValue(nI)) )
+		
+		next
+		
+	else 
+	
+		cTxt := '??? [' + cKey + ']'
+	
+	endif
+
+retu cTxt
+
+#include "{% hb_getenv( 'prgpath' ) + '/m_lang.prg'%}" 
 #include "{% hb_getenv( 'prgpath' ) + '/m_controller.prg'%}" 
 #include "{% hb_getenv( 'prgpath' ) + '/m_project.prg'%}" 

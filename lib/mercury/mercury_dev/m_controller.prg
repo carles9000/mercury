@@ -1,14 +1,14 @@
 function Controller( cMsg, aParams ) 
 
 	local cPathTemplate 	:= HB_GetEnv( 'PRGPATH' ) + '/templates' 
+	local cRealPath 		:= AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_APP' ) + '/src/controller'
 	local cTemplate 		:= ''
 	local cAction			:= ''
 	local cNameController	:= ''
-	local cRealPath 		:= AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_APP' ) + '/src/controller'
 	local lRenew 			:= .F.
 
 	if len( aParams ) == 0
-		Send( 'Controller wrong. See => help controller  or  /controller ', 'error' )
+		Send( _s('help controller error'), 'error' )
 		retu nil
 	endif		
 	
@@ -23,12 +23,12 @@ function Controller( cMsg, aParams )
 		if !empty( cNameController )
 		
 			if left( cNameController, 1 ) == '/' .or. left( cNameController, 1 ) == '\' 
-				Send( "First character can't be / or \", 'error' )
+				Send( _s('error /'), 'error' )
 				retu nil
 			endif
 		
 			if at( '.', cNameController ) > 0
-				Send( 'Character not allowed: . ', 'error' )
+				Send( _s( 'character error .'), 'error' )
 				retu nil						
 			endif					
 		
@@ -42,7 +42,7 @@ function Controller( cMsg, aParams )
 	
 			if empty( cNameController )
 			
-				Send( 'Controller name controller is empty ex. => controller new MyController')
+				Send( _s('controller name empty') )
 				retu nil
 				
 			endif
@@ -56,7 +56,7 @@ function Controller( cMsg, aParams )
 				cTemplate := memoread( cPathTemplate + '/' + cTemplate )				
 				cTemplate := StrTran( cTemplate, '<$classname$>', cNameController )
 			else
-				Send( 'Template file not found: ' + cTemplate  )		
+				Send( _s('template not found', cTemplate ) )		
 				retu nil
 			endif			
 	
@@ -64,7 +64,7 @@ function Controller( cMsg, aParams )
 		
 			if empty( cNameController )
 			
-				Send( 'Controller name controller is empty ex. => controller new MyController')
+				Send( _s('controller name empty') )
 				retu nil
 				
 			endif			
@@ -74,14 +74,14 @@ function Controller( cMsg, aParams )
 			if file ( cFile )
 				cTemplate := memoread( cFile )											
 			else
-				Send( 'Controller file not found: ' + cNameController, 'error'  )		
+				Send( _s( 'controller not found', cNameController), 'error'  )		
 				retu nil
 			endif						
 
 			c := StrTran( cTemplate, CRLF, '<br>' )			
 			c := '<div class="code">' + c + '</div>'
 			
-			Send( 'SHOW CONTROLLER ' + cNameController + '<hr>' + c + '<hr>')
+			Send( _s( 'show controller' , cNameController, c ) )
 			
 			retu nil			
 		
@@ -89,7 +89,7 @@ function Controller( cMsg, aParams )
 		
 			if empty( cNameController )
 			
-				Send( 'Controller name controller is empty ex. => controller del MyController')
+				Send( _s('controller name empty') )
 				retu nil
 				
 			endif			
@@ -98,14 +98,14 @@ function Controller( cMsg, aParams )
 
 			if file ( cFile )		
 				if fErase( cFile ) == 0
-					Send( 'Controller ' + cNameController + ' has deleted !' )
+					Send( _s( 'controller deleted' , cNameController ) )
 				else
-					Send( "Controller ' + cNameCOntroller + ' don't deleted !", 'error' )
+					Send( _s( 'controller deleted error', cNameController ), 'error' )
 				endif
 				
 			else
 			
-				Send( 'Controller not found: ' + cNameController, 'info'  )	
+				Send( _s( 'controller not found', cNameController), 'info'  )	
 				
 			endif
 			
@@ -119,7 +119,7 @@ function Controller( cMsg, aParams )
 		
 		otherwise
 		
-			Send( 'Unknown parameter ' +  aParams[1] , 'error' )		
+			Send( _s( 'unknow parameter', aParams[1] ) , 'error' )		
 			retu nil	
 	endcase		
 
@@ -131,7 +131,7 @@ function Controller( cMsg, aParams )
 	
 		if ! IsDirectory( cRealPath )
 		
-			Send( "Controller folder doen't exist" , 'error' )
+			Send( _s( 'controller folder error'), 'error' )
 			retu nil			
 			
 		endif
@@ -146,7 +146,7 @@ function Controller( cMsg, aParams )
 		cFile := cRealPath + '/' + cNameController + '.prg'
 	
 		if file( cFile ) .and. !lRenew
-			Send( cNameController + ' exist !. You can force with -renew- param...', 'alert' )
+			Send( _s( 'controller exist renew', cNameController ), 'alert' )
 			retu nil
 		endif			
 	
@@ -158,12 +158,12 @@ function Controller( cMsg, aParams )
 	
 		if lSave
 			if lRenew
-				Send( 'Controller ' + cNameController + ' has recreated!' )
+				Send( _s( 'controller recreated', cNameController ) )
 			else
-				Send( 'Controller ' + cNameController + ' has created!' )
+				Send( _s( 'controller created', cNameController ) )
 			endif
 		else
-			Send( 'Error while creating controller ' + cNameController  )
+			Send( _s('controller created error')  )
 		endif				
 
 retu nil
@@ -245,9 +245,9 @@ function CheckNameController( cRealPath, cNameController )
 		
 		if ! IsDirectory( cDir )
 			if MakeDir( cDir ) == 0			
-				Send( 'Create directory ' + aDirs[nI] )
+				Send( _s( 'dir create', aDirs[nI] ) )
 			else
-				Send( 'Error creando directorio ' + cDir, 'error' )				
+				Send( _s( 'dir create error', cDir ), 'error' )				
 				quit
 			endif
 		else

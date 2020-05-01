@@ -26,9 +26,10 @@ ENDCLASS
 
 METHOD New( oApp ) CLASS TRoute
 
-	::oApp 			:= oApp
+	::oApp 		:= oApp
 	::oRequest 	:= oApp:oRequest
 	::oResponse 	:= oApp:oResponse
+	
 	
 RETU Self
 
@@ -126,8 +127,8 @@ METHOD Listen() CLASS TRoute
 	LOCAL cUrlDev
 	
 	if substr(lower( cUrlQuery ), 1, 7 ) == 'mercury' 
-		
-		cUrlDev := TApp():cUrl + '/lib/mercury_dev/'
+
+		cUrlDev := TApp():cUrl + '/lib/mercury/mercury_dev/'
 				
 		AP_HeadersOutSet( "Location", cUrlDev + 'm_main'  )
 		ErrorLevel( 302 ) 	//	REDIRECTION 
@@ -542,10 +543,9 @@ METHOD Execute( cController, hParam, aRouteSelect, lTEST, oNewRequest, oNewRespo
 		oTController:oRequest  			:= ::oRequest
 		oTController:oResponse 			:= ::oResponse		
 		oTController:oMiddleware			:= App():oMiddleware
-		oTController:aRouteSelect  		:= aRouteSelect		
+		oTController:aRouteSelect  			:= aRouteSelect		
 		
 		oTController:InitView()
-		
 			
 			IF valtype( ::bLog ) == 'B'
 				Eval( ::bLog, oTController, cAction )

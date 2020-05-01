@@ -18,7 +18,7 @@ CLASS JWT
 	DATA aPayload 				INIT {=>}
 	DATA cKey 					INIT 'HWeB!2019v1'
 	DATA cError					INIT ''
-	DATA nLapsus				INIT 10			//	Lapsus in seconds...
+	DATA nLapsus				INIT 3600			//	Lapsus in seconds...
 
 	METHOD New() CONSTRUCTOR
 	METHOD Reset()
@@ -28,7 +28,7 @@ CLASS JWT
 	METHOD Refresh()					INLINE ::Encode()
 	
 	METHOD SetKey( cKey )				INLINE ::cKey := cKey 
-	METHOD SetTime( nLapsus )		INLINE ::nLapsus := nLapsus
+	METHOD SetTime( nLapsus )			INLINE ::nLapsus := nLapsus
 	
 	METHOD SetData( hData )
 	METHOD SetVar( cVar, cValue )
@@ -43,7 +43,13 @@ CLASS JWT
 
 ENDCLASS
 
-METHOD New() CLASS JWT
+METHOD New( cKey ) CLASS JWT
+
+	DEFAULT cKey := ''
+	
+	if !empty( cKey )
+		::cKey := cKey 
+	endif
 
 	//	At the moment we're working in this method...
 		

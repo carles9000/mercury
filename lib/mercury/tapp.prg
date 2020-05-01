@@ -26,6 +26,9 @@ CLASS TApp
    
    //DATA bError							INIT {|cError, cTitle| ::ShowError( cError, cTitle ) }							
     DATA bInit								INIT NIL							
+    DATA cPsw								INIT ''
+    DATA cId_Cookie							INIT ''
+    DATA nTime								INIT 3600
    
    //CLASSDATA cPath							INIT AP_GETENV( 'PATH_APP' )
    CLASSDATA cPath							INIT AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_APP' )
@@ -34,10 +37,10 @@ CLASS TApp
    CLASSDATA cPathCss						INIT '/css/'
    CLASSDATA cPathJs						INIT '/js/'
    CLASSDATA cPathView						INIT '/src/view/'
-   CLASSDATA cPathController				INIT '/src/controller/'
-   CLASSDATA cPathModel						INIT '/src/model/'
+   CLASSDATA cPathController					INIT '/src/controller/'
+   CLASSDATA cPathModel					INIT '/src/model/'
    CLASSDATA cPathData						INIT AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_DATA' )
-   CLASSDATA cTitle							INIT AP_GETENV( 'APP_TITLE' )
+   CLASSDATA cTitle						INIT AP_GETENV( 'APP_TITLE' )
    CLASSDATA cFileLog						INIT AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_DATA' ) + '/logview.txt'
    CLASSDATA lLog							INIT .F.
    CLASSDATA aLog							INIT {}							
@@ -47,8 +50,11 @@ CLASS TApp
    METHOD New() CONSTRUCTOR
 
    METHOD Version()								INLINE MVC_VERSION
-   METHOD Path() 								INLINE ::cPath
-   METHOD Url() 								INLINE ::cUrl
+   METHOD Path() 									INLINE ::cPath
+   METHOD Url() 									INLINE ::cUrl
+   METHOD UrlCss() 								INLINE ::cUrl + ::cPathCss
+   METHOD UrlJs() 								INLINE ::cUrl + ::cPathJs
+   METHOD UrlLib() 								INLINE ::cUrl + ::cPathDev
    METHOD Route() 								
    METHOD Init() 
    METHOD Config() 
@@ -65,15 +71,25 @@ CLASS TApp
    
 ENDCLASS
 
-METHOD New( cTitle ) CLASS TApp
+METHOD New( cTitle , bInit, cPsw, cId_Cookie, nTime ) CLASS TApp
+
+	DEFAULT cPsw 		:= ''
+	DEFAULT cId_Cookie 	:= ''
+	DEFAULT nTime 		:= 3600
 
 	::cTitle 		:= IF( valtype( cTitle ) == 'C', cTitle, AP_GETENV( 'APP_TITLE' ) )
 
-	::oRequest 		:= TRequest():New()	
+	::oRequest 	:= TRequest():New()	
 	::oResponse 	:= TResponse():New()	
 	::oMiddleware 	:= TMiddleware():New()	
 	::oRoute 		:= TRoute():New( SELF )
 	::oData 		:= TData():New()	
+	
+	::bInit 		:= bInit
+	::cPsw		:= cPsw
+	::cId_Cookie	:= cId_Cookie
+	::nTime		:= nTime
+	
 
 	//	Chequeamos que se ha cargado las variables del .htaccess
 	
@@ -103,6 +119,16 @@ METHOD Init() CLASS TApp
 	::Config()	
 	
 	::aSys[ 'time_init' ]	:= hb_milliseconds()
+	
+	//	Middleware. Si hemos entrado un psw, inicializaremos middleware
+	
+		if !empty( ::cPsw )
+? 'Init ', ::cId_Cookie, ::cPsw, ::nTime		
+			::oMiddleware:Credentials( 'jwt', ::cId_Cookie, ::cPsw, ::nTime )
+		
+		endif		
+	
+	//	-----------------------------------------------------------------
 
 	IF Valtype( ::bInit ) == 'B'
 		Eval( ::bInit, oThis )

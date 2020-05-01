@@ -3,29 +3,33 @@
 
 CLASS TMiddleware
 
-	DATA cId_Cookie           		INIT 'HFW_APP'					
-	DATA cView_Default       		INIT 'HFW_APP'					
+	CLASSDATA cPsw 			          	INIT 'HWeB!2019v1'			
+	CLASSDATA cId_Cookie           		INIT 'HFW_APP'					
+	CLASSDATA cView_Default       		INIT 'HFW_APP'					
+	CLASSDATA nTime			     		INIT 3600
 	DATA oController					
 	DATA oResponse
 	DATA hTokenData
 	DATA hJWTData
 	
 	
-	CLASSDATA lHasAutenticate		INIT .F.
+	CLASSDATA lHasAutenticate			INIT .F.
 	CLASSDATA cType					INIT ''
-	CLASSDATA cToken				INIT ''
+	CLASSDATA cToken					INIT ''
 	CLASSDATA cargo					INIT ''
 	
 	METHOD New( cAction, hPar ) CONSTRUCTOR
 	METHOD Exec( oController, cValid, cView )
 	
-	METHOD SetAutentication( cType, cCargo )
+	
+	METHOD SetAutentication( cType, cCargo, cCargo2, cCargo3 )
+	METHOD Credentials( cType, cId_Cookie, cPsw, nTime )		INLINE ::SetAutentication( 	cType, cId_Cookie, cPsw, nTime )
+	
 	METHOD SetAutenticationJWT( cType )			
 	METHOD ValidateJWT()			
 	METHOD CloseJWT()
 
 	METHOD GetDataJWT()			
-
 	
 ENDCLASS 
 
@@ -84,18 +88,21 @@ METHOD Exec( oController, cValid, cRoute ) CLASS TMiddleware
 
 RETU lValidate
 
+
 METHOD SetAutenticationJWT( hData, nTime ) CLASS TMiddleware
 
-	LOCAL oJWT 			:= JWT():New()	
-	LOCAL oResponse 	:= App():oResponse
+	LOCAL oJWT 		:= JWT():New( ::cPsw )	
+	LOCAL oResponse 		:= App():oResponse
 	LOCAL cToken 
 	
 	__defaultNIL( @hData, {=>} )
-	__defaultNIL( @nTime, 3600 )
+	__defaultNIL( @nTime, ::nTime )
+	
 	
 	::lHasAutenticate	:= .T.
-	::cType 			:= 'jwt'
-	::hTokenData 		:= hData
+	::cType 				:= 'jwt'
+	::hTokenData 			:= hData
+
 
 	//	Crearemos un JWT. Tiempo de validez (10 seg.). Default system 3600
 	
@@ -111,7 +118,6 @@ METHOD SetAutenticationJWT( hData, nTime ) CLASS TMiddleware
 	
 	//	Preparamos la Cookie. NO se envia aun, hasta que haya un sendhtml()...
 
-
 		oResponse:SetCookie( ::cId_Cookie, cToken, nTime )
 
 
@@ -122,7 +128,7 @@ METHOD GetDataJWT() CLASS TMiddleware
 
 	LOCAL oRequest 			:= App():oRequest
 	LOCAL cToken 			:= oRequest:GetCookie( ::cId_Cookie )
-	LOCAL oJWT 				:= JWT():New()	
+	LOCAL oJWT 			:= JWT():New( ::cPsw )	
 	LOCAL lValid 			:= oJWT:Decode( cToken )	
 	LOCAL hData 			:= NIL
 	
@@ -149,7 +155,7 @@ METHOD ValidateJWT( cRoute ) CLASS TMiddleware
 		
 	ELSE	//	Chequearemos validez del token...
 	
-		oJWT 	:= JWT():New()	
+		oJWT 		:= JWT():New( ::cPsw ) 	
 		lValid 	:= oJWT:Decode( cToken )						
 
 		IF ! lValid
@@ -168,7 +174,7 @@ METHOD ValidateJWT( cRoute ) CLASS TMiddleware
 		
 			//	Si el Token es correcto, prepararemos el sistema para que lo refresque cuando genere una nueva salida
 
-				cToken 		:= oJWT:Refresh()		//	Vuelve a crear el Token teniendo en cuenta el lapsus
+				cToken 	:= oJWT:Refresh()		//	Vuelve a crear el Token teniendo en cuenta el lapsus
 				
 			//	Crearemos una cookie con el JWT, con el mismo periodo			
 			
@@ -193,11 +199,19 @@ METHOD CloseJWT( cRoute ) CLASS TMiddleware
 
 RETU .T.
 
-METHOD SetAutentication( cType, cCargo ) CLASS TMiddleware
+METHOD SetAutentication( cType, cPar1, cPar2, cPar3 ) CLASS TMiddleware
+
+	DEFAULT cType :=  'jwt'
+	DEFAULT cPar1 :=  ''
+	DEFAULT cPar2 :=  ''
+	DEFAULT cPar3 :=  ''
+	
 
 	DO CASE
 		CASE cType = 'jwt' 
-			::cId_Cookie := cCargo 
+			::cId_Cookie 	:= if( !empty(cPar1), cPar1, ::cId_Cookie )
+			::cPsw 		:= if( !empty(cPar2), cPar2, ::cPsw )
+			::nTime 		:= if( !empty(cPar3), cPar3, 3600 )
 	ENDCASE
 
 RETU NIL
