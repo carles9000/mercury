@@ -96,17 +96,22 @@ METHOD SetAutenticationJWT( hData, nTime ) CLASS TMiddleware
 	LOCAL cToken 
 	
 	__defaultNIL( @hData, {=>} )
-	__defaultNIL( @nTime, ::nTime )
+	DEFAULT nTime := 0
+
+	
 	
 	
 	::lHasAutenticate	:= .T.
 	::cType 				:= 'jwt'
 	::hTokenData 			:= hData
+	::nTime 				:= if( nTime > 0, nTime, ::nTime )
 
 
-	//	Crearemos un JWT. Tiempo de validez (10 seg.). Default system 3600
-	
-		oJWT:SetTime( nTime )	
+	//	Crearemos un JWT. Default system 3600
+
+		
+		oJWT:SetTime( ::nTime )	
+		
 		
 	//	Añadimos datos al token...
 
@@ -118,7 +123,7 @@ METHOD SetAutenticationJWT( hData, nTime ) CLASS TMiddleware
 	
 	//	Preparamos la Cookie. NO se envia aun, hasta que haya un sendhtml()...
 
-		oResponse:SetCookie( ::cId_Cookie, cToken, nTime )
+		oResponse:SetCookie( ::cId_Cookie, cToken, ::nTime )
 
 
 RETU NIL
@@ -170,7 +175,7 @@ METHOD ValidateJWT( cRoute ) CLASS TMiddleware
 				
 			//	Consultamos el lapsus que hay definidio, para ponerla en la nueva cookie
 				nLapsus 	:= oJWT:GetLapsus()
-		
+
 		
 			//	Si el Token es correcto, prepararemos el sistema para que lo refresque cuando genere una nueva salida
 
