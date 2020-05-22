@@ -5,6 +5,19 @@
 	Date: 			19/06/19	
 -------------------------------------------------------------------------------- */
 
+#define MVC_VERSION 			'Mercury v1.01'
+	
+#define MAP_METHOD 			1
+#define MAP_ID 					2
+#define MAP_ROUTE				3
+#define MAP_CONTROLLER			4
+#define MAP_QUERY				5
+#define MAP_PARAMS				6
+#define MAP_ORDER				7
+
+
+
+
 /*	-----------------------------------------------------------------------------
 	Si compilamos con harbour todos los módulos para generar el hrb, podemos ver
 	los errores de compilación y asi poder solucionar y limpiar code. Una vez 

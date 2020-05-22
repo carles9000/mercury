@@ -1,34 +1,34 @@
 
 CLASS TRequest
 
-	DATA hGet								INIT {=>}
-	DATA hPost								INIT {=>}
-	DATA hHeaders							INIT {=>}
-	DATA hCookies							INIT {=>}
-	DATA hRequest							INIT {=>}
-	DATA hCgi								INIT {=>}
-	
-	METHOD New() CONSTRUCTOR
-	METHOD Method()							INLINE AP_GetEnv( 'REQUEST_METHOD' )
-	METHOD Get( cKey, uDefault, cType )	
-	METHOD GetAll()							INLINE ::hGet
-	
-	METHOD SetPost( cKey, uValue )	
-	METHOD Post( cKey, uDefault, cType )	
-	METHOD PostAll()							INLINE ::hPost
-	
-	METHOD Cgi ( cKey )	
-	METHOD CountGet()							INLINE len( ::hGet )
-	METHOD CountPost()							INLINE len( ::hPost )
-	METHOD LoadGet()
-	METHOD LoadPost()
-	METHOD LoadRequest()
-	METHOD LoadHeaders()
-	METHOD GetQuery()
-	METHOD GetUrlFriendly()   
-	METHOD GetCookie( cKey )					INLINE HB_HGetDef( ::hCookies, cKey, '' ) 
-	METHOD Request( cKey, uDefault, cType )
-	METHOD RequestAll()						INLINE ::hRequest
+	DATA hGet											INIT {=>}
+	DATA hPost											INIT {=>}
+	DATA hHeaders										INIT {=>}
+	DATA hCookies										INIT {=>}
+	DATA hRequest										INIT {=>}
+	DATA hCgi											INIT {=>}
+		
+	METHOD New() CONSTRUCTOR	
+	METHOD Method()									INLINE AP_GetEnv( 'REQUEST_METHOD' )
+	METHOD Get( cKey, uDefault, cType )		
+	METHOD GetAll()									INLINE ::hGet
+		
+	METHOD SetPost( cKey, uValue )		
+	METHOD Post( cKey, uDefault, cType )		
+	METHOD PostAll()									INLINE ::hPost
+		
+	METHOD Cgi ( cKey )		
+	METHOD CountGet()									INLINE len( ::hGet )
+	METHOD CountPost()								INLINE len( ::hPost )
+	METHOD LoadGet()	
+	METHOD LoadPost()	
+	METHOD LoadRequest()	
+	METHOD LoadHeaders()	
+	METHOD GetQuery()	
+	METHOD GetUrlFriendly()   	
+	METHOD GetCookie( cKey )							INLINE HB_HGetDef( ::hCookies, cKey, '' ) 
+	METHOD Request( cKey, uDefault, cType )	
+	METHOD RequestAll()								INLINE ::hRequest
 	METHOD ValueToType( uValue, cType )
 	
 	METHOD GetStamp( cKey )
@@ -252,8 +252,6 @@ METHOD GetQuery() CLASS TRequest
 
 	cPath := _cFilePath( ::Cgi( 'SCRIPT_NAME' ) )
 	
-	//LOG 'GetQuery() Path: ' + cPath
-	
 	n := At( cPath, ::Cgi( 'REQUEST_URI' ) )
 	
 	cQuery := Substr( ::Cgi( 'REQUEST_URI' ), n + len( cPath ) ) 
@@ -265,6 +263,7 @@ METHOD GetQuery() CLASS TRequest
 RETU cQuery
 
 METHOD LoadHeaders() CLASS TRequest
+
 	LOCAL nLen := AP_HeadersInCount() - 1 
 	LOCAL n, nJ, cKey, cPart, uValue
 	
@@ -313,14 +312,26 @@ RETU NIL
 
 //	----------------------------------------------------------------------------
 
-METHOD GetStamp( cKey ) CLASS TRequest
+METHOD GetStamp( cKey, cPsw ) CLASS TRequest
 
 	LOCAL cToken 	:= ::Request( cKey )
-	LOCAL hToken	:= __wDecrypt( cToken )
+	//LOCAL hToken	:= __wDecrypt( cToken )
+	LOCAL hData 	:= NIL
+	LOCAL oJWT
 	
-	SetSecure( cKey, hToken )
+	DEFAULT cPsw := 'HWeB!2019v1'
+	
+	oJWT := JWT():New( cPsw )		
 
-RETU hToken
+	oJWT:Decode( cToken )	
+	
+	if oJWT:Decode( cToken ) 
+		hData := oJWT:GetData()
+	endif	
+	
+	SetSecure( cKey, hData )
+
+RETU hData
 
 //	----------------------------------------------------------------------------
 
@@ -353,26 +364,39 @@ function __wDecrypt( cKey, cFeed )
 	
 retu hKey
 
-function SetSecure( cKey, uData )
+function SetSecure( cKey, uData, cPsw )
+
+	local oJWT
 	
 	DEFAULT cKey := ''
+	DEFAULT cPsw := 'HWeB!2019v1'
 	
 	IF empty( cKey )
 		retu ''
 	endif	
 	
+	oJWT := JWT():New( cPsw )	
+	
 	IF PCount() == 2
 	
 		DO CASE
 			CASE valtype( uData ) == 'C'
-				hKeySecure[ cKey ] := __wCrypt( { 'data' => uData } )
+				//hKeySecure[ cKey ] := __wCrypt( { 'data' => uData } )
+				
+				oJWT:SetData( { 'data' => uData } )	
+				
 			CASE valtype( uData ) == 'H'
-				hKeySecure[ cKey ] := __wCrypt( uData )
+				//hKeySecure[ cKey ] := __wCrypt( uData )
+				
+				oJWT:SetData( uData )
+			
 			OTHERWISE
 				retu ''
 		ENDCASE						
 		
 	ENDIF
+
+	hKeySecure[ cKey ] := oJWT:Encode()	
 		
 retu ''
 
@@ -385,9 +409,6 @@ function StampSecure( cKey )
 	endif	
 
 retu  '<input type="hidden" name="' + cKey + '" value="' + hKeySecure[ cKey ] + '">'
-
-//	SetCookie() en oResponse
-
 
 
 function _cFilePath( cFile )   // returns path of a filename

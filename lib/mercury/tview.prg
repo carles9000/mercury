@@ -84,8 +84,7 @@ METHOD Exec( cFile, ... ) CLASS TView
 	
 		//	AP_RPuts( zInlinePrg( cCode, oInfo,... ) )	
 		
-		//	La salida siempre la habr de hacer el objeto oResponse
-		
+		//	La salida siempre la habr de hacer el objeto oResponse		
 
 			cHtml := zInlinePrg( @cCode, oInfo,... )  
 			//cHtml := InlinePrg( @cCode,... )  
@@ -178,7 +177,9 @@ FUNCTION Js( cFile )
 	
 	IF File ( cFileJs )
 	
-		cCode := MemoRead( cFileJs )		
+		cCode := '<script>'
+		cCode += MemoRead( cFileJs )		
+		cCode += '</script>'
 		
 	ELSE
 	

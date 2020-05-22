@@ -20,31 +20,31 @@ CLASS TApp
    DATA oRoute					
    DATA oMiddleware
    DATA oData
-   DATA lShowError							INIT .T.
-   DATA cLastView							INIT ''
-
-   
-   //DATA bError							INIT {|cError, cTitle| ::ShowError( cError, cTitle ) }							
-    DATA bInit								INIT NIL							
-    DATA cPsw								INIT ''
-    DATA cId_Cookie							INIT ''
-    DATA nTime								INIT 3600
-   
-   //CLASSDATA cPath							INIT AP_GETENV( 'PATH_APP' )
-   CLASSDATA cPath							INIT AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_APP' )
-   CLASSDATA cUrl							INIT AP_GETENV( 'PATH_URL' )
-   CLASSDATA cPathDev						INIT '/lib/'
-   CLASSDATA cPathCss						INIT '/css/'
-   CLASSDATA cPathJs						INIT '/js/'
-   CLASSDATA cPathView						INIT '/src/view/'
-   CLASSDATA cPathController					INIT '/src/controller/'
-   CLASSDATA cPathModel					INIT '/src/model/'
-   CLASSDATA cPathData						INIT AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_DATA' )
-   CLASSDATA cTitle						INIT AP_GETENV( 'APP_TITLE' )
-   CLASSDATA cFileLog						INIT AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_DATA' ) + '/logview.txt'
-   CLASSDATA lLog							INIT .F.
-   CLASSDATA aLog							INIT {}							
-   CLASSDATA aSys							INIT {=>}							
+   DATA lShowError									INIT .T.
+   DATA cLastView									INIT ''
+		
+		
+   //DATA bError									INIT {|cError, cTitle| ::ShowError( cError, cTitle ) }							
+    DATA bInit										INIT NIL							
+    DATA cPsw										INIT ''
+    DATA cId_Cookie								INIT ''
+    DATA nTime										INIT 3600
+		
+   //CLASSDATA cPath									INIT AP_GETENV( 'PATH_APP' )
+   CLASSDATA cPath									INIT AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_APP' )
+   CLASSDATA cUrl									INIT AP_GETENV( 'PATH_URL' )
+   CLASSDATA cPathDev								INIT '/lib/'
+   CLASSDATA cPathCss								INIT '/css/'
+   CLASSDATA cPathJs								INIT '/js/'
+   CLASSDATA cPathView								INIT '/src/view/'
+   CLASSDATA cPathController						INIT '/src/controller/'
+   CLASSDATA cPathModel							INIT '/src/model/'
+   CLASSDATA cPathData								INIT AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_DATA' )
+   CLASSDATA cTitle									INIT AP_GETENV( 'APP_TITLE' )
+   CLASSDATA cFileLog								INIT AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_DATA' ) + '/logview.txt'
+   CLASSDATA lLog									INIT .F.
+   CLASSDATA aLog									INIT {}							
+   CLASSDATA aSys									INIT {=>}							
 
 
    METHOD New() CONSTRUCTOR
@@ -53,7 +53,7 @@ CLASS TApp
    METHOD Path() 									INLINE ::cPath
    METHOD Url() 									INLINE ::cUrl
    METHOD UrlCss() 								INLINE ::cUrl + ::cPathCss
-   METHOD UrlJs() 								INLINE ::cUrl + ::cPathJs
+   METHOD UrlJs() 									INLINE ::cUrl + ::cPathJs
    METHOD UrlLib() 								INLINE ::cUrl + ::cPathDev
    METHOD Route() 								
    METHOD Init() 
@@ -62,7 +62,7 @@ CLASS TApp
    
    METHOD Set( cKey, uValue ) 					INLINE ::oData:Set( cKey, uValue )	
    METHOD Get( cKey, uKey )						INLINE ::oData:Get( cKey, uKey  )	
-   METHOD GetAll()								INLINE ::oData:GetAll()	
+   METHOD GetAll()									INLINE ::oData:GetAll()	
    
    METHOD ShowError( cError, cTitle )		   
    //METHOD Error( cError, cTitle )			INLINE Eval( ::bError, cError, cTitle )
@@ -86,10 +86,10 @@ METHOD New( cTitle , bInit, cPsw, cId_Cookie, nTime ) CLASS TApp
 	::oData 		:= TData():New()	
 	
 	::bInit 		:= bInit
-	::cPsw		:= cPsw
+	::cPsw			:= cPsw
 	::cId_Cookie	:= cId_Cookie
-	::nTime		:= nTime
-	
+	::nTime			:= nTime
+		
 
 	//	Chequeamos que se ha cargado las variables del .htaccess
 	
@@ -214,9 +214,9 @@ METHOD Route( cRoute, aParams ) CLASS TApp
 								
 								lError 				:= .T.
 								/*
-								hError[ 'id' ]		    := cRoute
+								hError[ 'id' ]		    	:= cRoute
 								hError[ 'define' ]		:= aRoute[ MAP_ROUTE ]
-								hError[ 'descripcion' ]:= 'Parámetro definido<strong> ' + cDefParam + ' </strong>no existe'
+								hError[ 'descripcion' ]	:= 'Parámetro definido<strong> ' + cDefParam + ' </strong>no existe'
 								*/
 								
 								cError := aRoute[ MAP_ROUTE ] + ' => ' +  'Parámetro definido<strong> ' + cDefParam + ' </strong>no existe'

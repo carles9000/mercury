@@ -8,9 +8,9 @@ CLASS TRoute
 	DATA bLog
 
 	
-	CLASSDATA aMap										INIT {}	
+	CLASSDATA aMap											INIT {}	
 
-	METHOD New() CONSTRUCTOR
+	METHOD New() 											CONSTRUCTOR
 	
 	METHOD Map( cMethod, cId, cRoute, cController ) 
 	METHOD Get( cId, cRoute, cController ) 				INLINE ::Map( 'GET' , cId, cRoute, cController )
@@ -18,7 +18,7 @@ CLASS TRoute
 	METHOD ListRoute()
 	METHOD Listen()
 	METHOD Execute()
-	METHOD ShowError( cError )	INLINE ::oApp:ShowError( cError, 'Route Error! ')
+	METHOD ShowError( cError )							INLINE ::oApp:ShowError( cError, 'Route Error! ')
 	
 	METHOD GetMapSort()
 
@@ -438,13 +438,7 @@ METHOD Execute( cController, hParam, aRouteSelect, lTEST, oNewRequest, oNewRespo
 	LOG 'Headers: ' + cHBheaders2
 	
 	LOG 'Exec: ' + cController
-/*	
-? 'Execute()=================================='
-? cController
-? hParam
-? aRouteSelect	
-? '==========================================='
-*/	
+
 	//	Chequeamos de que tipo es el controller
 	//	tipo clase -> @
 	//	tipo function -> ()
@@ -488,10 +482,8 @@ METHOD Execute( cController, hParam, aRouteSelect, lTEST, oNewRequest, oNewRespo
 		
 	//	Si es una clase o function....
 
-	//? 'Path', cPath 
-	//? 'File', cFile
 	cProg := cPath + cFile
-	//? 'Prog', cProg
+	
 	
 	LOG 'Program: ' + cProg	
 	LOG 'Tipo Controller: ' +  cType	
@@ -501,11 +493,9 @@ METHOD Execute( cController, hParam, aRouteSelect, lTEST, oNewRequest, oNewRespo
 	IF File ( cProg )	
 	
 		IF cType == 'class'			
-//? 'CLASS'
+
 				cNameClass := cFileNoExt( cFileNoPath( cFile ) )
-//? 'nameclass', cNameClass
-//? 'action ===> ', cAction 
-//? '***************************'
+
 			//	Opcion acceso Controller via Clases
 			
 				cCode := "#include 'hbclass.ch'" + HB_OsNewLine()
@@ -533,17 +523,14 @@ METHOD Execute( cController, hParam, aRouteSelect, lTEST, oNewRequest, oNewRespo
 
 		ENDIF
 		
-//? 'Code', cCode
-//? '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'
-	
 		//	-----------------------------------
 
 		oTController 						:= TController():New( cAction, hParam )
-		oTController:oRoute  			:= SELF
+		oTController:oRoute  				:= SELF
 		oTController:oRequest  			:= ::oRequest
-		oTController:oResponse 			:= ::oResponse		
+		oTController:oResponse 			:= App():oResponse 		
 		oTController:oMiddleware			:= App():oMiddleware
-		oTController:aRouteSelect  			:= aRouteSelect		
+		oTController:aRouteSelect  		:= aRouteSelect			
 		
 		oTController:InitView()
 			
@@ -564,10 +551,9 @@ METHOD Execute( cController, hParam, aRouteSelect, lTEST, oNewRequest, oNewRespo
 		WHILE zReplaceBlocks( @cCode, ("{"+"%"), ("%"+"}"), oInfo, oTController )	
 	
 		END						
-//? 'TEST ===============> ', lTEST
-//? 'Executare ===============> ', cCode 
+
 		IF lTEST
-			? 'TESSSSSSSSSt'
+
 			
 			//? oNewRequest
 
@@ -578,28 +564,14 @@ METHOD Execute( cController, hParam, aRouteSelect, lTEST, oNewRequest, oNewRespo
 			oTController:oResponse 			:= oNewResponse // App():oResponse //::oResponse		
 			oTController:oMiddleware			:= App():oMiddleware
 			oTController:aRouteSelect  		:= aRouteSelect										
-			? 'INSPECT TRequest REDIRECT'  //, oTController:oRequest
-			? oNewResponse, 'RESP---------------'
+
 			//zexecute( cCode, oInfo , oTController )
 			execute( cCode, oTController )
 			QUIT
 		ELSE
-			//? 'INSPECT TRequest', oTController:oRequest
+
 			zExecute( cCode, oInfo, oTController )
 		ENDIF
-//? 'FINAL DE EXECUTE======================================================'		
-		
-		
-		/*
-		WHILE ReplaceBlocks( @cCode, ("{"+"%"), ("%"+"}"), oTController )	
-		END						
-		_l( 'CODE===================================================================')
-		_l( cCode )
-		Execute( @cCode, oTController )		
-		*/
-		
-		
-		
 
 	ELSE
 	
@@ -607,9 +579,6 @@ METHOD Execute( cController, hParam, aRouteSelect, lTEST, oNewRequest, oNewRespo
 		LOG 'Error: No existe Controller: ' + cFile 
 	
 	ENDIF
-	
-//? 'SURTU DE TROUTE():EXECUTE()'
-//? '---------------------------'	
 
 RETU NIL
 

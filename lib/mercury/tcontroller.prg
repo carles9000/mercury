@@ -7,25 +7,24 @@ CLASS TController
 	DATA oResponse	
 	DATA oMiddleware
 	DATA oView
-	DATA cAction 				INIT ''
-	DATA hParam				INIT {=>}
-	DATA aRouteSelect			INIT {=>}
+	DATA cAction 													INIT ''
+	DATA hParam														INIT {=>}
+	DATA aRouteSelect												INIT {=>}
 
 
 	
 	CLASSDATA oRoute					
 	
-	METHOD New( cAction, hPar ) CONSTRUCTOR
+	METHOD New( cAction, hPar ) 									CONSTRUCTOR
 	METHOD InitView()
 	METHOD View( cFile, ... ) 					
 	METHOD ListController()
 	METHOD ListRoute()											INLINE ::oRoute:ListRoute()
 	
-	METHOD RequestValue 	( cKey, cDefault, cType )			INLINE ::oRequest:Request( cKey, cDefault, cType )
-	METHOD GetValue			( cKey, cDefault, cType )			INLINE ::oRequest:Get	 	( cKey, cDefault, cType )
-	METHOD PostValue		( cKey, cDefault, cType )			INLINE ::oRequest:Post	( cKey, cDefault, cType )
-	
-	//	POdria ser algo mas como Autentica() ???
+	METHOD RequestValue 	( cKey, cDefault, cType )				INLINE ::oRequest:Request( cKey, cDefault, cType )
+	METHOD GetValue		( cKey, cDefault, cType )				INLINE ::oRequest:Get	 	( cKey, cDefault, cType )
+	METHOD PostValue		( cKey, cDefault, cType )				INLINE ::oRequest:Post	( cKey, cDefault, cType )
+
 	METHOD Middleware		( cValid, cRoute )					
 
 	METHOD Redirect		( cRoute )

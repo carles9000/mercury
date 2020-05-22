@@ -10,15 +10,15 @@
 
 CLASS TResponse
 
-   DATA aHeaders				INIT {}
-   DATA cContentType			INIT 'text/plain'
-   DATA cBody					INIT ''
-   DATA nCode					INIT 200 
-   DATA lRedirect				INIT .F.
-   DATA cLocation				INIT ''
-
-   METHOD New() CONSTRUCTOR
-   METHOD Echo() 					//	print(), go(), exec(), out(), ...
+   DATA aHeaders							INIT {}
+   DATA cContentType						INIT 'text/plain'
+   DATA cBody								INIT ''
+   DATA nCode								INIT 200 
+   DATA lRedirect							INIT .F.
+   DATA cLocation							INIT ''
+			
+   METHOD New() 							CONSTRUCTOR
+   METHOD Echo() 							//	print(), go(), exec(), out(), ...
    
    METHOD SetHeader( cHeader, uValue )
    
@@ -53,7 +53,7 @@ RETU NIL
 METHOD SendJson( uResult, nCode ) CLASS TResponse
 
 	::cContentType 	:= "application/json" 	
-	::cBody 		:= IF( HB_IsHash( uResult ), hb_jsonEncode( uResult ), '' )
+	::cBody 			:= IF( HB_IsHash( uResult ), hb_jsonEncode( uResult ), '' )
 	
 	::echo()	
 
@@ -62,7 +62,7 @@ RETU NIL
 METHOD SendXml( uResult, nCode ) CLASS TResponse
 
 	::cContentType 	:= "text/xml"	
-	::cBody 		:= IF( HB_IsString( uResult ), uResult, '' )
+	::cBody 			:= IF( HB_IsString( uResult ), uResult, '' )
 	
 	::echo()	
 
@@ -122,7 +122,6 @@ METHOD Echo() CLASS TResponse
 		ENDIF	
 		
 	//	Cabeceras
-	
 
 		FOR EACH aHeader IN ::aHeaders
 
