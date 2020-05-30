@@ -14,10 +14,13 @@ function Project( cMsg, aParams )
 	endif		
 	
 	//	Parameters	---------------------------------------------
-	//	new 	[<cNameController>] 	[<cOthertemplate>]
+	//	new  <cDirTarget> 	[<cNameProject>]
 	
 	cAction 		:= lower( alltrim(aParams[1]) )	
-	cNameProject 	:= If ( len( aParams ) > 1, alltrim(aParams[2]) , 'default' )
+	cDirTarget		:= If ( len( aParams ) > 1, alltrim(aParams[2]) , '' )
+	cNameProject 	:= If ( len( aParams ) > 2, alltrim(aParams[3]) , 'default' )
+
+	Send( AP_GetEnv( 'PATH_MERCURY' ) )
 	
 	//Send( 'Action: ' + cAction )
 	//Send( 'Project: ' + cNameProject )
@@ -26,11 +29,12 @@ function Project( cMsg, aParams )
 	do case
 		case cAction == 'new' .or. cAction == 'renew'
 			
-			lRenew 	:= ( cAction == 'renew' )							
+			lRenew := ( cAction == 'renew' )							
 			cFile 	:= cPathProject + '/' + cNameProject + '/files.txt'
 
 			if file ( cFile )
-				PrjCopyFiles( cPathProject + '/' + cNameProject, cFile, lRenew  )				
+				//PrjCopyFiles( cPathProject + '/' + cNameProject, cFile, lRenew  )				
+				PrjNew( cDirTarget, cPathProject + '/' + cNameProject, cFile, lRenew  )				
 			else
 				Send( 'Template file not found: ' + cFile  )		
 			endif	
@@ -50,6 +54,181 @@ function Project( cMsg, aParams )
 	endcase
 
 retu nil 
+
+static function PrjNew( cDirTarget , cPathSource, cFile, lRenew  )
+
+	local cRealPath 	:= AP_GETENV( 'DOCUMENT_ROOT' ) + '/' + cDirTarget 
+	local cTxt 		:= memoread( cFile )
+    local nLines 		:= mlcount( cTxt )
+	local aError		:= {}
+	local lExiste, nError, nI, cLine
+
+	DEFAULT cDirTarget TO '' 
+	
+	if empty( cDirTarget )
+		Send( 'No specify Dir target', 'error' )
+		retu nil
+	endif	
+	
+	lExiste := IsDirectory( cRealPath )
+	
+	if lExiste .and. !lRenew 
+		Send( 'Dir exist: ' + cRealPath, 'error' )
+		retu nil
+	endif
+	
+	if !lExiste
+	
+		nError := MakeDir( cRealPath ) 
+		
+		if nError == 0
+			Send( 'Dir project created: ' + cDirTarget )	
+		else
+			Send( 'Error while created dir project ' + cDirTarget, 'error' )
+			retu nil
+		endif
+	
+	endif
+	
+
+		
+	//	2ª Pass Execute operations	
+	
+		Send( 'Generating new Project<hr>', 'info' )
+	
+		aError := {}
+	
+		for nI = 1 TO nLines
+
+			cLine := alltrim(memoline( cTxt, nil, nI ))
+			
+			if substr( cLine, 1, 1 ) <> '#'
+			
+				if right( cLine, 1 ) == '/'		//	Directory
+				
+					cLine := Substr( cLine, 1, len(cLine)-1 )
+					
+					if !IsDirectory( cRealPath + '/' + cLine )
+					
+						nError := MakeDir( cRealPath + '/' + cLine ) 
+						
+						if nError == 0
+							Send( 'Dir created: ' + cRealPath + '/' + cLine )
+						else
+							Aadd( aError, 'Error creating dir: ' + cLine  + '   Error( ' + ltrim(str(nError)) + ')' )							
+						endif
+					
+					endif
+
+				else 
+				
+					cSource := cPathSource + '/' + cLine
+					cTo 	 := cRealPath + '/' + cLine				
+				//send( cSource )
+					if file( cSource )
+						nError := hb_FCopy( cSource, cTo )
+						
+						if nError == 0
+							Send( 'Created file: ' + cline  )	
+						else
+							Aadd( aError, "Error creating file: " + cLine + '   Error( ' + ltrim(str(nError)) + ')' )
+						
+						endif
+					else
+						Aadd( aError, "Source file doesn't exist: " + cLine )
+					endif
+				endif
+				
+			else	
+			
+				Send( 'Coment: ' + cLine, 'info' )
+			
+			endif        
+			
+		next
+		
+	//	Report status
+	
+		if len( aError ) > 0 
+			Send( 'Error process!', 'error')
+			for nI := 1 to len( aError )
+				Send( aError[nI], 'info')
+			next	
+
+		else
+		
+			//	Creamos directory lib/mercury y copiamos libreria actualitzada
+			
+				Send( '-------------' )
+				Send( cRealPath + '/lib' )
+				Send( cRealPath + '/lib/mercury' )
+			
+				send( valtochar( MakeDir( cRealPath + '/lib' ) ))
+				send( valtochar( MakeDir( cRealPath + '/lib/mercury' ) ))
+			
+				cOrigen := AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GetEnv( 'PATH_MERCURY' ) 
+				
+				send( cOrigen )
+				
+				hb_FCopy( cOrigen + '/mercury.ch'  , cRealPath + '/lib/mercury/mercury.ch' )
+				hb_FCopy( cOrigen + '/mercury.hrb' , cRealPath + '/lib/mercury/mercury.hrb' )
+				
+		
+		
+			//	Crearemos fichero .htaccess
+			
+			cHtaccess := BuildHtaccess( cDirTarget )
+			
+			Hb_Memowrit( cRealPath + '/.htaccess', cHtaccess )
+			Send( '.htaccess created !' )
+			
+		endif		
+		
+		Send( '<hr>', 'normal' )			
+
+
+retu nil 
+
+
+function BuildHtaccess( cDirTarget ) 
+
+	local cHtaccess := ''
+	
+	cDirTarget := '/' + cDirTarget
+	
+	TEXT TO cHtaccess 
+# --------------------------------------------------------------------------
+# CONFIGURACION RUTAS PROGRAMA  (Relative to DOCUMENT_ROOT)
+# --------------------------------------------------------------------------
+SetEnv APP_TITLE           "Mercury v1.0"
+SetEnv PATH_URL            "<$PATH$>"
+SetEnv PATH_APP            "<$PATH$>"
+SetEnv PATH_DATA           "<$PATH$>/data/"
+
+
+# --------------------------------------------------------------------------
+# Impedir que lean los ficheros del directorio
+# --------------------------------------------------------------------------
+Options All -Indexes
+
+
+# --------------------------------------------------------------------------
+# Pagina por defectos
+# --------------------------------------------------------------------------
+DirectoryIndex index.prg main.prg
+
+<IfModule mod_rewrite.c>
+	RewriteEngine on
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.*)$ index.prg/$1 [L]
+</IfModule>		
+	ENDTEXT
+	
+	cHtaccess := StrTran( cHtaccess, '<$PATH$>', cDirTarget )
+
+retu cHtaccess
+
 
 static function PrjCopyFiles( cPathSource, cFile, lRenew  )
 

@@ -20,7 +20,7 @@ FUNCTION Main()
 		//	Basic pages...
 		
 			DEFINE ROUTE 'default' 	URL '/' CONTROLLER 'default.prg' 	METHOD 'GET' OF oApp
-			DEFINE ROUTE 'help' 	URL '?' CONTROLLER 'help.prg' 		METHOD 'GET' OF oApp
+			DEFINE ROUTE 'help' 		URL '?' CONTROLLER 'help.prg' 		METHOD 'GET' OF oApp
 			
 		//	Test Controller and parameter received and oRoute:Get()
 		

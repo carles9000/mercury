@@ -1,6 +1,6 @@
 /*	---------------------------------------------------------
 	File.......: jwt.prg
-	Description: Suport to Json Web Token. 
+	Description: Support to Json Web Token. 
 	Author.....: Carles Aubia Floresvi
 	Date:......: 10/07/2019
 	Usage......: 

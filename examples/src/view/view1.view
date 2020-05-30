@@ -1,0 +1,5 @@
+<h1>Hello View 1</h1>
+<hr>
+
+<a href="{{ Route( 'view2' ) }}">Visit View 2 !</a>
+

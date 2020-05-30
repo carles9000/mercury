@@ -301,6 +301,8 @@ FUNCTION zExecute( cCode, oInfo, ... )
 		__pp_addRule( hPP, "#xcommand PARAM <nParam> => AP_Get( IF( valtype( pvalue(<nParam>) ) <> 'U', pvalue(<nParam>), '' ) )" )
 		__pp_addRule( hPP, "#xcommand PARAM <nParam>,<uIndex> => AP_Get( hb_pvalue(<nParam>),<uIndex> )" )					  
 		__pp_addRule( hPP, "#xcommand TEXT <into:TO,INTO> <v> => #pragma __cstream|<v>:=%s" )					  
+		__pp_addRule( hPP, "#xcommand BLOCKS VIEW <v>[ PARAMS [<v1>] [,<vn>] ] => " + ;
+					"#pragma __cstream |<v>+= InlinePrg( ReplaceBlocks( %s, '<$', '$>' [,<(v1)>][+','+<(vn)>] [, @<v1>][, @<vn>] ) )" )	
 	
 	ENDIF
 

@@ -2,11 +2,9 @@
 # CONFIGURACION RUTAS PROGRAMA  (Relative to DOCUMENT_ROOT)
 # --------------------------------------------------------------------------
 SetEnv APP_TITLE           "Mercury v1.0"
-SetEnv PATH_URL            "/master/mercury"
-SetEnv PATH_APP            "/master/mercury"
-SetEnv PATH_DATA           "/master/mercury/data/"
-
-SetEnv PATH_MERCURY        "/master/mercury/lib/mercury"
+SetEnv PATH_URL            "/zz"
+SetEnv PATH_APP            "/zz"
+SetEnv PATH_DATA           "/zz/data/"
 
 
 # --------------------------------------------------------------------------
@@ -25,4 +23,4 @@ DirectoryIndex index.prg main.prg
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
 	RewriteRule ^(.*)$ index.prg/$1 [L]
-</IfModule>
+</IfModule>		

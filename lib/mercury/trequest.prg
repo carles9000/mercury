@@ -27,6 +27,7 @@ CLASS TRequest
 	METHOD GetQuery()	
 	METHOD GetUrlFriendly()   	
 	METHOD GetCookie( cKey )							INLINE HB_HGetDef( ::hCookies, cKey, '' ) 
+	METHOD GetHeader( cKey )							INLINE HB_HGetDef( ::hHeaders, cKey, '' ) 
 	METHOD Request( cKey, uDefault, cType )	
 	METHOD RequestAll()								INLINE ::hRequest
 	METHOD ValueToType( uValue, cType )

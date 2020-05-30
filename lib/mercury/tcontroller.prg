@@ -25,7 +25,7 @@ CLASS TController
 	METHOD GetValue		( cKey, cDefault, cType )				INLINE ::oRequest:Get	 	( cKey, cDefault, cType )
 	METHOD PostValue		( cKey, cDefault, cType )				INLINE ::oRequest:Post	( cKey, cDefault, cType )
 
-	METHOD Middleware		( cValid, cRoute )					
+	METHOD Middleware		( cValid, cRoute, aExceptionMethods )					
 
 	METHOD Redirect		( cRoute )
 
@@ -39,15 +39,33 @@ METHOD New( cAction, hPar  ) CLASS TController
 
 RETU Self
 
-METHOD Middleware( cType, cRoute, cargo ) CLASS TController
+METHOD Middleware( cType, cRoute, aExceptionMethods, hError ) CLASS TController
 
-	DEFAULT cType	:= ''
-	DEFAULT cRoute 	:= ''
-	DEFAULT cargo  	:= ''
+	local nPos := 0
+
+	DEFAULT cType					:= 'jwt'
+	DEFAULT cRoute 				:= ''
+	DEFAULT aExceptionMethods  	:= array()
+	DEFAULT hError  				:= { 'success' => .f., 'error' => 'Error autentication' }
+	
+	//	If exist some exception, don't autenticate
+
+		nPos := Ascan( aExceptionMethods, {|x,y| lower(x) == lower( ::cAction )} )
+		
+		if nPos > 0
+			retu .t.
+		endif
+
+	cType := lower( cType )
+	
+	//	Lo mismo 'jwt' que 'token', lo se, lo se...
 	
 	DO CASE
 		CASE cType == 'jwt'
-			retu ::oMiddleware:Exec( SELF, cType, cRoute )
+			retu ::oMiddleware:Exec( SELF, cType, cRoute, hError )
+			
+		CASE cType == 'token'
+			retu ::oMiddleware:Exec( SELF, cType, cRoute, hError )			
 	
 		CASE cType == 'rool'				
 		

@@ -1,0 +1,29 @@
+<h1>User Zip</h1>
+<hr>
+
+	<?prg
+		local hRow 		:= pValue(1)
+		local cHtml 	:= ''
+		
+		cHtml += 'Identity: ' + hRow[ 'first' ] + ' ' + hRow[ 'last' ] + ', ' + hRow[ 'zip' ]
+		
+		retu cHtml		
+	?>
+	
+<hr>
+
+Other style to get parameters... You can use  preprocess command PARAM nParam, [nPos]/[cKey], ex:
+
+PARAM 1, 'first'  
+PARAM 1, 'last'
+...
+
+<br>
+
+<h1>User Zip</h1>
+<hr>
+Identity: {{ PARAM 1, 'first' }}  {{ PARAM 1, 'last' }} ,  {{ PARAM 1, 'zip' }}
+	
+
+
+

@@ -127,8 +127,8 @@ METHOD EvalValue( cKey, cValue ) CLASS TValidator
 
 				cargo := Val(substr(cRole, 5 ))
 
-				IF len( uValue ) > cargo	
-					RETU { 'success' => .F., 'field' => cKey,   'msg' => 'Maxima longitud de ' + ltrim(str(cargo)), 'value' => uValue  }
+				IF len( uValue ) <> cargo	
+					RETU { 'success' => .F., 'field' => cKey,   'msg' => 'Longitud ha de ser ' + ltrim(str(cargo)), 'value' => uValue  }
 					EXIT
 				ENDIF
 				

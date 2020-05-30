@@ -1,5 +1,8 @@
 FUNCTION Controller()
 	
-	?? '<h2>Default Controller()</h2>'		
+	?? '<h2>Welcome to Mercury</h2><hr>'		
+	
+	? 'Version:', MercuryVersion()
+	
 
 RETU NIL

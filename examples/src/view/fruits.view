@@ -1,0 +1,18 @@
+<h1>Fruits List!</h1>
+<hr>
+
+	<?prg
+		local aFruits 	:= pValue(1)
+		local cHtml 	:= '<ul>'
+		local nI 
+		
+		for nI := 1 to len( aFruits )
+			cHtml += '<li>' + aFruits[ nI ] + '</li>'
+		next
+		
+		cHtml += '</ul>'
+		
+		retu cHtml		
+	?>
+	
+<hr>
