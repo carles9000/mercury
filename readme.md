@@ -1,7 +1,7 @@
 ﻿![alt text](https://i.postimg.cc/B69ZjLTs/logo-mini.jpg)
 
-Mercury - Model/View/Controller for Harbour Web
-===============================================
+Mercury v1.01 - Model/View/Controller for Harbour Web
+=====================================================
 
 Módulo para trabajar MVC (Modelo/Vista/Controlador) en mod_harbour
 
