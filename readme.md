@@ -10,3 +10,5 @@ Revisar la configuración del fichero .htaccess y ajustar los paths
 ![alt text](https://github.com/carles9000/mercury/blob/master/doc/files/mvc-1.png)
 
 Ayuda -> https://github.com/carles9000/mercury/blob/master/doc/hfw_mercury_v1.pdf 
+
+English -> Not yet! (very soon)
