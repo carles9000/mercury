@@ -25,7 +25,7 @@ METHOD Run( o ) CLASS Validator
 	LOCAL oValidator := TValidator():New()
 	LOCAL hRoles     := {=>}	
 	
-		hRoles[ 'name' ] := 'required|string|len:5'
+		hRoles[ 'name' ] := 'required|string|maxlen:5'
 		hRoles[ 'age'  ] := 'required|numeric'
 
 		IF ! oValidator:Run( hRoles )
