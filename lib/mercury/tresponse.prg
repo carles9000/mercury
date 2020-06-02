@@ -53,7 +53,7 @@ RETU NIL
 METHOD SendJson( uResult, nCode ) CLASS TResponse
 
 	::cContentType 	:= "application/json" 	
-	::cBody 			:= IF( HB_IsHash( uResult ), hb_jsonEncode( uResult ), '' )
+	::cBody 		:= IF( HB_IsHash( uResult ) .or. HB_IsArray( uResult ), hb_jsonEncode( uResult ), '' )
 	
 	::echo()	
 
