@@ -5,7 +5,7 @@
 	Date: 			19/06/19	
 -------------------------------------------------------------------------------- */
 
-#define MVC_VERSION 			'Mercury v1.02'
+#define MVC_VERSION 			'Mercury v1.03'
 	
 #define MAP_METHOD 			1
 #define MAP_ID 					2
