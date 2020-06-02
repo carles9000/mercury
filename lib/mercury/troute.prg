@@ -28,7 +28,7 @@ METHOD New( oApp ) CLASS TRoute
 
 	::oApp 		:= oApp
 	::oRequest 	:= oApp:oRequest
-	::oResponse 	:= oApp:oResponse
+	::oResponse := oApp:oResponse
 	
 	
 RETU Self
@@ -529,8 +529,10 @@ METHOD Execute( cController, hParam, aRouteSelect, lTEST, oNewRequest, oNewRespo
 		oTController:oRoute  				:= SELF
 		oTController:oRequest  			:= ::oRequest
 		oTController:oResponse 			:= App():oResponse 		
-		oTController:oMiddleware			:= App():oMiddleware
-		oTController:aRouteSelect  		:= aRouteSelect			
+		oTController:oMiddleware		:= App():oMiddleware
+		oTController:aRouteSelect  		:= aRouteSelect	
+		
+		App():oRequest := ::oRequest	//	Si no, TValidator no captura bien el App():oRequest
 		
 		oTController:InitView()
 			
@@ -558,15 +560,16 @@ METHOD Execute( cController, hParam, aRouteSelect, lTEST, oNewRequest, oNewRespo
 			//? oNewRequest
 
 			
-			oTController 						:= TController():New( cAction, hParam )
+			oTController 					:= TController():New( cAction, hParam )
 			//oTController:oRoute  			:= SELF
 			oTController:oRequest  			:= oNewRequest // TRequest():New(.T.) 	//App():oRequest //oNewRequest  	//TRequest():New() 	//::oRequest
 			oTController:oResponse 			:= oNewResponse // App():oResponse //::oResponse		
-			oTController:oMiddleware			:= App():oMiddleware
-			oTController:aRouteSelect  		:= aRouteSelect										
+			oTController:oMiddleware		:= App():oMiddleware
+			oTController:aRouteSelect  		:= aRouteSelect
 
 			//zexecute( cCode, oInfo , oTController )
 			execute( cCode, oTController )
+			
 			QUIT
 		ELSE
 

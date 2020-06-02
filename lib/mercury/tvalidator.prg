@@ -96,7 +96,7 @@ METHOD EvalValue( cKey, cValue ) CLASS TValidator
 	nRoles := len( aRoles )	
 	
 	//	Aqui hemos de ponser todos los roles. Escalar !
-	
+
 	FOR n = 1 to nRoles
 	
 		cRole := alltrim(lower(aRoles[n]))
@@ -140,8 +140,7 @@ METHOD EvalValue( cKey, cValue ) CLASS TValidator
 				IF  uValue > cargo	
 					RETU { 'success' => .F., 'field' => cKey,   'msg' => 'Maxima valor de ' + ltrim(str(cargo)), 'value' => uValue  }
 					EXIT
-				ENDIF
-			
+				ENDIF			
 
 			CASE substr(cRole,1,7) == 'maxlen:'
 

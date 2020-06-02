@@ -79,7 +79,7 @@ METHOD New( cTitle , bInit, cPsw, cId_Cookie, nTime ) CLASS TApp
 
 	::cTitle 		:= IF( valtype( cTitle ) == 'C', cTitle, AP_GETENV( 'APP_TITLE' ) )
 
-	::oRequest 	:= TRequest():New()	
+	::oRequest 		:= TRequest():New()	
 	::oResponse 	:= TResponse():New()	
 	::oMiddleware 	:= TMiddleware():New()	
 	::oRoute 		:= TRoute():New( SELF )
