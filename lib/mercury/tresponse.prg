@@ -50,18 +50,22 @@ METHOD SetHeader( cHeader, cValue ) CLASS TResponse
 
 RETU NIL
 
-METHOD SendJson( uResult, nCode ) CLASS TResponse
+METHOD SendJson( uResult, nCode, cCharset ) CLASS TResponse
 
-	::cContentType 	:= "application/json" 	
-	::cBody 		:= IF( HB_IsHash( uResult ) .or. HB_IsArray( uResult ), hb_jsonEncode( uResult ), '' )
+	DEFAULT cCharSet  := 'ISO-8859-1'	//	'utf-8'
+
+	::cContentType 	:= "application/json;charset=" + cCharSet	
+	::cBody 			:= IF( HB_IsHash( uResult ) .or. HB_IsArray( uResult ), hb_jsonEncode( uResult ), '' )
 	
 	::echo()	
 
 RETU NIL
 
-METHOD SendXml( uResult, nCode ) CLASS TResponse
+METHOD SendXml( uResult, nCode, cCharset ) CLASS TResponse
 
-	::cContentType 	:= "text/xml"	
+	DEFAULT cCharSet  := 'ISO-8859-1'	//	'utf-8'
+	
+	::cContentType 	:= "text/xml;charset=" + cCharSet	
 	::cBody 			:= IF( HB_IsString( uResult ), uResult, '' )
 	
 	::echo()	
@@ -69,8 +73,8 @@ METHOD SendXml( uResult, nCode ) CLASS TResponse
 RETU NIL
 
 METHOD SendHtml( uResult, nCode ) CLASS TResponse
-
-	::cContentType 	:= "text/html"	
+	
+	::cContentType 	:= "text/html"
 	::cBody 			:= IF( HB_IsString( uResult ), uResult, '' )
 	
 	::echo()
