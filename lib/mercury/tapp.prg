@@ -303,6 +303,28 @@ exit procedure App_End()
 
 RETU 
 
+//	Function for Trace lapsus
+
+function _t( cTrace )
+
+	static nPos := NIL
+	
+	DEFAULT cTrace := ''
+	
+	if nPos == nil
+		Aadd( M->getList, array(1) )
+		nPos := len(M->getList)
+		M->getList[nPos] := {}
+		Aadd( M->getList[nPos] , { 'init', HB_MILLISECONDS() } )
+	endif
+	
+	if !empty( cTrace )
+		Aadd( M->getList[nPos] , { cTrace, HB_MILLISECONDS() - M->getList[nPos][1][2]} )	
+	endif
+
+retu M->getList[nPos]
+
+//	-------------------------------------------------------------------
 
 function _GTrace( cName )
 	GTrace():New( cName )
@@ -406,6 +428,7 @@ METHOD toLog() CLASS GTrace
 		
 
 RETU NIL
+
 	
 
 

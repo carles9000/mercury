@@ -12,7 +12,13 @@
 
 #xcommand INIT APP <oApp> => <oApp>:Init()
 
+/*
 #xcommand AUTENTICATE CONTROLLER <oController> DEFAULT <cRoute> ;
 => ;
 	<oController>:Middleware( 'jwt', <cRoute> )
+*/
+#xcommand AUTENTICATE CONTROLLER <oController> [ VIA <cType> ] [<err:ERROR ROUTE, DEFAULT> <cRoute>] ;
+	[ <exc: EXCEPTION> <cMethod,...> ] [ ERROR JSON [<hError>]] ;
+=> ;
+	<oController>:Middleware( [<cType>], [<cRoute>], [\{<cMethod>\}], [<hError>] )
 

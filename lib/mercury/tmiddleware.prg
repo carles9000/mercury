@@ -253,13 +253,28 @@ RETU .T.
 
 //	--------------------------------------------------------------------------
 
-METHOD ValidateToken() CLASS TMiddleware
+METHOD ValidateToken( cToken ) CLASS TMiddleware
 
 	LOCAL oRequest 		:= App():oRequest
-	LOCAL oResponse 		:= App():oResponse
-	LOCAL cToken 			:= oRequest:GetHeader( 'Authorization' )
+	LOCAL oResponse 		:= App():oResponse	
 	LOCAL oJWT	
 	LOCAL lValid, nLapsus,nPos, h
+	
+	DEFAULT cToken := ''
+	
+	if empty( cToken )
+		cToken 	:= oRequest:GetHeader( 'Authorization' )
+		
+		if !empty( cToken )
+			nPos := At( 'Bearer', cToken )
+			
+			if nPos > 0 
+				cToken := alltrim(Substr( cToken, 7 ))
+			endif
+			
+		endif
+	endif
+	
 
 	::hJWTData := NIL		
 	
@@ -267,13 +282,7 @@ METHOD ValidateToken() CLASS TMiddleware
 
 		RETU .F.
 		
-	ELSE	//	Chequearemos validez del token...
-	
-		nPos := At( 'Bearer', cToken )
-		
-		if nPos > 0 
-			cToken := alltrim(Substr( cToken, 7 ))
-		endif
+	ELSE	//	Chequearemos validez del token...					
 
 		oJWT 	:= JWT():New( ::cPsw ) 	
 		lValid 	:= oJWT:Decode( cToken )						

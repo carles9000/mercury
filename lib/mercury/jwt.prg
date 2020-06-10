@@ -67,7 +67,7 @@ METHOD Encode() CLASS JWT
 	
 	//	Actualizamos fecha de expiracion (CLAIMS)
 	
-		::aPayload[ 'iss'  ]:= 'mod_harbour'				//	Emisor
+		::aPayload[ 'iss'  ]:= 'mercury'					//	Emisor
 		::aPayload[ 'exp'  ]:= Seconds() + ::nLapsus		//	Expire
 		::aPayload[ 'lap'  ]:= ::nLapsus					//	lapsus
 		

@@ -25,7 +25,7 @@ CLASS TController
 	METHOD GetValue		( cKey, cDefault, cType )				INLINE ::oRequest:Get	 	( cKey, cDefault, cType )
 	METHOD PostValue		( cKey, cDefault, cType )				INLINE ::oRequest:Post	( cKey, cDefault, cType )
 
-	METHOD Middleware		( cValid, cRoute, aExceptionMethods )					
+	METHOD Middleware		( cType, cRoute, aExceptionMethods, hError  )					
 
 	METHOD Redirect		( cRoute )
 
