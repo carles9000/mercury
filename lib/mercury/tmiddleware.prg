@@ -180,9 +180,9 @@ RETU cToken
 
 METHOD GetDataJWT() CLASS TMiddleware
 
-	LOCAL oRequest 		:= App():oRequest
+	LOCAL oRequest 			:= App():oRequest
 	LOCAL cToken 			:= oRequest:GetCookie( ::cId_Cookie )
-	LOCAL oJWT 			:= JWT():New( ::cPsw )	
+	LOCAL oJWT 				:= JWT():New( ::cPsw )	
 	LOCAL lValid 			:= oJWT:Decode( cToken )	
 	LOCAL hData 			:= NIL
 	

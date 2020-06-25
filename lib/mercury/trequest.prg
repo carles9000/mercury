@@ -62,7 +62,7 @@ METHOD Get( cKey, uDefault, cType ) CLASS TRequest
 	HB_HCaseMatch( ::hGet, .F. )	
 
 	IF !empty(cKey) .AND. hb_HHasKey( ::hGet, cKey )
-		uValue := hb_UrlDecode(::hGet[ cKey ])
+		uValue := if( valtype( ::hGet[ cKey ] ) == 'A', Aeval( ::hGet[ cKey ], {|u| u :=  hb_UrlDecode(u)} ) , hb_UrlDecode( ::hGet[ cKey ] ) )
 	ELSE
 		uValue := uDefault
 	ENDIF
@@ -83,7 +83,8 @@ METHOD Post( cKey, uDefault, cType ) CLASS TRequest
 	HB_HCaseMatch( ::hPost, .F. )
 
 	IF hb_HHasKey( ::hPost, cKey )
-		uValue := hb_UrlDecode(::hPost[ cKey ])
+		//uValue := hb_UrlDecode(::hPost[ cKey ])
+		uValue := if( valtype( ::hPost[ cKey ] ) == 'A', Aeval( ::hPost[ cKey ], {|u| u :=  hb_UrlDecode(u)} ) , hb_UrlDecode( ::hPost[ cKey ] ) )
 	ELSE
 		uValue := uDefault
 	ENDIF
@@ -163,6 +164,13 @@ RETU NIL
 
 METHOD LoadGet() CLASS TRequest
 
+	::hGet	:= ZAP_GetPairs()
+	
+RETU NIL
+
+/*
+METHOD LoadGet() CLASS TRequest
+
 	LOCAL cArgs := AP_Args()
 	LOCAL cPart, nI
 	
@@ -183,7 +191,15 @@ METHOD LoadGet() CLASS TRequest
 	ENDIF 
 
 RETU NIL
+*/
 
+METHOD LoadPost() CLASS TRequest
+
+	::hPost := ZAP_PostPairs()
+	
+RETU NIL
+
+/*
 METHOD LoadPost() CLASS TRequest
 
 	LOCAL hPost := AP_PostPairs()
@@ -214,6 +230,7 @@ METHOD LoadPost() CLASS TRequest
 	ENDIF 
 
 RETU NIL
+*/
 
 METHOD Cgi( cKey ) CLASS TRequest
 

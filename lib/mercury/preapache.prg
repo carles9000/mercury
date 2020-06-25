@@ -383,3 +383,86 @@ function LoadInclude( cPathPluggin )
 RETU '"' + AP_GetEnv( "DOCUMENT_ROOT" ) + AP_GetEnv( "PATH_APP" ) + cPathPluggin
 
 FUNCTION VersionPreApache(); RETU  'v0.1'
+
+//--------------------------------------------------------------
+
+function ZAP_PostPairs( lUrlDecode )	//	Prototype
+
+    local cPair, uPair, hPairs := {=>}
+	local nTable, aTable, cKey, cTag	
+	
+	__defaultNIL( @lUrlDecode, .T. )
+	
+	cTag := if( lUrlDecode, '[]', '%5B%5D' )
+
+    for each cPair in hb_ATokens( AP_Body(), "&" )
+	
+	//	Podriamos decodificar con hb_UrlDecode(), pero hasta ahora
+	//	era una opcion del programador de si querer o no usarla...	
+	
+		if lUrlDecode
+			cPair := hb_urldecode( cPair )
+		endif				
+		
+	//	----------------------------------------------------------
+	
+      if ( uPair := At( "=", cPair ) ) > 0	  
+			cKey := Left( cPair, uPair - 1 )	
+			
+			if ( nTable := At( cTag, cKey ) ) > 0 		
+			
+				cKey 	:= Left( cKey, nTable - 1 )			
+				aTable 	:= HB_HGetDef( hPairs, cKey, {} ) 				
+				Aadd( aTable, SubStr( cPair, uPair + 1 ) )				
+				hPairs[ cKey ] := aTable
+			else						
+				hb_HSet( hPairs, cKey, SubStr( cPair, uPair + 1 ) )
+			endif
+      endif
+    next
+
+return hPairs
+
+//--------------------------------------------------------------
+
+function ZAP_GetPairs( lUrlDecode )	//	Prototype
+
+	local cArgs 	:= AP_Args()	//	FastCgi -> mh_query()
+    local hPairs 	:= {=>}
+    local cPair, uPair, nPos, cKey, uValue
+	
+	__defaultNIL( @lUrlDecode, .T. )	
+	
+	FOR EACH cPair IN hb_ATokens( cArgs, "&" )
+	
+		if lUrlDecode
+			cPair := hb_urldecode( cPair )
+		endif		
+	
+		IF ( uPair := At( "=", cPair ) ) > 0
+
+			cKey := Left( cPair, uPair - 1 )			
+			
+			//	Chequeamos si existe la key en nuestro hPairs
+			
+			if ( nPos := HB_HPos( hPairs, cKey ) ) == 0
+				hb_HSet( hPairs, cKey, SubStr( cPair, uPair + 1 ) )
+			else
+				
+				uValue 			:= hPairs[ cKey ] 				
+				hPairs[ cKey ] 	:= {}
+				
+				Aadd( hPairs[ cKey ], uValue )
+				Aadd( hPairs[ cKey ], SubStr( cPair, uPair + 1 ) )
+			endif				
+			
+		else
+			HB_HSet( hPairs, lower(cPair), '' )
+		endif
+	   
+	next
+
+return hPairs
+
+
+//----------------------------------------------------------------//
