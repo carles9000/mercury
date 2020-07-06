@@ -53,16 +53,72 @@ function main()
 		</div>
 		
 		<script>
-		
-			$('#msg').keypress(function (e) {
 
-				if( e.which == 13) {
-					validateCmd()
+			var aLog 		= []
+			var aLogPoint	= -1
+			
+			$('#msg').keydown(function (e) {
+			
+				var arrow = { enter: 13 , up: 38 , down: 40 };
+			
+				console.log ( e.which )
+
+				switch ( e.which ) {
+				
+					case arrow.enter :
+						validateCmd()
+						break;
+						
+					case arrow.up :					//	Up
+						ShowUpLog()
+						break;	
+
+					case arrow.down :					//	Down
+						ShowDownLog()
+						break;						
 			    }
-			}); 
+			}); 			
+			
+			function ShowUpLog() {
+				
+				if ( aLog.length == 0 )
+					return null
+					
+				if ( aLogPoint == -1 )
+					aLogPoint = aLog.length - 1
+				else
+					aLogPoint--
+				
+				if ( aLogPoint == -1 ) {
+					$('#msg').val('')
+					return null
+				}					
+					
+				$('#msg').val( aLog[aLogPoint] )					
+			}
+			
+			function ShowDownLog() {
+			
+				if ( aLog.length == 0 )
+					return null			
+				
+				if ( aLogPoint == -1 )
+					aLogPoint = 0
+				else
+					aLogPoint++
+				
+				if ( aLogPoint >= aLog.length ) {
+					$('#msg').val('')
+					aLogPoint = -1
+					return null
+				}					
+					
+				$('#msg').val( aLog[aLogPoint] )					
+			}			
 		
 			function validateCmd() {
-			  var cCmd = $( '#msg' ).val();
+			
+				var cCmd = $( '#msg' ).val();
 			 
 				if ( cCmd == "") 
 					return null;
@@ -72,6 +128,9 @@ function main()
 					$( '#msg' ).val( '' )
 					return null
 				}
+				
+				aLog.push( cCmd )
+				aLogPoint = -1				
 				
 				var o = new Object()
 					o[ 'msg' ] 	= cCmd;

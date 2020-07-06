@@ -50,6 +50,7 @@ function Help( aParams )
 	do case
 		case cTopic == 'default' 	 	; cFile := 'default.html' 
 		case cTopic == 'controller' 	; cFile := 'controller.html' 
+		case cTopic == 'project' 		; cFile := 'project.html' 
 		case cTopic == 'view' 			; cFile := 'view.html' 
 		
 		otherwise						

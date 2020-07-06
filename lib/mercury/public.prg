@@ -51,7 +51,7 @@ RETURN cRet
 
 FUNCTION _l( uValue, cFile )
 
-	STATIC _l_file 		:= '/log.txt'
+	thread STATIC _l_file 		:= '/log.txt'
 	
 //	LOCAL cFileName 		:= IF ( HB_GETENV( 'LOG_FILE' ) == '',  hb_getenv( 'PRGPATH' ) + '/log.txt', HB_GETENV( 'LOG_FILE' ) )
 	LOCAL cFileName 		

@@ -83,14 +83,14 @@ RETU NIL
 
 METHOD Redirect( cUrl ) CLASS TResponse
 
+	local cHtml := ''
+	
 	
 		//	Tendriamos de decir al controller que cargue el nuevo
 		
-		//? ::cLocation	
-		
-		AP_HeadersOutSet( "Location", cUrl )		
+		//AP_HeadersOutSet( "Location", cUrl )		
 	
-		ErrorLevel( REDIRECTION )	
+		//ErrorLevel( REDIRECTION )	
 		
 		
 		
@@ -102,7 +102,13 @@ METHOD Redirect( cUrl ) CLASS TResponse
 		::Echo()
 		*/
 		
+
+	cHtml += '<script>'
+	cHtml += "window.location.replace( '" + cUrl + "'); "
+	cHtml += '</script>'
+
 		
+	::SendHtml( cHtml )									
 	
 RETU NIL
 

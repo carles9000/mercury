@@ -305,13 +305,19 @@ RETU
 
 //	Function for Trace lapsus
 
-function _t( cTrace )
+function _t( cTrace, cAction )
 
-	static nPos := NIL
+	thread static nPos := 0
 	
-	DEFAULT cTrace := ''
+	local nLen := 0
+	local cLog := ''
+	local nI
 	
-	if nPos == nil
+	
+	DEFAULT cTrace  := ''
+	DEFAULT cAction := ''
+	
+	if nPos == 0
 		Aadd( M->getList, array(1) )
 		nPos := len(M->getList)
 		M->getList[nPos] := {}
@@ -321,8 +327,28 @@ function _t( cTrace )
 	if !empty( cTrace )
 		Aadd( M->getList[nPos] , { cTrace, HB_MILLISECONDS() - M->getList[nPos][1][2]} )	
 	endif
+			
+	do case
+	
+		case cAction == 'show' 
+		
+			nLen := len(M->getList[nPos])
+			cLog := chr(13) + chr(10) + Replicate( '-', 60 ) +  chr(13) + chr(10)
+			
+			for nI := 2 to nLen 
+				cLog += M->getList[nPos][nI][1] + ': ' + ltrim(str(M->getList[nPos][nI][2])) + chr(13) + chr(10)
+			next
+			
+			cLog += Replicate( '-', 60 )
+			
+			_l( cLog, '/trace.txt' )				
+		
+	endcase
 
 retu M->getList[nPos]
+
+
+
 
 //	-------------------------------------------------------------------
 

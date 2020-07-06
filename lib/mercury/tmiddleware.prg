@@ -54,28 +54,35 @@ METHOD Exec( oController, cType, cRoute, hError ) CLASS TMiddleware
 	
 	cType := lower( cType )
 
+
 	DO CASE
 		CASE cType == 'jwt' 
 
 			lValidate := ::ValidateJWT()
+
 			
 			IF ! lValidate
-			
+
+
 				IF !empty( cRoute ) 
 			
 					IF right( lower(cRoute), 5 ) == '.view'
 
 				
 						//	Borrar cookie
+
 							oResponse:SetCookie( ::cId_Cookie, '', -1 )
 						
+
 						//	Redireccionamos pantalla incial
 							oController:View( cRoute )
 						
 					ELSE
 
+
 						oResponse:Redirect( Route( cRoute ) )
-						
+
+					
 					ENDIF 
 					
 				ELSE

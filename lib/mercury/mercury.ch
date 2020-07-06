@@ -16,4 +16,11 @@
 	[ <exc: EXCEPTION> <cMethod,...> ] [ ERROR JSON [<hError>]] ;
 => ;
 	<oController>:Middleware( [<cType>], [<cRoute>], [\{<cMethod>\}], [<hError>] )
+	
+	
+//	Token JWT ---------------------------------------------------------------------
+	
+#xcommand DEFINE JWT OF <oController> [ WITH <hToken> ] => <oController>:oMiddleware:SetAutenticationJWT( [<hToken>] )
+#xcommand CLOSE JWT OF <oController> => <oController>:oMiddleware:CloseJWT()
+#xcommand GET JWT <hData> OF <oController> => <hData> := <oController>:oMiddleware:GetDataJWT()
 
