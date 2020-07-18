@@ -15,7 +15,7 @@ FUNCTION Main()
 
 	//	Config Routes
 
-		DEFINE ROUTE 'default' URL '/' CONTROLLER 'default@mycontroller.prg' 	METHOD 'GET' OF oApp
+		DEFINE ROUTE 'default' URL '/' CONTROLLER 'default@examplecontroller.prg' 	METHOD 'GET' OF oApp
 
 		
 	//	System start...

@@ -1,14 +1,14 @@
-#include 'mercury.ch'
-#include "FileIO.ch"
+
 
 FUNCTION MercuryVersion() ; RETU MVC_VERSION 
 
-FUNCTION App()
+FUNCTION App( cTitle, uInit , cPsw, cId_Cookie, nTime  )
 	
-	STATIC oApp
+	thread STATIC oApp
 	
 	IF oApp == NIL
-		oApp := TApp():New()
+		//oApp := TApp():New()
+		oApp := TApp():New( cTitle, uInit , cPsw, cId_Cookie, nTime )
 	ENDIF
 
 RETU oApp

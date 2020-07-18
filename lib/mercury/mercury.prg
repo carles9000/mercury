@@ -5,9 +5,11 @@
 	Date: 			19/06/19	
 -------------------------------------------------------------------------------- */
 
-#define MVC_VERSION 			'Mercury v1.03'
+#define MVC_VERSION 			'Mercury v1.07'
+#define MERCURY_PATH 			'lib/'
+#define CRLF 					hb_OsNewLine()
 	
-#define MAP_METHOD 			1
+#define MAP_METHOD 				1
 #define MAP_ID 					2
 #define MAP_ROUTE				3
 #define MAP_CONTROLLER			4
@@ -17,14 +19,14 @@
 
 
 
-
 /*	-----------------------------------------------------------------------------
 	Si compilamos con harbour todos los módulos para generar el hrb, podemos ver
 	los errores de compilación y asi poder solucionar y limpiar code. Una vez 
 	tengamos la libreria generada, la tendremos de llamar desde el módulo principal
 	con ...
 -------------------------------------------------------------------------------- */	
-static hKeySecure := {=>}
+
+thread static hKeySecure := {=>}
 
 //	Se han de definir estos comandos pues los usamos en algunos módulos...
 #xcommand ? [<explist,...>] => AP_RPuts( '<br>' [,<explist>] )
@@ -37,11 +39,16 @@ static hKeySecure := {=>}
                [, <uVarN> := <uValN> ] => ;
                   If( <uVar1> == nil, <uVar1> := <uVal1>, ) ;;
                 [ If( <uVarN> == nil, <uVarN> := <uValN>, ); ]
+				
 //	-------------------------------------------------------------------------------- 
 
-#include "hbclass.ch" 
+#include "..\..\include\hbclass.ch" //	thread STATIC s_oClass Lin239
 #include "hboo.ch"   
+#include "common.ch" 
 #include "hbhash.ch" 
+#include "FileIO.ch"
+
+#include 'mercury.ch'
 
 #include "tapp.prg"   				//	Sistema TApp
 #include "tview.prg"   				//	Sistema View

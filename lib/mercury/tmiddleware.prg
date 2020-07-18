@@ -90,10 +90,10 @@ METHOD Exec( oController, cType, cRoute, hError ) CLASS TMiddleware
 					?? ''		//	White screen
 				
 				ENDIF
-
 			
 				//	Exit				
-					QUIT
+				//	QUIT
+		
 				
 			ENDIF
 			
@@ -106,7 +106,7 @@ METHOD Exec( oController, cType, cRoute, hError ) CLASS TMiddleware
 				oResponse:SendJson( hError )							
 				
 				//	Exit				
-					QUIT
+				//	QUIT
 				
 			ENDIF			
 			

@@ -1,1 +1,2 @@
+18/07/2020 Mercury adapted to threads (Many thanks Diego)
 01/04/2020 TValidator coding ANSI

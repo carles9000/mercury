@@ -4,8 +4,6 @@
 //	tenemos....
 //	-----------------------------------------------------------------------------------------
 
-#define CRLF hb_OsNewLine()
-
 
 FUNCTION zReplaceBlocks( cCode, cStartBlock, cEndBlock, oInfo, ... )
 
@@ -440,20 +438,26 @@ function ZAP_GetPairs( lUrlDecode )	//	Prototype
 		endif		
 	
 		IF ( uPair := At( "=", cPair ) ) > 0
-
+		
 			cKey := Left( cPair, uPair - 1 )			
-			
+
 			//	Chequeamos si existe la key en nuestro hPairs
 			
 			if ( nPos := HB_HPos( hPairs, cKey ) ) == 0
+		
 				hb_HSet( hPairs, cKey, SubStr( cPair, uPair + 1 ) )
-			else
+			else			
+
+				if valtype( hPairs[ cKey ] ) <> 'A'
 				
-				uValue 			:= hPairs[ cKey ] 				
-				hPairs[ cKey ] 	:= {}
+					uValue 			:= hPairs[ cKey ] 				
+					hPairs[ cKey ] 	:= {}
+					Aadd( hPairs[ cKey ], uValue )
+					
+				endif
 				
-				Aadd( hPairs[ cKey ], uValue )
 				Aadd( hPairs[ cKey ], SubStr( cPair, uPair + 1 ) )
+				
 			endif				
 			
 		else
@@ -461,6 +465,7 @@ function ZAP_GetPairs( lUrlDecode )	//	Prototype
 		endif
 	   
 	next
+
 
 return hPairs
 

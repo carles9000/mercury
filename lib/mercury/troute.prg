@@ -501,16 +501,21 @@ METHOD Execute( cController, hParam, aRouteSelect, lTEST, oNewRequest, oNewRespo
 				cCode := "#include 'hbclass.ch'" + HB_OsNewLine()
 				cCode += "#include 'hboo.ch' " + HB_OsNewLine()  
 				
+				cCode += "STATIC __lOk" + HB_OsNewLine()
 				cCode += "FUNCTION __RunController( o )" + HB_OsNewLine()  
-				cCode += "	LOCAL oC := " + cNameClass + "():New( o )" + HB_OsNewLine() 
+				cCode += "	LOCAL oC"  + HB_OsNewLine() 
+				cCode += "	__lOk := .T." + HB_OsNewLine()  
+				cCode += "	oC := " + cNameClass + "():New( o )" + HB_OsNewLine() 
 				
 				IF !Empty( cAction )
 				
 					cCode += "	IF __objHasMethod( oC, '" + cAction + "' ) "  + HB_OsNewLine() 
-					cCode += "		oC:" + cAction + "(o) "  + HB_OsNewLine() 
+					cCode += "		IF __lOk" + + HB_OsNewLine() 
+					cCode += "		    oC:" + cAction + "(o) "  + HB_OsNewLine() 
+					cCode += "		ENDIF" + HB_OsNewLine() 
 					cCode += "	ELSE "  + HB_OsNewLine() 
 					cCode += "		App():ShowError( 'Método <b>" + cAction  + "()</b> no definido en el controller " + cFile + "', 'TController Error!' ) "  + HB_OsNewLine() 				
-					cCode += "		QUIT "  + HB_OsNewLine() 				
+					//cCode += "		QUIT "  + HB_OsNewLine() 				
 					cCode += "	ENDIF "  + HB_OsNewLine() 
 				
 				ENDIF

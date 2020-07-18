@@ -1,7 +1,5 @@
-#include "FileIO.ch"
-#include "common.ch"
 
-#define MERCURY_PATH 		'lib/'
+
 
 function MercuryInclude( cPath )
 
