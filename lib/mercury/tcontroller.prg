@@ -10,6 +10,7 @@ CLASS TController
 	DATA cAction 													INIT ''
 	DATA hParam														INIT {=>}
 	DATA aRouteSelect												INIT {=>}
+	DATA lAutenticate												INIT .T.
 
 
 	
@@ -62,10 +63,10 @@ METHOD Middleware( cType, cRoute, aExceptionMethods, hError ) CLASS TController
 	
 	DO CASE
 		CASE cType == 'jwt'
-			retu ::oMiddleware:Exec( SELF, cType, cRoute, hError )
+			retu ::lAutenticate := ::oMiddleware:Exec( SELF, cType, cRoute, hError )
 			
 		CASE cType == 'token'
-			retu ::oMiddleware:Exec( SELF, cType, cRoute, hError )			
+			retu ::lAutenticate := ::oMiddleware:Exec( SELF, cType, cRoute, hError )			
 	
 		CASE cType == 'rool'				
 		

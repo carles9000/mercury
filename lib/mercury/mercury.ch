@@ -15,7 +15,7 @@
 #xcommand AUTENTICATE CONTROLLER <oController> [ VIA <cType> ] [<err:ERROR ROUTE, DEFAULT> <cRoute>] ;
 	[ <exc: EXCEPTION> <cMethod,...> ] [ ERROR JSON [<hError>]] ;
 => ;
-	__lOk := <oController>:Middleware( [<cType>], [<cRoute>], [\{<cMethod>\}], [<hError>] )
+	__Autenticate := <oController>:Middleware( [<cType>], [<cRoute>], [\{<cMethod>\}], [<hError>] )
 	
 	
 //	Token JWT ---------------------------------------------------------------------
