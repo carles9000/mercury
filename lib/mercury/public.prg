@@ -95,7 +95,7 @@ FUNCTION _l( uValue, cFile )
 
 		fClose( hFile )
    
-RETU nil  
+RETU nil 
 
 //	-------------------------------------------------------	//
 //	From Fivewin.lib

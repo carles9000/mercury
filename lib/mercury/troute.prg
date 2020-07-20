@@ -514,7 +514,7 @@ METHOD Execute( cController, hParam, aRouteSelect, lTEST, oNewRequest, oNewRespo
 					cCode += "		    oC:" + cAction + "(o) "  + HB_OsNewLine() 
 					cCode += "		ENDIF" + HB_OsNewLine() 
 					cCode += "	ELSE "  + HB_OsNewLine() 
-					cCode += "		App():ShowError( 'Método <b>" + cAction  + "()</b> no definido en el controller " + cFile + "', 'TController Error!' ) "  + HB_OsNewLine() 				
+					cCode += "		App():ShowError( 'Method <b>" + cAction  + "()</b> not defined in " + cFile + " controller.', 'Controller Error!' ) "  + HB_OsNewLine() 				
 					//cCode += "		QUIT "  + HB_OsNewLine() 				
 					cCode += "	ENDIF "  + HB_OsNewLine() 
 				
@@ -561,21 +561,6 @@ METHOD Execute( cController, hParam, aRouteSelect, lTEST, oNewRequest, oNewRespo
 
 		IF lTEST
 
-			
-			//? oNewRequest
-
-			
-			oTController 					:= TController():New( cAction, hParam )
-			//oTController:oRoute  			:= SELF
-			oTController:oRequest  			:= oNewRequest // TRequest():New(.T.) 	//App():oRequest //oNewRequest  	//TRequest():New() 	//::oRequest
-			oTController:oResponse 			:= oNewResponse // App():oResponse //::oResponse		
-			oTController:oMiddleware		:= App():oMiddleware
-			oTController:aRouteSelect  		:= aRouteSelect
-
-			//zexecute( cCode, oInfo , oTController )
-			execute( cCode, oTController )
-			
-			QUIT
 		ELSE
 
 			zExecute( cCode, oInfo, oTController )
@@ -583,7 +568,7 @@ METHOD Execute( cController, hParam, aRouteSelect, lTEST, oNewRequest, oNewRespo
 
 	ELSE
 	
-		::ShowError( 'No existe controller ==> <strong> ' + cFile + '</strong>' )
+		::ShowError( "Doesn't exist controller ==> <strong> " + cFile + '</strong>' )
 		LOG 'Error: No existe Controller: ' + cFile 
 	
 	ENDIF

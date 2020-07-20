@@ -50,7 +50,7 @@ METHOD Load( cFile ) CLASS TView
 	
 		LOG 'Error: No existe Vista: ' + cFile 		
 			
-		App():ShowError( 'No existe Vista: ' +  cFile,  'TView Error!' )						
+		App():ShowError( "Doesn't exist view ==> <strong> " +  cFile + "<strong>",  'Route Error!' )						
 	
 	ENDIF	
 	
@@ -64,8 +64,6 @@ METHOD Exec( cFile, ... ) CLASS TView
 	LOCAL cCode  	:= ::Load( cFile )
 	LOCAL oInfo 	:= { => }
 	LOCAL oExecute 
-
-
 	
 	IF !empty( cCode )
 
@@ -84,11 +82,10 @@ METHOD Exec( cFile, ... ) CLASS TView
 	
 		//	AP_RPuts( zInlinePrg( cCode, oInfo,... ) )	
 		
-		//	La salida siempre la habr de hacer el objeto oResponse		
+		//	La salida siempre la habr de hacer el objeto oResponse	
 
 			cHtml := zInlinePrg( @cCode, oInfo,... )  
-			//cHtml := InlinePrg( @cCode,... )  
-	
+			//cHtml := InlinePrg( @cCode,... )  	
 
 			IF empty( cHtml )
 				cHtml := ''

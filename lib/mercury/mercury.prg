@@ -5,7 +5,7 @@
 	Date: 			19/06/19	
 -------------------------------------------------------------------------------- */
 
-#define MVC_VERSION 			'Mercury v1.07'
+#define MVC_VERSION 			'Mercury v1.08'
 #define MERCURY_PATH 			'lib/'
 #define CRLF 					hb_OsNewLine()
 	
@@ -27,6 +27,7 @@
 -------------------------------------------------------------------------------- */	
 
 thread static hKeySecure := {=>}
+thread static __hCargo 	:= {=>}
 
 //	Se han de definir estos comandos pues los usamos en algunos módulos...
 #xcommand ? [<explist,...>] => AP_RPuts( '<br>' [,<explist>] )
@@ -64,6 +65,7 @@ thread static hKeySecure := {=>}
 #include "jwt.prg"					//	Sistema JWT (Json Web Token)
 #include "preapache.prg"			//	Funcs. mod harbour apache
 #include "public.prg"				//	Funcs. public
+#include "errorsys.prg"				//	Funcs. Error
 
 
 

@@ -7,8 +7,8 @@
 
 FUNCTION zReplaceBlocks( cCode, cStartBlock, cEndBlock, oInfo, ... )
 
-    LOCAL bErrorHandler 	:= { |oError | AP_CompileErrorHandler(oError, oInfo, 'Error Blocs' ) }
-	LOCAL bLastHandler 	:= ErrorBlock(bErrorHandler)
+    //LOCAL bErrorHandler 	:= {|oError| GetErrorInfo( oError, cCode, oInfo ), Break(oError) }  
+	//LOCAL bLastHandler 		:= ErrorBlock(bErrorHandler)
 	LOCAL lReplaced 		:= .F.
 	LOCAL nStart, nEnd, cBlock
 	LOCAL uValue, bBloc 	
@@ -17,6 +17,7 @@ FUNCTION zReplaceBlocks( cCode, cStartBlock, cEndBlock, oInfo, ... )
    
 	hb_default( @cStartBlock, "{{" )
 	hb_default( @cEndBlock, "}}" )
+	hb_default( @oInfo, {=>} )
 
 	oInfo[ 'block' ] := 0    	
 	
@@ -25,7 +26,8 @@ FUNCTION zReplaceBlocks( cCode, cStartBlock, cEndBlock, oInfo, ... )
 	__pp_addRule( hPP, "#xcommand PARAM <nParam>,<uIndex> => AP_Get( hb_pvalue(<nParam>),<uIndex> )" )
     __pp_addRule( hPP, "#xcommand DEFAULT <v1> TO <x1> [, <vn> TO <xn> ] => ;" + ;
                       "IF <v1> == NIL ; <v1> := <x1> ; END [; IF <vn> == NIL ; <vn> := <xn> ; END ]" )	
-
+					  
+					  
 	WHILE ( nStart := At( cStartBlock, cCode ) ) != 0 .and. ;
           ( nEnd := At( cEndBlock, cCode ) ) != 0		 
 		 
@@ -37,12 +39,14 @@ FUNCTION zReplaceBlocks( cCode, cStartBlock, cEndBlock, oInfo, ... )
 		cBlock := SubStr( cCode, nStart + Len( cStartBlock ), nEnd - nStart - Len( cEndBlock ) )
 		cBlock := alltrim(cBlock)
 		uValue := ''
+	
 		
 		oInfo[ 'code' ] := cBlock
 		
 	    IF !empty( cBlock )
 		  
 			cBlock := __pp_process( hPP, cBlock )
+
 
 			bBloc  := &( '{|...| '  + cBlock + ' }' )
 			uValue := Eval( bBloc, ... )
@@ -56,15 +60,15 @@ FUNCTION zReplaceBlocks( cCode, cStartBlock, cEndBlock, oInfo, ... )
 	    ENDIF
 	  
 		cCode  := cCodeA + uValue + cCodeB
-	  
 		lReplaced := .T.
     end
-	
+  
 	oInfo[ 'code' ] := cCode
    
-    ErrorBlock(bLastHandler) // Restore handler    
-   
-RETU lReplaced
+    //ErrorBlock(bLastHandler) // Restore handler    
+
+RETU If( HB_PIsByRef( 1 ), lReplaced, cCode )
+
 
 FUNCTION AP_Get( uValue, uInd )
 
@@ -100,116 +104,7 @@ FUNCTION AP_Get( uValue, uInd )
 
 RETU valtochar( uValue )
 
-FUNCTION AP_CompileErrorHandler( oError, oInfo, cTitle )	
 
-	LOCAL cArgs 		:= ''
-	LOCAL n
-	LOCAL aError		:= {}
-	LOCAL cCallStack  := ''
-	LOCAL cCode 		:= ''
-
-	//LOCAL a 			:= __objGetMsgList( oError, .T. )
-	
-
-	Aadd( aError, { 'Filename', oInfo[ 'file' ] } )
-	//Aadd( aError, { 'File...', oError:filename } )
-	Aadd( aError, { 'Error', oError:description } )
-	Aadd( aError, { 'Operation', valtochar( oError:operation)  } )
-	
-    IF ValType( oError:Args ) == "A"
-      cArgs += "   Args:" + CRLF
-      for n = 1 to Len( oError:Args )
-	  
-		IF ValType( oError:Args[ n ] ) $ 'CNDMAH'
-			cArgs += "[" + Str( n, 4 ) + "] = " + ValType( oError:Args[ n ] ) + ;
-					"   " + hb_ValToExp( oError:Args[ n ] ) + hb_OsNewLine()
-					//"   " + ValToChar( oError:Args[ n ] ) + hb_OsNewLine()
-		ELSE
-			cArgs += "[" + Str( n, 4 ) + "] = " + ValType( oError:Args[ n ] ) + hb_OsNewLine()
-		ENDIF
-      next
-    ENDIF			
-	
-    IF !empty( cArgs )
-		Aadd( aError, { 'Args', cArgs } )
-	ENDIF
-	
-	Aadd( aError, { 'Error Code', valtochar( oError:subsystem ) + ' ' + valtochar( oError:subcode ) } )
-
-	
-	//Aadd( aError, { 'Error(1)', valtochar(oError:gencode) } )
-	
-	if hb_hhaskey( oInfo, 'block' ) .AND. oInfo[ 'block' ] > 0
-		Aadd( aError, { 'Num. Code Block', ltrim(str(oInfo[ 'block' ])) } )
-	endif	
-
-	cCode := StrTran( oInfo[ 'code'], CRLF, '<br>' )	
-	
-	//	De momento capado para que no muestre code...
-	//	Aadd( aError, { 'Source', cCode } )	
-	//	Quizas podriamos generar un log...
-   
-	
-
-	/*
-    n = 0
-    while ! Empty( ProcName( n ) )
-      cCallStack += "called from: " + ProcName( n ) + ", line: " + AllTrim( Str( ProcLine( n ) ) ) + "<br>" + CRLF
-      n++
-    end 
-	Aadd( aError, { 'Statck', cCallStack } )	
-	*/
-
-	AP_ShowCompileError( aError, cTitle )
-
-    BREAK oError      // RETU error object to RECOVER	  
-
-RETU NIL
-
-FUNCTION AP_ShowCompileError( aError, cTitle )
-
-	LOCAL nI
-	LOCAL nLen := len( aError )
-	LOCAL cText
-	LOCAL cHtml := ''
-
-	cHtml += '<meta charset="utf-8">'
-	cHtml += '<body style="background-color: #ececec;">'
-	cHtml += '<h4>' + cTitle + '<hr></h4>'
-	cHtml += '<style>'
-	cHtml += '  .errortype {'
-	cHtml += '     text-align: right;'
-	cHtml += '     padding: 5px;'
-	cHtml += '  }'
-	cHtml += '  .errortxt {'
-	cHtml += '     padding: 5px;'
-	cHtml += '  }'	
-	cHtml += '</style>'
-
-	cHtml +=  '<table border="1" style="background-color: white; width: 100%;">'
-	
-	FOR nI := 1 TO nLen	
-
-		//	Sustituyo <br> imprimible por real...
-		cText :=  UHtmlEncode((aError[nI][2])) 		
-		cText := Alltrim(StrTran( cText, '&lt;br&gt;', '<br>' ))
-		
-		IF !empty( cText )
-			cHtml +=  '<tr>'
-			cHtml +=  '<td class="errortype"><b>' + aError[nI][1] + '</b></td>' 				
-			cHtml +=  '<td class="errortxt">' + cText + '</td>' 
-			cHtml +=  '</tr>'
-		ENDIF
-		
-	NEXT	
-	
-	cHtml +=  '</table>' 
-	cHtml +=  '</body>' 
-	
-	//ErrorLevel( 400 )
-	? cHtml
-
-RETU ''
 
 
 FUNCTION zInlinePRG( cText, oInfo, ... )
@@ -217,9 +112,10 @@ FUNCTION zInlinePRG( cText, oInfo, ... )
 
 	LOCAl BlocA, BlocB
 	LOCAL nStart, nEnd, cCode, cResult
-
-	oInfo[ 'block' ] := 0  
 	
+	DEFAULT oInfo TO {=>}
+
+	oInfo[ 'block' ] := 0  	
 	
 	WHILE ( nStart := At( "<?prg", cText ) ) != 0
 	
@@ -232,11 +128,8 @@ FUNCTION zInlinePRG( cText, oInfo, ... )
 		cCode := SubStr( cText, nStart + 5, nEnd - 1 )
 
 		oInfo[ 'code' ] := cCode 
-		
-		
 	  
 		cResult := zExecInline( cCode, oInfo, ... ) 
-
 		
 		IF Valtype( cResult ) <> 'C' 
 			//	Pendiente de provocar Error
@@ -247,7 +140,6 @@ FUNCTION zInlinePRG( cText, oInfo, ... )
 		cText 	:= BlocA + cResult + BlocB              
  
 	END
-    
    
 RETU cText
 
@@ -261,13 +153,15 @@ RETU zExecute( "function __Inline()" + HB_OsNewLine() + cCode, oInfo, ... )
 FUNCTION zExecute( cCode, oInfo, ... )
 
 	STATIC hPP
-    //LOCAL bErrorHandler 	:= { |oError | AP_CompileErrorHandler(oError, oInfo, 'Error PRG' ) }
-	//LOCAL bLastHandler 	:= ErrorBlock(bErrorHandler)   
+	
     LOCAL oHrb, uRet
     local cHBheaders1 := "~/harbour/include"
     LOCAL cHBheaders2 
+	LOCAL bErrorHandler 	:= {|oError| GetErrorInfo( oError, @cCode, oInfo ), Break(oError) } 
+	LOCAL bLastHandler 		:= ErrorBlock(bErrorHandler)
+
 	
-	ErrorBlock( { | oError | AP_RPuts( GetErrorInfo( oError, @cCode ) ), Break( oError ) } )
+	__hCargo[ '__oInfo' ] :=  oInfo 	//	Usado en zBlocks para conocer la file
 	
 	//	Si no funciona htacces...
 	IF empty( AP_GETENV( 'PATH_APP' ) )
@@ -276,7 +170,7 @@ FUNCTION zExecute( cCode, oInfo, ... )
 		cHBheaders2 := AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_APP' ) + "/include"	//	"c:\harbour\include"
 	ENDIF
 
-	IF hPP == NIL
+	//IF hPP == NIL
 
 		hPP := __pp_init()
 		__pp_path( hPP, "~/harbour/include" )
@@ -299,12 +193,21 @@ FUNCTION zExecute( cCode, oInfo, ... )
 		__pp_addRule( hPP, "#xcommand PARAM <nParam> => AP_Get( IF( valtype( pvalue(<nParam>) ) <> 'U', pvalue(<nParam>), '' ) )" )
 		__pp_addRule( hPP, "#xcommand PARAM <nParam>,<uIndex> => AP_Get( hb_pvalue(<nParam>),<uIndex> )" )					  
 		__pp_addRule( hPP, "#xcommand TEXT <into:TO,INTO> <v> => #pragma __cstream|<v>:=%s" )					  
-		__pp_addRule( hPP, "#xcommand BLOCKS VIEW <v>[ PARAMS [<v1>] [,<vn>] ] => " + ;
-					"#pragma __cstream |<v>+= InlinePrg( ReplaceBlocks( %s, '<$', '$>' [,<(v1)>][+','+<(vn)>] [, @<v1>][, @<vn>] ) )" )	
-	
-	ENDIF
+		
+		
+		//__pp_addRule( hPP, "#xcommand OLDBLOCKS VIEW <v>[ PARAMS [<v1>] [,<vn>] ] => " + ;
+		//			"#pragma __cstream |<v>+= InlinePrg( ReplaceBlocks( %s, '<$', '$>' [,<(v1)>][+','+<(vn)>] [, @<v1>][, @<vn>] ) )" )
 
+		__pp_addRule( hPP, "#xcommand BLOCKS VIEW <v>[ PARAMS [<v1>] [,<vn>] ] => " + ;
+					"#pragma __cstream |<v>+= zBlocks( %s [,<(v1)>][+','+<(vn)>] [, @<v1>][, @<vn>] )" )					
+							
+	
+	
+	//ENDIF
+
+	
 	cCode = __pp_process( hPP, cCode )
+
 	
 
     oHrb = HB_CompileFromBuf( cCode, .T., "-n", "-I" + cHBheaders1, "-I" + cHBheaders2,;
@@ -312,10 +215,7 @@ FUNCTION zExecute( cCode, oInfo, ... )
 
     IF ! Empty( oHrb )
        uRet = hb_HrbDo( hb_HrbLoad( oHrb ), ... )
-    ENDIF
- 
-
-    //ErrorBlock(bLastHandler) // Restore handler       
+    ENDIF		   
    
 RETU uRet
 
@@ -469,5 +369,56 @@ function ZAP_GetPairs( lUrlDecode )	//	Prototype
 
 return hPairs
 
+//----------------------------------------------------------------//
+
+function zBlocks( cCode, cParams, ... )
+
+	local cText 	
+	local oInfo	:= __hCargo[ '__oInfo' ]
+	
+	cText := yReplaceBlocks( cCode, oInfo,  cParams, ... )
+	
+	cText := yInlinePRG( cText, oInfo )
+
+retu cText
+
+function yReplaceBlocks( cCode, oInfo, cParams, ... )
+
+   local nStart, nEnd, cBlock
+   local cStartBlock := "<$"
+   local cEndBlock 	:= "$>"
+
+   hb_default( @cParams, "" )
+
+   while ( nStart := At( cStartBlock, cCode ) ) != 0 .and. ;
+         ( nEnd := At( cEndBlock, cCode ) ) != 0
+		 
+      cBlock := SubStr( cCode, nStart + Len( cStartBlock ), nEnd - nStart - Len( cEndBlock ) )
+      cCode  := SubStr( cCode, 1, nStart - 1 ) + ;
+                ValToChar( Eval( &( "{ |" + cParams + "| " + cBlock + " }" ), ... ) ) + ;
+      SubStr( cCode, nEnd + Len( cEndBlock ) )
+          
+   end
+   
+return cCode 
+
+//----------------------------------------------------------------//
+
+function yInlinePRG( cText, oInfo )
+
+   local nStart, nEnd, cCode, cResult
+   
+
+   while ( nStart := At( "<?prg", cText ) ) != 0
+   
+      nEnd  := At( "?>", SubStr( cText, nStart + 5 ) )
+      cCode := SubStr( cText, nStart + 5, nEnd - 1 )
+
+      cText := SubStr( cText, 1, nStart - 1 ) + ( cResult := zExecInline( cCode, oInfo ) ) + ;
+               SubStr( cText, nStart + nEnd + 6 )
+
+   end 
+   
+return cText
 
 //----------------------------------------------------------------//

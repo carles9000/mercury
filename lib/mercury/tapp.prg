@@ -150,14 +150,9 @@ METHOD ShowError( cError, cTitle ) CLASS TApp
 	endif
 	
 	__defaultNIL( @cError, '' )
-	__defaultNIL( @cTitle, 'Error' )	
-	
-	?? '<meta charset="utf-8" />' 
-	
-	?? '<h3>' + cTitle + '<hr></h3>'
-	
-	?? '<h4>' + cError + '</h3><hr>'
+	__defaultNIL( @cTitle, 'Error' )		
 
+	MercuryError( cError, cTitle )
 
 RETU NIL
 
