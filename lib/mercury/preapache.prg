@@ -7,8 +7,8 @@
 
 FUNCTION zReplaceBlocks( cCode, cStartBlock, cEndBlock, oInfo, ... )
 
-    //LOCAL bErrorHandler 	:= {|oError| GetErrorInfo( oError, cCode, oInfo ), Break(oError) }  
-	//LOCAL bLastHandler 		:= ErrorBlock(bErrorHandler)
+    LOCAL bErrorHandler 	:= {|oError| GetErrorInfo( oError, cCode, oInfo ), Break(oError) }  
+	LOCAL bLastHandler 		:= ErrorBlock(bErrorHandler)
 	LOCAL lReplaced 		:= .F.
 	LOCAL nStart, nEnd, cBlock
 	LOCAL uValue, bBloc 	
@@ -39,10 +39,9 @@ FUNCTION zReplaceBlocks( cCode, cStartBlock, cEndBlock, oInfo, ... )
 		cBlock := SubStr( cCode, nStart + Len( cStartBlock ), nEnd - nStart - Len( cEndBlock ) )
 		cBlock := alltrim(cBlock)
 		uValue := ''
-	
 		
 		oInfo[ 'code' ] := cBlock
-		
+
 	    IF !empty( cBlock )
 		  
 			cBlock := __pp_process( hPP, cBlock )
@@ -65,7 +64,7 @@ FUNCTION zReplaceBlocks( cCode, cStartBlock, cEndBlock, oInfo, ... )
   
 	oInfo[ 'code' ] := cCode
    
-    //ErrorBlock(bLastHandler) // Restore handler    
+    ErrorBlock(bLastHandler) // Restore handler    
 
 RETU If( HB_PIsByRef( 1 ), lReplaced, cCode )
 
@@ -132,11 +131,10 @@ FUNCTION zInlinePRG( cText, oInfo, ... )
 		cResult := zExecInline( cCode, oInfo, ... ) 
 		
 		IF Valtype( cResult ) <> 'C' 
-			//	Pendiente de provocar Error
-			? '<h3>Error Code<hr></h3>'
-			? oInfo[ 'file' ], '==> <b>prg no devuelve string</b>'
-			quit			
+			DoError( "Don't return string", oInfo, 'Prg Block' )
+			retu ''		//	No podemos usar QUIT 
 		ENDIF
+		
 		cText 	:= BlocA + cResult + BlocB              
  
 	END
@@ -170,7 +168,7 @@ FUNCTION zExecute( cCode, oInfo, ... )
 		cHBheaders2 := AP_GETENV( 'DOCUMENT_ROOT' ) + AP_GETENV( 'PATH_APP' ) + "/include"	//	"c:\harbour\include"
 	ENDIF
 
-	//IF hPP == NIL
+	IF hPP == NIL
 
 		hPP := __pp_init()
 		__pp_path( hPP, "~/harbour/include" )
@@ -203,7 +201,7 @@ FUNCTION zExecute( cCode, oInfo, ... )
 							
 	
 	
-	//ENDIF
+	ENDIF
 
 	
 	cCode = __pp_process( hPP, cCode )

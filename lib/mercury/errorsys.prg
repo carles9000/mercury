@@ -16,19 +16,20 @@ function GetErrorInfo( oError, cCode, oInfo )
 		endif 
 	else
 	
-		if valtype( oInfo ) == 'H' 
-			//cCodeError := oInfo[ 'code' ]
+		if valtype( oInfo ) == 'H' 							
+		
+			//cCodeError := cCode
 			
 			cCodeError := UHtmlEncode( oInfo[ 'code' ] )
 			cCodeError := StrTran( cCodeError, '\n', '<br>' )
 			cCodeError := StrTran( cCodeError, '\t', ' ' )			
 			
+			
 		endif
 		
 	endif	
 	
-
-	
+		
 	if valtype( oInfo ) == 'H'
 	
 		TEXT TO cHtml PARAMS oInfo
@@ -212,3 +213,18 @@ function MercuryError( cDescription, cTitle )
 	?? cHtml	
 
 retu ''
+
+function DoError( cDescription, oInfo, cOperation )
+
+	local oError := ErrorNew()
+	
+	DEFAULT cOperation := ''
+	
+	oError:Subsystem   := "Mercury"
+	oError:Severity    := 2	//	ES_ERROR
+	oError:Operation   := cOperation
+	oError:Description := cDescription 
+	
+	Eval( ErrorBlock(), oError, '', oInfo )
+		
+retu nil
