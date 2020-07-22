@@ -40,7 +40,7 @@ METHOD New( cAction, hPar  ) CLASS TController
 
 RETU Self
 
-METHOD Middleware( cType, cRoute, aExceptionMethods, hError ) CLASS TController
+METHOD Middleware( cType, cRoute, aExceptionMethods, hError, lJson ) CLASS TController
 
 	local nPos := 0
 
@@ -48,6 +48,7 @@ METHOD Middleware( cType, cRoute, aExceptionMethods, hError ) CLASS TController
 	DEFAULT cRoute 				:= ''
 	DEFAULT aExceptionMethods  	:= array()
 	DEFAULT hError  				:= { 'success' => .f., 'error' => 'Error autentication' }
+	DEFAULT lJson  				:= .F.
 	
 	//	If exist some exception, don't autenticate
 
@@ -63,10 +64,10 @@ METHOD Middleware( cType, cRoute, aExceptionMethods, hError ) CLASS TController
 	
 	DO CASE
 		CASE cType == 'jwt'
-			retu ::lAutenticate := ::oMiddleware:Exec( SELF, cType, cRoute, hError )
+			retu ::lAutenticate := ::oMiddleware:Exec( SELF, cType, cRoute, hError, lJson )
 			
 		CASE cType == 'token'
-			retu ::lAutenticate := ::oMiddleware:Exec( SELF, cType, cRoute, hError )			
+			retu ::lAutenticate := ::oMiddleware:Exec( SELF, cType, cRoute, hError, lJson )			
 	
 		CASE cType == 'rool'				
 		

@@ -44,13 +44,15 @@ METHOD New() CLASS TMiddleware
 RETU Self
 
 
-METHOD Exec( oController, cType, cRoute, hError ) CLASS TMiddleware
+METHOD Exec( oController, cType, cRoute, hError, lJson ) CLASS TMiddleware
 
 	LOCAL lValidate 	:= .F.
 	LOCAL oResponse 	:= App():oResponse
 
 	__defaultNIL( @cType, '' )		//	Por defecto habria de ser 'jwt'
 	__defaultNIL( @cRoute, '' )		
+	__defaultNIL( @hError, { 'success' => .f., 'error' => 'Error autentication' } )		
+	__defaultNIL( @lJson, .F. )		
 	
 	cType := lower( cType )
 
@@ -87,7 +89,11 @@ METHOD Exec( oController, cType, cRoute, hError ) CLASS TMiddleware
 					
 				ELSE
 				
-					?? ''		//	White screen
+					IF lJson 
+						oResponse:SendJson( hError )	
+					else														
+						?? ''		//	White screen					
+					endif
 				
 				ENDIF
 			

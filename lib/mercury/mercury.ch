@@ -13,9 +13,9 @@
 #xcommand INIT APP <oApp> => <oApp>:Init()
 
 #xcommand AUTENTICATE CONTROLLER <oController> [ VIA <cType> ] [<err:ERROR ROUTE, DEFAULT> <cRoute>] ;
-	[ <exc: EXCEPTION> <cMethod,...> ] [ ERROR JSON [<hError>]] ;
+	[ <exc: EXCEPTION> <cMethod,...> ] [ <json:ERROR JSON> [<hError>]] ;
 => ;
-	__lAutenticate := <oController>:Middleware( [<cType>], [<cRoute>], [\{<cMethod>\}], [<hError>] )
+	__lAutenticate := <oController>:Middleware( [<cType>], [<cRoute>], [\{<cMethod>\}], [<hError>], [<.json.>] )
 	
 	
 //	Token JWT ---------------------------------------------------------------------
