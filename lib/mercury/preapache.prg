@@ -19,7 +19,7 @@ FUNCTION zReplaceBlocks( cCode, cStartBlock, cEndBlock, oInfo, ... )
 	hb_default( @cEndBlock, "}}" )
 	hb_default( @oInfo, {=>} )
 
-	oInfo[ 'block' ] := 0    	
+	oInfo[ 'block' ] := 0    
 	
     hPP := __pp_init()
 	__pp_addRule( hPP, "#xcommand PARAM <nParam> => AP_Get( IF( valtype( pvalue(<nParam>) ) <> 'U', pvalue(<nParam>), '' ) )" )
@@ -111,6 +111,7 @@ FUNCTION zInlinePRG( cText, oInfo, ... )
 
 	LOCAl BlocA, BlocB
 	LOCAL nStart, nEnd, cCode, cResult
+
 	
 	DEFAULT oInfo TO {=>}
 
@@ -160,6 +161,7 @@ FUNCTION zExecute( cCode, oInfo, ... )
 
 	
 	__hCargo[ '__oInfo' ] :=  oInfo 	//	Usado en zBlocks para conocer la file
+
 	
 	//	Si no funciona htacces...
 	IF empty( AP_GETENV( 'PATH_APP' ) )

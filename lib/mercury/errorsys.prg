@@ -1,10 +1,13 @@
 function GetErrorInfo( oError, cCode, oInfo ) 
 
-	local aLines
-	local nI , n, nLine
-	local cCodeError := ''
-	local cHtml := DoHeadError()
+	local cCodeError 	:= ''
+	local lShowCode 	:= HB_GetEnv( 'SET_ERRORLEVEL' ) <> '1'
+	local cHtml 		:= DoHeadError()
+	local aLines, nI , n, nLine
 	
+	
+	//? 'Errorlevel', HB_GetEnv( 'SET_ERRORLEVEL' ), valtype(  HB_GetEnv( 'SET_ERRORLEVEL' ) )
+	//? oError
 	
 	if oError:subsystem == 'COMPILER'
 	
@@ -35,7 +38,7 @@ function GetErrorInfo( oError, cCode, oInfo )
 		TEXT TO cHtml PARAMS oInfo
 		
 			<tr>
-				<td class="errortype"><b>Filename</b></td>
+				<td class="errortype"><b>File Source</b></td>
 				<td class="errortxt"><$ oInfo[ 'file' ] $></td>
 			</tr>				
 			
@@ -43,12 +46,21 @@ function GetErrorInfo( oError, cCode, oInfo )
 	
 	endif
 	
-	TEXT TO cHtml PARAMS oError, cCodeError
+	if lShowCode
 	
-		<tr>
-			<td class="errortype"><b>Code</b></td>
-			<td class="errortxt"><pre><$ cCodeError $></pre></td>
-		</tr>		
+		TEXT TO cHtml PARAMS oError, cCodeError
+		
+			<tr>
+				<td class="errortype"><b>Code</b></td>
+				<td class="errortxt"><pre><$ cCodeError $></pre></td>
+			</tr>		
+			
+		ENDTEXT
+	
+	endif
+		
+	
+	TEXT TO cHtml PARAMS oError
 	
 		<tr>
 			<td class="errortype"><b>Description</b></td>
@@ -58,8 +70,24 @@ function GetErrorInfo( oError, cCode, oInfo )
 		<tr>
 			<td class="errortype"><b>Operation</b></td>
 			<td class="errortxt"><$ oError:operation $></td>
-		</tr>	
+		</tr>
 
+	ENDTEXT
+
+	if !empty( oError:filename )
+	
+		TEXT TO cHtml PARAMS oError
+		
+			<tr>
+				<td class="errortype"><b>File</b></td>
+				<td class="errortxt"><$ oError:filename $></td>
+			</tr>
+
+		ENDTEXT			
+		
+	endif
+	
+	TEXT TO cHtml PARAMS oError
 		<tr>
 			<td class="errortype"><b>Subsytem</b></td>
 			<td class="errortxt"><$ oError:subsystem $></td>
@@ -67,7 +95,7 @@ function GetErrorInfo( oError, cCode, oInfo )
 		
 	ENDTEXT	
 	
-	if oError:subsystem == 'COMPILER'
+	if oError:subsystem == 'COMPILER' .AND. lShowCode
 	
 		TEXT TO cHtml 
 			<tr>
@@ -104,6 +132,7 @@ function GetErrorInfo( oError, cCode, oInfo )
 	ENDTEXT 	
 	
 	?? cHtml
+
 	
 retu ''
 

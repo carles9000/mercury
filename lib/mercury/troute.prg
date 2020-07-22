@@ -507,8 +507,8 @@ METHOD Execute( cController, hParam, aRouteSelect, lTEST, oNewRequest, oNewRespo
 				cCode += "	__lAutenticate := .T." + HB_OsNewLine()  
 				cCode += "	oC := " + cNameClass + "():New( o )" + HB_OsNewLine() 
 				
-				IF !Empty( cAction )
-				
+				IF !Empty( cAction )				
+			
 					cCode += "	IF __objHasMethod( oC, '" + cAction + "' ) "  + HB_OsNewLine() 
 					cCode += "		IF __lAutenticate" + + HB_OsNewLine() 
 					cCode += "		    oC:" + cAction + "(o) "  + HB_OsNewLine() 

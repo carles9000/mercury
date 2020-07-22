@@ -5,7 +5,7 @@
 	Date: 			19/06/19	
 -------------------------------------------------------------------------------- */
 
-#define MVC_VERSION 			'Mercury v1.08'
+#define MVC_VERSION 			'Mercury v1.08b'
 #define MERCURY_PATH 			'lib/'
 #define CRLF 					hb_OsNewLine()
 	
@@ -26,8 +26,9 @@
 	con ...
 -------------------------------------------------------------------------------- */	
 
-thread static hKeySecure := {=>}
+thread static hKeySecure  := {=>}
 thread static __hCargo 	:= {=>}
+
 
 //	Se han de definir estos comandos pues los usamos en algunos módulos...
 #xcommand ? [<explist,...>] => AP_RPuts( '<br>' [,<explist>] )

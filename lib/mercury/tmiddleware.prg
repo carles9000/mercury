@@ -100,6 +100,7 @@ METHOD Exec( oController, cType, cRoute, hError ) CLASS TMiddleware
 		CASE cType == 'token' 
 
 			lValidate := ::ValidateToken()
+
 			
 			IF ! lValidate			
 				
