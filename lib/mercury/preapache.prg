@@ -250,13 +250,38 @@ RETU ''
 
 //	zInclude() no queda bonita en el prg. Crearemos LoadFile()
 
+/*	-----------------------------------------------------------------------
+	En el modulo de Diego si p.e. tenemos la directiva 
+		#ifndef _CONTENTMODEL_CH
+		#define _CONTENTMODEL_CH
+			...
+		#endif
+		
+	No hace caso a partir de la 2 vez, es decir mantiene en memoria que ya se habia
+	cargado, pero al tratarse de otra request no carga el contenido y por consecuencia
+	no carga el symbolo del fichero.
+	
+	Ahora lo q hacemos es q al iniciarse App() se crea una thread static __hFiles en 
+	la q ire poniendo los ficheros que se cargan, de tal manera q si esta cargado no
+	lo vuelvo a cargar, emulando  asi estas directivas...
+	
+	Creo q lo suyo habria de ser a cada request vaciar de memoria #ifdef 
+--------------------------------------------------------------------------- */	
+
 FUNCTION LoadFile( cFile ) 
 
    local cPath 		:= AP_GetEnv( "DOCUMENT_ROOT" ) 
    local cPath_App 	:= AP_GetEnv( "PATH_APP" ) 
    local oError 
-
+   
    hb_default( @cFile, '' )
+   
+    if HB_HPos( __hFiles, cFile ) > 0
+		retu ''
+	endif
+	
+	__hFiles[ cFile ] := .t.		
+
    cFile = cPath + cPath_App + cFile   
    
    if "Linux" $ OS()
@@ -368,6 +393,14 @@ function ZAP_GetPairs( lUrlDecode )	//	Prototype
 
 
 return hPairs
+
+//----------------------------------------------------------------//
+
+
+
+
+
+
 
 //----------------------------------------------------------------//
 

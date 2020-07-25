@@ -28,6 +28,7 @@
 
 thread static hKeySecure  := {=>}
 thread static __hCargo 	:= {=>}
+thread static __hFiles 	:= {=>}
 
 
 //	Se han de definir estos comandos pues los usamos en algunos módulos...
