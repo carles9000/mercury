@@ -16,4 +16,3 @@ English -> https://github.com/carles9000/mercury/blob/master/doc/hfw_mercury_v1_
 
 25/07/2020 Esta versión queda cerrada.
            Se adjunta binarios del modHarbour compatible -> .\bin\modharbour
-
